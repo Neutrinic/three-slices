@@ -4,7 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb,amsthm,mathrsfs,mathtools}
 \usepackage{geometry}
-\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue]{hyperref}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \usepackage{cleveref}
 \usepackage{booktabs}
 \usepackage{enumitem}
@@ -542,7 +542,8 @@ Under the exceptional isomorphism, the bridge automorphism $\delta = \Ad(\Lambda
 
 \begin{table}[h]
 \centering
-\caption{Involution dictionary under exceptional isomorphisms}
+\caption{Involution dictionary under exceptional isomorphisms.
+The three holomorphic involutions $\alpha$, $\theta$, $\delta = \alpha \circ \theta$ of the general $D$-series (\S\ref{sec:involution_algebra}) are matched to their $A$-series counterparts via the exceptional isomorphisms $\sso(4,\C) \cong \ssl(2,\C)^{\oplus 2}$ and $\sso(6,\C) \cong \ssl(4,\C)$. The takeaway: in each column, the bridge automorphism $\delta$ produces the same cone-preserving action on $\mfp$, confirming that the $V_4$ structure is compatible across classical series.}
 \label{tab:involution-dictionary}
 \begin{tabular}{@{}lllll@{}}
 \toprule
@@ -560,6 +561,16 @@ $\theta$-Lorentz & $\SO_0(1,3)$ & $\SL(2,\C)_\R$ & $\SO_0(1,5)$ & $\SU^*(4)$ \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\begin{example}[Worked example: $n=2$]\label{ex:n2-dictionary}
+For $n=2$, the exceptional isomorphism $\sso(4,\C) \cong \ssl(2,\C) \oplus \ssl(2,\C)$ decomposes a $4 \times 4$ antisymmetric matrix into self-dual and anti-self-dual parts. Under this decomposition, the $D$-series involutions become:
+\begin{itemize}
+\item $\alpha = \Ad(I_{2,2})$ acts as the Cartan involution on each $\ssl(2,\C)$ factor independently (fixing $\su(2) \oplus \su(2) = \sso(4)$);
+\item $\theta = \Ad(I_{1,3})$ acts as the swap $(X_+, X_-) \mapsto (X_-, X_+)$ composed with the Cartan involution on each factor (fixing $\ssl(2,\C)_\R = \sso(1,3)$);
+\item $\delta = \alpha \circ \theta$ acts as the pure swap $(X_+, X_-) \mapsto (X_-, X_+)$ (fixing $\ssl(2,\R) \oplus \ssl(2,\R) = \sso(2,2)$).
+\end{itemize}
+The bridge form $\sso(2,2) \cong \ssl(2,\R) \oplus \ssl(2,\R)$ is both Hermitian and split, as noted in \S\ref{sec:discussion}. The abelian subalgebra is $\fa = \R \oplus \R$ with coordinates $(a_+, a_-)$, and $\delta$ permutes: $(a_+, a_-) \mapsto (a_-, a_+)$. The invariant cone is $\{(a_+, a_-) : a_+ \geq 0,\, a_- \geq 0\}$, visibly $\delta$-invariant.
+\end{example}
 
 The key verification is that $\delta$ in each column produces the same map on $\mfp$ (and hence the same action on the cone $C$). For $n=2$, the swap $(X,Y) \mapsto (Y,X)$ on $\ssl(2,\R)^2$ exchanges the two factors, which on the one-dimensional abelian subalgebra $\fa = \R \oplus \R$ is the permutation $(a_1, a_2) \mapsto (a_2, a_1)$, matching the spectral value permutation in the $D$-series. For $n=3$, $\sigma_L \circ \sigma_B$ acts on $\mfp \cong M_2(\C)$ as $B \mapsto B^T$, which preserves the (positive semidefinite) cone and permutes eigenvalues of the Hermitian form, again matching the $D$-series spectral swap.
 
@@ -679,6 +690,20 @@ For $n=2$, $\min(2,2) = 2$ and $p = q$ (split), so the Hermitian and split forms
 
 For $G_\C = \SL(2n,\C)$, the natural triple is $(\SU(2n),\, \SU(n,n),\, \SU^*(2n))$ with $\SU(n,n)$ as bridge. The invariant cone is the positive semidefinite cone in the Jordan algebra of $n \times n$ Hermitian matrices.
 
+Explicitly, the three antiholomorphic involutions of $\ssl(2n,\C)$ and their holomorphic compositions are given in $n \times n$ block form as:
+\begin{alignat}{2}
+\sigma_E(X) &= -\bar{X}^T &\qquad& \text{(compact form: fixes $\su(2n)$)}, \\
+\sigma_B(X) &= -I_{n,n}\, \bar{X}^T\, I_{n,n} &\qquad& \text{(bridge form: fixes $\su(n,n)$)}, \\
+\sigma_L(X) &= J_n\, \bar{X}\, J_n^{-1} &\qquad& \text{(Lorentzian form: fixes $\su^*(2n)$)},
+\end{alignat}
+where $I_{n,n} = \diag(I_n, -I_n)$ and $J_n = \bigl(\begin{smallmatrix} 0 & -I_n \\ I_n & 0 \end{smallmatrix}\bigr)$. The holomorphic automorphisms are:
+\begin{alignat}{2}
+\alpha &= \sigma_E \circ \sigma_B = \Ad(I_{n,n}) &\qquad& \text{(Cartan involution of $\SU(n,n)$)}, \\
+\theta &= \sigma_E \circ \sigma_L \colon X \mapsto -J_n X^T J_n^{-1} &\qquad& \text{(outer automorphism, involves transpose)}, \\
+\delta &= \sigma_L \circ \sigma_B \colon X \mapsto -J_n I_{n,n}\, X\, I_{n,n} J_n^{-1} &\qquad& \text{(bridge automorphism)}.
+\end{alignat}
+One verifies $\alpha \circ \theta = \delta$ and $\alpha^2 = \theta^2 = \delta^2 = \mathrm{id}$, reproducing the $V_4$ structure.
+
 \begin{proposition}[$A$-series cone preservation]\label{prop:A_series_cone}
 The $V_4$ structure extends to $\SL(2n,\C)$ with bridge $\SU(n,n)$. The bridge automorphism $\delta$ preserves the invariant cone $C \subset \p$, where $C$ is the cone of positive semidefinite matrices in the Jordan algebra $\Herm_n(\C)$.
 \end{proposition}
@@ -700,6 +725,10 @@ For $n=1$: $\SU(1,1) \cong \SL(2,\R)$, and the $A$-series bridge recovers one fa
 \begin{conjecture}[$A$-series simultaneous RP]\label{conj:A_series}
 Simultaneous $\alpha$-RP and $\theta$-RP holds for $\SU(n,n)$ under analogous conditions to \Cref{conj:simultaneous_RP}. The case $n=1$ ($\SU(1,1) \cong \SL(2,\R)$) is classical; the case $n=2$ corresponds to the conformal group $\SU(2,2)$ and is proved in \S\ref{sec:n3}. The general-$n$ case requires the same modular-theoretic input as the $D$-series.
 \end{conjecture}
+
+\begin{remark}[The case $n=4$]\label{rmk:n4}
+For $n=4$ (eight spacetime dimensions), the bridge form is $\SO_0(2,6)$ and the bounded symmetric domain is $D^6_{IV}$, a Type~IV domain of rank~2 and complex dimension~6. The $\delta$-evenness theorem of \cite{Author_CauchySzego} (Theorem~7.2) applies directly: all scalar Hardy-space $K$-types on $D^6_{IV}$ satisfy $k + |\lambda| = 2m_1 \in 2\Z$, so the $\delta$-odd obstruction identified in \S\ref{sec:obstruction} is vacuous. What is \emph{not} available for $n=4$ is the Lorentzian reconstruction: the bridge $\SO_0(2,6)$ is not the conformal group of any Lorentzian spacetime (that role belongs to $\SO_0(2,d)$ for $d$-dimensional spacetime, i.e.\ $d=6$ here), so the classical L\"uscher--Mack reconstruction used for $n=3$ does not apply. The $A$-series counterpart $\SU(4,4)$ is similarly unexplored. This makes $n=4$ the first genuinely open case of \Cref{conj:simultaneous_RP}.
+\end{remark}
 
 \subsubsection*{Steinmann relations}
 

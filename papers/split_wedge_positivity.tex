@@ -3,7 +3,7 @@
 \usepackage{amsmath,amsthm,amssymb,amsfonts}
 \usepackage{mathrsfs}
 \usepackage{geometry}
-\usepackage{hyperref}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \usepackage{cleveref}
 \usepackage{enumitem}
 \usepackage{booktabs}
@@ -728,11 +728,11 @@ we obtain:
 \end{align}
 Define the \emph{translated kernel} $K_a(\xi, \eta) := W_2(\Theta_S \xi - \eta - 2a)$.
 
-\emph{Step 3: Holomorphic interpolation.} The spectrum condition (S5) implies that $W_2$ is the boundary value of a function $W_2^{\mathrm{hol}}$ holomorphic on the split tube $\TT_S = \R^4 + iV^+_S$. For $t \in [0,1]$, define:
+\emph{Step 3: Holomorphic interpolation.} The spectrum condition (S5) implies that $W_2$ is the boundary value of a function $W_2^{\mathrm{hol}}$ holomorphic on the split tube $\TT_S = \R^4 + iV^+_S$. The dual cone $(V^+_S)^* := \{y \in \R^4 : g_S(p, y) \geq 0 \text{ for all } p \in \overline{V^+_S}\}$ satisfies $(V^+_S)^* \subset V^+_S$ (see \eqref{eq:dual-cone}); this containment is essential, as it ensures that regularizing with $y \in (V^+_S)^*$ places the imaginary part inside the tube domain where $W_2^{\mathrm{hol}}$ is defined. For $t \in [0,1]$, define:
 \begin{equation}
     K_t(\xi, \eta) := W_2^{\mathrm{hol}}(\Theta_S \xi - \eta - 2ta + i\epsilon y)
 \end{equation}
-for small $\epsilon > 0$ and $y \in (V^+_S)^*$, where $(V^+_S)^*$ is the dual cone defined in \eqref{eq:dual-cone}. Since $(V^+_S)^* \subset V^+_S$, the imaginary part $\epsilon y$ lies in $V^+_S$ and the holomorphic function $W_2^{\mathrm{hol}}$ is well-defined at this argument. This interpolates between $K_0 = K$ and $K_1 = K_a$ as $\epsilon \to 0$.
+for small $\epsilon > 0$ and $y \in (V^+_S)^*$. Holomorphic boundedness on the tube is guaranteed by temperedness (S3): since $W_2$ is a tempered distribution, its Laplace--Fourier representation converges on $\TT_S$ and $|W_2^{\mathrm{hol}}(x + i\epsilon y)|$ is polynomially bounded in $x$ for each fixed $\epsilon > 0$, uniformly on compact subsets of $V^+_S$ in the $y$-variable \cite{Vladimirov1979}. This interpolates between $K_0 = K$ and $K_1 = K_a$ as $\epsilon \to 0$.
 
 \emph{Step 4: Tube regularization and damping.} The Paley--Wiener--Schwartz theorem gives:
 \begin{equation}
@@ -764,7 +764,7 @@ where $g(p) = \int e^{ip \cdot \Theta_S \xi} f(\xi) \, d\xi$. Since $|e^{-2ip \c
     |Q_{a,\epsilon}[f]| \leq \int_{\overline{V^+_S}} |g(p)|^2 \cdot e^{-\epsilon p \cdot y} \, d\mu(p) = Q_{0,\epsilon}[f].
 \end{equation}
 
-Taking $\epsilon \to 0^+$: the integrand $|g(p)|^2 e^{-\epsilon p \cdot y}$ is dominated by $|g(p)|^2$ (which is $\mu$-integrable since $Q_{0,0}[f] = \|\Psi_f\|^2 < \infty$). By dominated convergence:
+Taking $\epsilon \to 0^+$: since $p \cdot y \geq 0$ for $p \in \overline{V^+_S}$ and $y \in (V^+_S)^*$, we have $0 < e^{-\epsilon p \cdot y} \leq 1$ for all $\epsilon > 0$, so the integrand $|g(p)|^2 e^{-\epsilon p \cdot y}$ is dominated by $|g(p)|^2$. This dominating function is $\mu$-integrable: $\int |g(p)|^2 \, d\mu(p) = Q_{0,0}[f] = \|\Psi_f\|^2 < \infty$ by the GNS norm finiteness (since $f \in \mathcal{S}(\R^4)$ and $\omega$ is a state). By dominated convergence:
 \begin{equation}
     \|T(a)\Psi_f\|^2 = \lim_{\epsilon \to 0^+} Q_{a,\epsilon}[f] \leq \lim_{\epsilon \to 0^+} Q_{0,\epsilon}[f] = \|\Psi_f\|^2.
 \end{equation}
@@ -780,7 +780,13 @@ The operators $T(a)$ are symmetric: $\langle T(a)\Psi, \Phi \rangle = \langle \P
 We show $\omega((\alpha_a F)^* \cdot G) = \omega(F^* \cdot \alpha_a G)$. Both expressions involve $W_{n+m}$ evaluated at arguments of the form $(\Theta_S \vec{x}, \vec{y})$ with various translations. The identity follows from translation invariance (S1): shifting all arguments by $a$ leaves $W_{n+m}$ unchanged, and the $\Theta_S$ involution satisfies $\Theta_S(x - a) = \Theta_S(x) + a$, which exchanges the role of the translation on reflected vs.\ unreflected arguments.
 \end{proof}
 
-By Lemmas \ref{lemma:contractivity-n} and \ref{lemma:symmetric}, $\{T(a_u, 0, 0, 0)\}_{a_u \geq 0}$ is a strongly continuous symmetric contraction semigroup. Strong continuity follows from continuity of $\omega$ tested against translates of Schwartz functions: $\lim_{a \to 0} \|T(a)\Psi - \Psi\|^2 = \lim_{a \to 0} \omega((F - \alpha_a F)^* \cdot (F - \alpha_a F)) = 0$. By the Hille--Yosida theorem, the generator $H_u$ is self-adjoint and non-negative. Similarly for $H_v$. The semigroup property $T(a)T(b) = T(a+b)$ is immediate from $\alpha_a \circ \alpha_b = \alpha_{a+b}$.
+By Lemmas \ref{lemma:contractivity-n} and \ref{lemma:symmetric}, $\{T(a_u, 0, 0, 0)\}_{a_u \geq 0}$ is a strongly continuous symmetric contraction semigroup on the GNS Hilbert space $\HH_\omega$. Strong continuity follows from continuity of $\omega$ tested against translates of Schwartz functions: $\lim_{a \to 0} \|T(a)\Psi - \Psi\|^2 = \lim_{a \to 0} \omega((F - \alpha_a F)^* \cdot (F - \alpha_a F)) = 0$, which holds because the Schwartz-class test functions are dense in $\HH_\omega$ and translations act continuously on $\mathcal{S}(\R^4)$. The semigroup property $T(a)T(b) = T(a+b)$ is immediate from $\alpha_a \circ \alpha_b = \alpha_{a+b}$.
+
+By the Hille--Yosida theorem \cite{ReedSimonII}, the generator
+\begin{equation}
+  H_u := -\lim_{a_u \to 0^+} \frac{T(a_u) - \mathbf{1}}{a_u}
+\end{equation}
+(defined on the domain of vectors where the strong limit exists) is a non-negative self-adjoint operator on $\HH_\omega$. Self-adjointness follows from symmetry of each $T(a)$ (Lemma~\ref{lemma:symmetric}) combined with contractivity: a symmetric contraction semigroup is automatically self-adjoint by the classical criterion \cite[Theorem~X.49]{ReedSimonII}. Non-negativity $H_u \geq 0$ reflects the contractivity $\|T(a)\| \leq 1$, which forces the spectrum of $H_u$ to lie in $[0, \infty)$. The domain $\operatorname{Dom}(H_u)$ is dense in $\HH_\omega$; indeed, the GNS vectors $\Psi_f$ with $f \in \mathcal{S}(\R^4)$ form a core for $H_u$, since Schwartz-class vectors are invariant under the semigroup and the GNS construction ensures they are dense. Similarly for $H_v$.
 
 \medskip
 \noindent\textbf{Step 4: Unitary Extension.}
@@ -1274,7 +1280,7 @@ The algebraic core of this paper has been formally verified in the Lean~4 proof 
 \end{enumerate}
 The functional analysis arguments (GNS construction, BCR theorem, Nelson's theorem, Stone's theorem, OS reconstruction) invoke standard results not yet available in Mathlib and are therefore not machine-verified. The Two-Point Trinity (Corollary~\ref{cor:trinity}) is stated as a formal equivalence, but its proof legs rely on the functional analysis results listed above; the Lean formalization verifies the algebraic infrastructure (sum-kernel rewrite, tube inclusion, semigroup structure) but not the equivalence itself. A successful build of the Lean project constitutes a machine-checked proof certificate for the algebraic content listed above; the source code is available at \cite{LeanVerification}.
 
-\emph{Corrections from formalization.} The Lean verification uncovered that the shift identity $\Theta_S(\xi' + a) = \Theta_S \xi' - a$ (equation~\eqref{eq:theta-shift}) requires restriction to timelike translations $a = (a_u, a_v, 0, 0)$, since $\Theta_S$ preserves the spatial components $(x, y)$. This does not affect the proof of Theorem~\ref{thm:main-theorem}, which uses only timelike shifts $a \in \R_+^2 \times \{0\}$.
+\emph{Corrections from formalization.} The Lean verification uncovered that the shift identity $\Theta_S(\xi' + a) = \Theta_S \xi' - a$ (equation~\eqref{eq:theta-shift}) requires restriction to timelike translations $a = (a_u, a_v, 0, 0)$, since $\Theta_S$ preserves the spatial components $(x, y)$. This does not affect the proof of Theorem~\ref{thm:main}, which uses only timelike shifts $a \in \R_+^2 \times \{0\}$.
 
 \begin{thebibliography}{99}
 
@@ -1397,6 +1403,11 @@ Phys.\ Rev.\ D \textbf{64}, 126001 (2001).
 M.~Reed and B.~Simon,
 \emph{Methods of Modern Mathematical Physics I: Functional Analysis},
 Academic Press (1972).
+
+\bibitem{ReedSimonII}
+M.~Reed and B.~Simon,
+\emph{Methods of Modern Mathematical Physics II: Fourier Analysis, Self-Adjointness},
+Academic Press (1975).
 
 \bibitem{SteinWeiss1971}
 E.~M.~Stein and G.~Weiss,

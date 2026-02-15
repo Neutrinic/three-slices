@@ -1,0 +1,35 @@
+# Lean 4 / Lake
+.lake/
+lake-packages/
+lake-manifest.json
+*.olean
+*.ilean
+*.trace
+*.hash
+*.c
+build/
+
+# LaTeX
+papers/*.aux
+papers/*.log
+papers/*.out
+papers/*.bbl
+papers/*.blg
+papers/*.fdb_latexmk
+papers/*.fls
+papers/*.synctex.gz
+papers/*.toc
+papers/*.lof
+papers/*.lot
+papers/*.nav
+papers/*.snm
+papers/*.vrb
+papers/*.pdf
+
+# Claude
+.claude/
+CLAUDE.md
+
+# OS
+.DS_Store
+Thumbs.db

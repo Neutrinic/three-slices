@@ -1,0 +1,37 @@
+name: Compile Papers
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  compile-papers:
+    runs-on: ubuntu-latest
+    container:
+      image: texlive/texlive:latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compile papers
+        run: |
+          cd papers
+          for tex in *.tex; do
+            name="${tex%.tex}"
+            echo "::group::Compiling $tex"
+            latexmk -pdf -interaction=nonstopmode "$tex" || true
+            latexmk -pdf -interaction=nonstopmode "$tex"
+            echo "::endgroup::"
+            if [ ! -f "${name}.pdf" ]; then
+              echo "::error::Failed to compile $tex"
+              exit 1
+            fi
+          done
+          ls -la *.pdf
+
+      - name: Upload PDFs to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: papers/*.pdf

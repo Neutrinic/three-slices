@@ -1,0 +1,830 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs,mathtools}
+\usepackage{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue]{hyperref}
+\usepackage{cleveref}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{tikz-cd}
+
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\SO}{SO}
+\DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\SU}{SU}
+\DeclareMathOperator{\Spin}{Spin}
+\DeclareMathOperator{\Ad}{Ad}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Herm}{Herm}
+\DeclareMathOperator{\spec}{spec}
+\renewcommand{\Re}{\operatorname{Re}}
+
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\p}{\mathfrak{p}}
+\newcommand{\mfp}{\mathfrak{p}}
+\newcommand{\q}{\mathfrak{q}}
+\newcommand{\fk}{\mathfrak{k}}
+\newcommand{\fa}{\mathfrak{a}}
+\newcommand{\sso}{\mathfrak{so}}
+\newcommand{\ssl}{\mathfrak{sl}}
+\newcommand{\ssu}{\mathfrak{su}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\BB}{\mathcal{B}}
+
+\title{Bridge Triples and the Klein Four-Group \\ for Real Forms of $\SO(2n,\C)$}
+\author{A.~Abrahams}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For $G_\C = \SO(2n,\C)$ with $n \geq 2$, we identify a Klein four-group $V_4 \cong \Z_2 \times \Z_2$ of holomorphic automorphisms connecting three real forms: compact $\SO(2n)$, Lorentzian $\SO_0(1,2n{-}1)$, and the Hermitian bridge form $\SO_0(2,2n{-}2)$. We prove that the bridge form is the unique real form of $\SO_0(p,q)$-type admitting an invariant cone (for $n \geq 3$), and that the bridge automorphism preserves this cone by acting as a restricted Weyl group element. This provides the algebraic skeleton for simultaneous Osterwalder--Schrader (Euclidean) and Wightman (Lorentzian) reconstruction from a single positivity condition on the bridge form. We verify the full reconstruction explicitly for $n=2$ (recovering the equivalence of three formulations of axiomatic quantum field theory) and $n=3$ (where the bridge form is the conformal group $\SO_0(2,4)$ and the bridge automorphism corresponds to parity). For general $n$, we identify the precise obstruction to abstract transfer---the $\delta$-odd sector of the GNS Hilbert space---establish a contractivity bound $|K_\theta| \leq K_\alpha$ via holomorphic extension to the complex Olshanski semigroup, and formulate a conjecture identifying the Bisognano--Wichmann property for non-compactly causal symmetric spaces as the missing axiom. The analogous algebraic structure, including cone preservation, is established for the $A$-series ($\SL(2n,\C)$ with bridge $\SU(n,n)$).
+\end{abstract}
+
+\tableofcontents
+
+%----------------------------------------------------------------------
+\section{Introduction}\label{sec:intro}
+%----------------------------------------------------------------------
+
+\subsection{Background and motivation}
+
+The theory of reflection positivity, originating in the Osterwalder--Schrader reconstruction theorem \cite{OS73,OS75}, provides the analytic bridge between Euclidean and Lorentzian quantum field theory. In the representation-theoretic framework of Neeb and \'Olafsson \cite{NO18,NO23}, reflection positivity is formulated as a property of representations of real Lie groups: given a symmetric pair $(G, \tau)$ with an invariant cone $C$ in the $(-1)$-eigenspace of $\tau$, the Olshanski semigroup $S = H \exp(C)$ carries contractive representations that analytically continue to unitary representations of the $c$-dual group $G^c$ via the L\"uscher--Mack theorem \cite{LM75}.
+
+The standard theory handles \emph{one involution at a time}: given a triple $(G, \tau, C)$, one obtains a single $c$-dual. The present paper investigates the algebraic structure governing two simultaneous reconstructions---Euclidean and Lorentzian---from a single positivity condition on a ``bridge'' real form.
+
+\subsection{Main results}
+
+For $G_\C = \SO(2n,\C)$, we consider the triple of real forms
+\begin{equation}\label{eq:triple}
+(G_E, G_B, G_L) = \big(\SO(2n),\; \SO_0(2,2n{-}2),\; \SO_0(1,2n{-}1)\big).
+\end{equation}
+
+Our main results fall into two categories: \emph{algebraic} results that hold for all $n$, and \emph{analytic} results verified for specific $n$.
+
+\medskip
+
+\noindent\textbf{Algebraic results (all $n \geq 2$):}
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Klein four-group} (\Cref{prop:V4}). The three real forms are connected by holomorphic automorphisms $\alpha, \delta, \theta$ with $\theta = \delta \circ \alpha$, forming $V_4 \cong \Z_2 \times \Z_2$ in $\Aut_{\mathrm{hol}}(G_\C)$.
+\item \textbf{Bridge uniqueness} (\Cref{prop:bridge_unique}). For $n \geq 3$, $\SO_0(2,2n{-}2)$ is the unique real form $\SO_0(p,q)$ that is Hermitian symmetric, hence the unique form admitting the invariant cone required for the Olshanski semigroup.
+\item \textbf{Cone preservation} (\Cref{thm:cone_preservation}). The bridge automorphism $\delta$ preserves the invariant cone $C$ on $\SO_0(2,2n{-}2)$.
+\item \textbf{Compact continuation} (\Cref{thm:compact_continuation}). The Cartan involution $\alpha$ on the bridge form, together with the cone $C$, yields a unitary representation of $\SO(2n)$ via L\"uscher--Mack. This is a standard application of the existing theory to the bridge setting.
+\item \textbf{Obstruction and contractivity} (\Cref{prop:failure,thm:contractivity}). Abstract transfer from $\alpha$-RP to $\theta$-RP fails on $\delta$-odd states. However, holomorphic extension to the complex Olshanski semigroup yields the matrix bound $|K_\theta| \leq K_\alpha$.
+\item \textbf{$A$-series extension} (\Cref{prop:A_series_cone}). The $V_4$ structure and cone preservation extend to $\SL(2n,\C)$ with bridge $\SU(n,n)$.
+\end{enumerate}
+
+\noindent\textbf{Analytic results (specific $n$):}
+\begin{enumerate}[label=(\roman*),resume]
+\item \textbf{$n=2$: QFT recovery} (\Cref{sec:n2}). Both Euclidean and Lorentzian reconstructions hold, recovering the equivalence of OS, Wightman, and split-signature axiomatizations \cite{Author_SplitWedge}.
+\item \textbf{$n=3$: Conformal bridge} (\Cref{sec:n3}). The bridge form is the conformal group $\SO_0(2,4) \cong \SU(2,2)$, and both continuations are established by classical results in CFT. The bridge automorphism is identified with parity.
+\end{enumerate}
+
+\subsection{The range of $n$}\label{sec:range}
+
+The parameter $n$ indexes the $D$-series Lie algebras $\sso(2n,\C)$.
+
+\begin{itemize}
+\item \textbf{$n=1$: Degenerate.} $\SO(2,\C) \cong \C^*$ is abelian. The bridge form $\SO_0(2,0) = \SO(2)$ coincides with the compact form, the $V_4$ collapses, and no non-trivial reconstruction occurs.
+\item \textbf{$n=2$: Poincar\'e.} The symmetry group of $\C^4$; the three real slices are Euclidean $\R^4$, Lorentzian $\R^{1,3}$, and split $\R^{2,2}$. The split form coincides with the Hermitian bridge. All results proved unconditionally.
+\item \textbf{$n=3$: Conformal.} The conformal extension of 4D spacetime. The bridge $\SO_0(2,4) \cong \SU(2,2)$ is the conformal group. All results proved unconditionally.
+\item \textbf{$n \geq 4$: Higher rank.} Algebraic structure proved; simultaneous RP is an open conjecture (\Cref{conj:simultaneous_RP}). These groups do not arise as symmetries of four-dimensional spacetime.
+\end{itemize}
+
+For the physics of quantum field theory in four dimensions, the theorem is complete at $n=2$ (Poincar\'e) and $n=3$ (conformal). The general-$n$ theory is a natural Lie-theoretic completion that identifies the precise boundary of the algebraic method.
+
+\subsection{The obstruction to abstract transfer}\label{sec:obstruction_intro}
+
+A natural conjecture is that $\alpha$-reflection positivity on the bridge form, combined with $\delta$-invariance, \emph{automatically} implies $\theta$-reflection positivity (and hence the Lorentzian continuation). We explain in \S\ref{sec:obstruction} why this fails on any fixed domain: the $\theta$-RP kernel decomposes under $\delta$ into positive and negative parts, and $\delta$-odd states violate $\theta$-RP. The abstract transfer fails precisely on the $(-1)$-eigenspace of the implementing unitary $U$.
+
+For $n=2$ and $n=3$, this obstruction is overcome by \emph{analytic} methods specific to each case (tube domain properties for QFT, conformal structure for CFT), not by abstract algebra. Holomorphic extension to the complex Olshanski semigroup yields a contractivity bound $|K_\theta| \leq K_\alpha$ (\Cref{thm:contractivity}) that is strictly stronger than what the algebraic obstruction alone gives, but still falls short of positivity. The identification of this obstruction, together with the contractivity bound, sharpens the question of simultaneous reflection positivity from a vague open problem to a precise analytic condition (\Cref{conj:simultaneous_RP}).
+
+\subsection{Epistemic status}
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Claim} & \textbf{Status} & \textbf{Type} \\
+\midrule
+$V_4$ structure of holomorphic automorphisms & Proved & New \\
+Uniqueness of Hermitian bridge form & Proved & Classification \\
+Cone preservation $\delta(C) = C$ & Proved & New \\
+Compact continuation via L\"uscher--Mack & Proved & Standard + new setting \\
+Abstract $\alpha$-RP $\Rightarrow$ $\theta$-RP & \textbf{False} & \S\ref{sec:obstruction} \\
+Contractivity bound $|K_\theta| \leq K_\alpha$ & Proved & New \\
+Transfer on $\delta$-even sector & Proved & New \\
+Simultaneous RP ($n=2$, QFT) & Proved & Recovery of \cite{Author_SplitWedge} \\
+Simultaneous RP ($n=3$, CFT) & Proved & New application \\
+Simultaneous RP (general $n$) & Open & \Cref{conj:simultaneous_RP} \\
+$\delta$-invariance $=$ parity (CFT) & Identification & New \\
+$A$-series $V_4$ + cone preservation & Proved & New \\
+$A$-series simultaneous RP & Open & \Cref{conj:A_series} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%----------------------------------------------------------------------
+\section{The Involution Algebra}\label{sec:involution_algebra}
+%----------------------------------------------------------------------
+
+\subsection{Setup and conventions}
+
+Let $G_\C = \SO(2n,\C)$ for $n \geq 2$, realized as complex matrices preserving the standard symmetric form on $\C^{2n}$. We work at the Lie algebra level throughout; statements about groups hold for identity components of the corresponding matrix groups. All exceptional isomorphisms (\S\ref{sec:n2}--\ref{sec:n3}) are at the Lie algebra level via simply connected covers.
+
+\begin{definition}[Real form involutions]\label{def:involutions}
+Define signature matrices $I_{p,q} = \diag(-1,\ldots,-1,+1,\ldots,+1)$ with $p$ negative entries. Three antiholomorphic involutions on $\SO(2n,\C)$:
+\begin{align}
+\sigma_E(A) &= \bar{A}, & G_E &= \SO(2n) \text{ (compact)}, \label{eq:sigma_E} \\
+\sigma_B(A) &= I_{2,2n-2}\, \bar{A}\, I_{2,2n-2}, & G_B &= \SO_0(2,2n{-}2) \text{ (bridge)}, \label{eq:sigma_B} \\
+\sigma_L(A) &= I_{1,2n-1}\, \bar{A}\, I_{1,2n-1}, & G_L &= \SO_0(1,2n{-}1) \text{ (Lorentzian)}. \label{eq:sigma_L}
+\end{align}
+\end{definition}
+
+\subsection{Holomorphic automorphisms and the Klein four-group}
+
+\begin{definition}[Bridge automorphisms]\label{def:holo_auto}
+The pairwise compositions (holomorphic):
+\begin{align}
+\alpha &:= \sigma_B \circ \sigma_E = \Ad(I_{2,2n-2}), \label{eq:alpha} \\
+\delta &:= \sigma_L \circ \sigma_B = \Ad(\Lambda), \quad \Lambda := \diag(1,-1,1,\ldots,1), \label{eq:delta} \\
+\theta &:= \sigma_L \circ \sigma_E = \Ad(I_{1,2n-1}). \label{eq:theta}
+\end{align}
+\end{definition}
+
+\begin{remark}\label{rem:anti_vs_holo}
+The composition of two antiholomorphic maps is holomorphic. The Klein four-group lives in $\Aut_{\mathrm{hol}}(G_\C)$, not among the antiholomorphic involutions. Conflating these two types leads to sign errors: $\sigma_E \circ \sigma_L$ is holomorphic (no complex conjugation), while $\sigma_E$ and $\sigma_L$ individually are antiholomorphic.
+\end{remark}
+
+\begin{proposition}[$V_4$ structure]\label{prop:V4}
+$\alpha^2 = \delta^2 = \theta^2 = \id$, $\;\alpha \circ \delta = \delta \circ \alpha = \theta$, $\;\{\id, \alpha, \delta, \theta\} \cong V_4$.
+\end{proposition}
+
+\begin{proof}
+Each is $\Ad(M)$ for a diagonal involutory matrix. The composition uses $I_{2,2n-2} \cdot \Lambda = I_{1,2n-1}$. Commutativity holds because all conjugating matrices are diagonal.
+\end{proof}
+
+The $V_4$ structure is summarized by the diagram:
+\begin{equation}\label{eq:diamond}
+\begin{tikzcd}[row sep=large, column sep=large]
+& G_B \arrow[dl, "\alpha"', "\text{\small Cartan}"'] \arrow[dr, "\delta", "\text{\small bridge}"'] & \\
+G_E & & G_L
+\end{tikzcd}
+\qquad\qquad \theta = \delta \circ \alpha
+\end{equation}
+where the arrows represent $c$-duality along the indicated involutions, restricted to $G_B$.
+
+\subsection{Eigenspace decompositions on $G_B$}\label{sec:decompositions}
+
+We index coordinates $1, 2, 3, \ldots, 2n$ with metric $\eta = I_{2,2n-2}$ ($\eta_1 = \eta_2 = -1$, $\eta_j = +1$ for $j \geq 3$).
+
+\begin{proposition}[Cartan decomposition via $\alpha$]\label{prop:alpha_decomp}
+$\tau_\alpha := \alpha|_{G_B}$ is a Cartan involution of $\g_B = \sso(2,2n{-}2)$:
+\begin{alignat*}{2}
+\fk &= \sso(2) \oplus \sso(2n{-}2) &\qquad& \text{(block diagonal, indices $\{1,2\}$ and $\{3,\ldots,2n\}$)}, \\
+\p &\cong \R^{2 \times (2n-2)} &\qquad& \text{(off-diagonal blocks, parametrized by $B = \binom{b_1}{b_2}$)}.
+\end{alignat*}
+The $c$-dual is $G_B^{c,\alpha} = \SO(2n)$. The maximal compact subgroup is $K = \SO(2) \times \SO(2n{-}2)$.
+\end{proposition}
+
+\begin{proposition}[Target decomposition via $\theta$]\label{prop:theta_decomp}
+$\tau_\theta := \theta|_{G_B}$ has:
+\begin{alignat*}{2}
+\h_\theta &= \sso(1,2n{-}2) &\qquad& \text{(indices $\{2,\ldots,2n\}$, metric $(-1,+1,\ldots,+1)$)}, \\
+\q_\theta &\cong \R^{2n-1} &\qquad& \text{(entries with exactly one index $= 1$)}.
+\end{alignat*}
+The $c$-dual is $G_B^{c,\theta} = \SO_0(1,2n{-}1)$. The Wick rotation converts coordinate~$1$ from timelike to spacelike, changing signature from $(2,2n{-}2)$ to $(1,2n{-}1)$.
+\end{proposition}
+
+\begin{proposition}[Bridge decomposition via $\delta$]\label{prop:delta_decomp}
+$\tau_\delta := \delta|_{G_B}$ has:
+\begin{alignat*}{2}
+\h_\delta &= \sso(1,2n{-}2) &\qquad& \text{(indices $\{1,3,4,\ldots,2n\}$, metric $(-1,+1,\ldots,+1)$)}, \\
+\q_\delta &\cong \R^{2n-1} &\qquad& \text{(entries with exactly one index $= 2$)}.
+\end{alignat*}
+The $c$-dual is $G_B^{c,\delta} = \SO_0(1,2n{-}1)$.
+\end{proposition}
+
+\begin{remark}[Intersection structure]\label{rem:intersection}
+The subspaces interrelate as:
+\[
+\p = (\p \cap \q_\theta) \oplus (\p \cap \h_\theta), \qquad \q_\theta = (\fk \cap \q_\theta) \oplus (\p \cap \q_\theta),
+\]
+where $\p \cap \q_\theta = \{B = (b_1;\, 0)\}$ (first row, dim $2n{-}2$), $\;\p \cap \h_\theta = \{B = (0;\, b_2)\}$ (second row), and $\fk \cap \q_\theta = \R \cdot X_{12}$ (rotation in the $(1,2)$-plane, dim 1).
+\end{remark}
+
+\begin{remark}[$\delta$ is outer on $G_B$]\label{rem:delta_outer}
+$\det(\Lambda) = -1$, so $\delta$ is not in the identity component of $\Aut(G_B)$; it is an outer automorphism of the real group $G_B$ (though inner in $G_\C$). The requirement of $\delta$-invariance is a genuinely discrete symmetry condition.
+\end{remark}
+
+\subsection{Uniqueness of the bridge form}
+
+\begin{proposition}[Bridge uniqueness]\label{prop:bridge_unique}
+Among real forms $\SO_0(p,q)$ of $\SO(2n,\C)$ with $p+q = 2n$ and $p \leq q$, the Hermitian symmetric ones are exactly those with $p \leq 2$. In particular, for $n \geq 3$, $\SO_0(2,2n{-}2)$ is the unique non-compact Hermitian real form of $\SO_0(p,q)$-type, and hence the unique such form admitting an $\Ad(K)$-invariant cone in its non-compact tangent space.
+\end{proposition}
+
+\begin{proof}
+The symmetric space $\SO_0(p,q)/\SO(p) \times \SO(q)$ is Hermitian if and only if $\sso(p)$ has a $U(1)$ center acting as complex structure on $\p$. This requires $p = 2$. See \cite[Ch.~X, Table V]{Helgason}.
+\end{proof}
+
+\begin{remark}\label{rem:DIII}
+The complexified group $\SO(2n,\C)$ also admits real forms not of $\SO_0(p,q)$-type, notably the DIII series $\SO^*(2n)$, which is Hermitian symmetric for all $n \geq 2$. However, $\SO^*(2n)$ does not participate in our $V_4$ structure: the three antiholomorphic involutions \eqref{eq:sigma_E}--\eqref{eq:sigma_L} produce only $\SO_0(p,q)$-type real forms. Our uniqueness claim is: among the real forms connected by the Euclidean-Lorentzian $V_4$, only $\SO_0(2,2n{-}2)$ is Hermitian.
+\end{remark}
+
+\begin{remark}\label{rem:n2_coincidence}
+For $n=2$, $\SO_0(2,2)$ is simultaneously the split form ($p = q = 2$) and the Hermitian bridge. For $n \geq 3$, the split form $\SO(n,n)$ is not Hermitian and cannot serve as the bridge. This explains why split-signature methods work for four-dimensional QFT: it is the unique dimension where split and Hermitian bridge coincide.
+\end{remark}
+
+\begin{remark}[Relation to Helminck's theory]\label{rem:Helminck}
+The commuting pair $(\alpha, \delta)$ of involutions on $G_\C$ is a special case of the framework studied by Helminck \cite{Helminck88}, who classified commuting pairs of involutions on reductive algebraic groups and their associated ``double symmetric spaces.'' Our $V_4 = \{\id, \alpha, \delta, \theta\}$ generates such a double symmetric space structure on $G_B$. The novelty here is not the existence of commuting involutions (which is general) but the identification of which specific triple of real forms they connect, the cone preservation property, and the consequences for reflection positivity.
+\end{remark}
+
+%----------------------------------------------------------------------
+\section{The Invariant Cone}\label{sec:cone}
+%----------------------------------------------------------------------
+
+\subsection{Definition via the Jordan algebra}
+
+The symmetric space $G_B/K = \SO_0(2,2n{-}2)/(\SO(2) \times \SO(2n{-}2))$ is Hermitian of tube type. The non-compact tangent space $\p$ carries the structure of a Euclidean Jordan algebra (a spin factor). The invariant cone is the closure of the cone of squares in this Jordan algebra \cite{FK94}.
+
+\begin{definition}\label{def:abelian}
+The maximal abelian subalgebra $\fa \subset \p$ is $2$-dimensional (for $n \geq 2$), spanned by:
+\begin{align*}
+H_1 &: B \text{ has entry } \lambda_1 \text{ in position } (1,1), \text{ zeros elsewhere}, \\
+H_2 &: B \text{ has entry } \lambda_2 \text{ in position } (2,2), \text{ zeros elsewhere}.
+\end{align*}
+The \textbf{positive Weyl chamber} is $\fa^+ = \{\lambda_1 H_1 + \lambda_2 H_2 : \lambda_1 \geq \lambda_2 \geq 0\}$.
+\end{definition}
+
+\begin{definition}[Invariant cone]\label{def:cone}
+\begin{equation}\label{eq:cone}
+C := \Ad(K) \cdot \overline{\fa^+} = \big\{ \Ad(k)(\lambda_1 H_1 + \lambda_2 H_2) : k \in K,\; \lambda_1 \geq \lambda_2 \geq 0 \big\}.
+\end{equation}
+\end{definition}
+
+\begin{proposition}\label{prop:cone_properties}
+$C$ is a closed, convex, $\Ad(K)$-invariant, pointed, generating cone in $\p$.
+\end{proposition}
+
+\begin{proof}
+Closedness and $\Ad(K)$-invariance are immediate. Pointedness: $\lambda_1 \geq \lambda_2 \geq 0$ and $-\lambda_1 \geq -\lambda_2 \geq 0$ forces $\lambda_1 = \lambda_2 = 0$. Generation: every element of $\p$ is a difference of elements with non-negative spectral parameters. Convexity: $C$ is the positive cone of the spin-factor Jordan algebra, which is convex by \cite[Ch.~III]{FK94}; alternatively, this follows from the Kostant convexity theorem.
+\end{proof}
+
+\subsection{Cone preservation}
+
+\begin{theorem}[Cone preservation]\label{thm:cone_preservation}
+The bridge automorphism $\delta$ preserves the invariant cone: $\delta(C) = C$.
+\end{theorem}
+
+\begin{proof}
+On the $2 \times (2n{-}2)$ matrix $B$, $\delta$ flips the sign of the second row:
+$
+\delta\colon \binom{b_1}{b_2} \mapsto \binom{b_1}{-b_2}.
+$
+On $\fa$: $\delta(H_1) = H_1$, $\delta(H_2) = -H_2$, mapping $(\lambda_1, \lambda_2) \mapsto (\lambda_1, -\lambda_2)$.
+
+The restricted root system of $G_B/K$ is of type $B_2$ (for $n > 2$) or $A_1 \times A_1$ (for $n=2$). In either case, $(\lambda_1, \lambda_2) \mapsto (\lambda_1, -\lambda_2)$ is a Weyl reflection, represented by some $n_w \in N_K(\fa)$. Thus:
+\[
+\delta(C) = \Ad(K) \cdot \delta(\overline{\fa^+}) = \Ad(K) \cdot \Ad(n_w)(\overline{\fa^+}) = \Ad(K) \cdot \overline{\fa^+} = C.
+\]
+The equality $\Ad(K) \cdot \Ad(n_w)(\overline{\fa^+}) = \Ad(K) \cdot \overline{\fa^+}$ holds because $n_w \in K$.
+\end{proof}
+
+\begin{remark}[Elementary alternative]
+The map $\binom{b_1}{b_2} \mapsto \binom{b_1}{-b_2}$ is left-multiplication by $\diag(1,-1) \in \mathrm{O}(2)$. Under the $K = \SO(2) \times \SO(2n{-}2)$ action (left and right rotations), elements of $\p$ have a polar-type decomposition $B = k_L (\lambda_1 H_1 + \lambda_2 H_2) k_R$ with $k_L \in \SO(2)$, $k_R \in \SO(2n{-}2)$, and $\lambda_1, \lambda_2 \in \R$ (signed). The cone $C$ consists of orbits with $\lambda_1 \geq \lambda_2 \geq 0$. Left-multiplication by $\diag(1,-1)$ maps $(\lambda_1, \lambda_2) \mapsto (\lambda_1, -\lambda_2)$, and $\Ad(K)$-saturation absorbs the resulting reordering: $\delta(C) = C$.
+
+\emph{Caution:} These signed spectral parameters $\lambda_i$ are \emph{not} SVD singular values (which are non-negative by convention). The cone $C$ is a proper subcone of $\p$; it is not all of $\p$.
+\end{remark}
+
+%----------------------------------------------------------------------
+\section{Compact Continuation}\label{sec:compact}
+%----------------------------------------------------------------------
+
+\begin{definition}[Reflection positivity, {\cite[Def.~3.1.1]{NO18}}]\label{def:RP}
+A \textbf{reflection positive representation} of $(G, S, \tau)$ consists of a unitary representation $(\pi, \mathcal{H})$ of $G$ with:
+\begin{enumerate}[label=(\roman*)]
+\item a unitary involution $\Theta$ implementing $\tau$: $\Theta\, \pi(g)\, \Theta = \pi(\tau(g))$;
+\item a closed $S$-invariant subspace $\mathcal{E}_+$;
+\item the positive-semidefiniteness condition $\langle \Theta v, v \rangle \geq 0$ for all $v \in \mathcal{E}_+$.
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[Compact continuation]\label{thm:compact_continuation}
+Let $(\pi, \mathcal{H})$ be a representation of $G_B = \SO_0(2,2n{-}2)$ that is $\alpha$-reflection positive with respect to the Olshanski semigroup $S_\alpha = K \exp(C)$. Then the L\"uscher--Mack theorem \cite{LM75,NO18} yields a unitary representation of the compact form $G_E = \SO(2n)$.
+\end{theorem}
+
+\begin{proof}
+Standard application of L\"uscher--Mack to the Hermitian symmetric pair $(G_B, \tau_\alpha)$. The symmetric space $G_B/K$ is Hermitian, $C \subset \p$ is the invariant cone, $S_\alpha = K\exp(C)$ is the Olshanski semigroup, and the $c$-dual is $\SO(2n)$.
+\end{proof}
+
+%----------------------------------------------------------------------
+\section{The Obstruction to Abstract Transfer}\label{sec:obstruction}
+%----------------------------------------------------------------------
+
+One might hope that $\alpha$-RP combined with $\delta$-invariance \emph{automatically} implies $\theta$-RP, yielding the Lorentzian continuation by abstract algebra. We now show this fails: there is no purely algebraic implication $(\alpha\text{-RP on } S_\alpha) + (\delta\text{-invariance}) \Rightarrow (\theta\text{-RP on the same domain})$.
+
+Throughout this section, we take $s, t \in S_\alpha = K\exp(C)$ (equivalently, in a test-function algebra supported on $S_\alpha$), and ask whether the induced $\theta$-kernel on the \emph{same} positive domain $\mathcal{E}_+$ is positive semidefinite. The $n=2$ and $n=3$ cases overcome the resulting obstruction not by working on this domain, but by using analytic continuation to \emph{extend} from $S_\alpha$ to $S_\theta$ (or to the relevant tube domain), which changes the problem entirely.
+
+\subsection{The kernel decomposition}
+
+Define the $\alpha$-RP kernel $K_\alpha(s,t) = \omega(s^{\sharp_\alpha} t)$ for $s, t \in S_\alpha$, where $s^{\sharp_\alpha} = \tau_\alpha(s)^{-1}$ and $\omega$ is the GNS functional. The $\theta$-RP kernel on $S_\alpha$ involves $s^{\sharp_\theta} = \tau_\theta(s)^{-1} = (\delta(\tau_\alpha(s)))^{-1} = \delta(s^{\sharp_\alpha})$.
+
+\begin{proposition}\label{prop:kernel_relation}
+If $\omega$ is $\delta$-invariant, then
+\begin{equation}\label{eq:kernel_relation}
+K_\theta(s,t) = K_\alpha(s,\, \delta(t)).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+$K_\theta(s,t) = \omega(\delta(s^{\sharp_\alpha}) \cdot t) = \omega(\delta(s^{\sharp_\alpha}) \cdot \delta(\delta(t))) = \omega(\delta(s^{\sharp_\alpha} \cdot \delta(t))) = \omega(s^{\sharp_\alpha} \cdot \delta(t)) = K_\alpha(s, \delta(t))$, using $\delta^2 = \id$ and $\omega \circ \delta = \omega$.
+\end{proof}
+
+\begin{lemma}[Kernel invariance]\label{lem:kernel_invariance}
+Assume $\omega \circ \delta = \omega$ and $\delta \circ \tau_\alpha = \tau_\alpha \circ \delta$ (which holds since $\alpha$ and $\delta$ commute). Then $K_\alpha(\delta(s), \delta(t)) = K_\alpha(s,t)$ for all $s,t \in S_\alpha$. Consequently, the map $U \colon k_t \mapsto k_{\delta(t)}$ extends to a unitary involution on the reproducing kernel Hilbert space $\mathcal{H}_\alpha$.
+\end{lemma}
+
+\begin{proof}
+$K_\alpha(\delta(s),\delta(t)) = \omega(\delta(s)^{\sharp_\alpha} \delta(t)) = \omega(\delta(s^{\sharp_\alpha}) \delta(t)) = \omega(\delta(s^{\sharp_\alpha} t)) = \omega(s^{\sharp_\alpha} t) = K_\alpha(s,t)$, using $\delta \circ \tau_\alpha = \tau_\alpha \circ \delta$ in the second step and $\omega \circ \delta = \omega$ in the fourth. The map $U$ preserves inner products: $\langle k_{\delta(s)}, k_{\delta(t)} \rangle = K_\alpha(\delta(s), \delta(t)) = K_\alpha(s,t) = \langle k_s, k_t \rangle$. Since $\delta^2 = \id$, $U^2 = \id$, so $U$ is a unitary involution.
+\end{proof}
+
+\begin{proposition}[Failure of automatic transfer]\label{prop:failure}
+In the RKHS $\mathcal{H}_\alpha$, the unitary involution $U$ from \Cref{lem:kernel_invariance} decomposes $\mathcal{H}_\alpha = \mathcal{H}_\alpha^+ \oplus \mathcal{H}_\alpha^-$ into $(\pm 1)$-eigenspaces. Then:
+\begin{equation}\label{eq:theta_decomposition}
+K_\theta(s,t) = \langle k_s, U\, k_t \rangle_\alpha.
+\end{equation}
+The $\theta$-RP condition $\sum_{i,j} \bar{c}_i c_j K_\theta(s_i, s_j) \geq 0$ is equivalent to $\langle v, U v \rangle \geq 0$ for $v \in \mathcal{E}_+$. Since $\langle v, U v \rangle = \|v_+\|^2 - \|v_-\|^2$, this fails on the $(-1)$-eigenspace: any $v \in \mathcal{H}_\alpha^- \cap \mathcal{E}_+$ with $v \neq 0$ gives $\langle v, U v \rangle = -\|v\|^2 < 0$.
+\end{proposition}
+
+\begin{remark}[Sharpness of the obstruction]\label{rem:sharp}
+Since $U$ is a unitary involution, $U \geq 0$ if and only if $U = I$ (the only positive involution is the identity). So $\theta$-RP on any domain $X$ holds if and only if $\mathcal{H}_X^- = 0$: the $\delta$-odd sector must be entirely absent from the $X$-cyclic subspace. No perturbative correction or weakening of the condition can fix this; only a change of domain (analytic continuation) or a replacement of the unitary insertion by a positive operator (modular theory) can overcome the obstruction.
+\end{remark}
+
+\subsection{The contractivity bound}
+
+Holomorphic extension to the complex Olshanski semigroup provides a result strictly stronger than the algebraic obstruction alone.
+
+\begin{theorem}[Neeb contractivity bound]\label{thm:contractivity}
+Let $\omega$ be $\alpha$-RP with GNS triple $(\pi, \mathcal{H}, \Omega)$, and assume $\omega$ extends holomorphically to the complex Olshanski semigroup $\Gamma_\alpha(C) = G_B \exp(iC)$ (as guaranteed by $\alpha$-RP when the GNS representation is semibounded \cite{Neeb00}). Then the $2N \times 2N$ matrix
+\begin{equation}\label{eq:block_matrix}
+M = \begin{pmatrix} A & B \\ B^* & A \end{pmatrix}, \qquad A_{ij} = K_\alpha(s_i, s_j), \quad B_{ij} = K_\theta(s_i, s_j),
+\end{equation}
+is positive semidefinite for any finite set $\{s_1, \ldots, s_N\} \subset G_B$. In particular,
+\begin{equation}\label{eq:contractivity}
+-A \leq \Re(B) \leq A
+\end{equation}
+as an inequality of $N \times N$ Hermitian matrices.
+\end{theorem}
+
+\begin{proof}
+By Neeb's extension theorem \cite[Ch.~XI]{Neeb00}, $\alpha$-RP implies that the GNS representation $\pi$ extends to a continuous $*$-representation of $\Gamma_\alpha(C)$, and the kernel $K_\alpha(z,w) = \langle \pi(w)\Omega, \pi(z)\Omega \rangle$ is positive-semidefinite for all $z, w \in \Gamma_\alpha(C)$.
+
+Since $G_B \subset \Gamma_\alpha(C)$ (as the boundary component $G_B \cdot \exp(0)$), the $2N$ points $\{s_1, \ldots, s_N, \delta(s_1), \ldots, \delta(s_N)\}$ all lie in $\Gamma_\alpha(C)$. The $2N \times 2N$ Gram matrix of $K_\alpha$ at these points is PSD.
+
+Setting $v_i = \pi(s_i)\Omega$ and using the unitary $U$ implementing $\delta$:
+\begin{align*}
+A_{ij} &= \langle v_j, v_i \rangle, \\
+D_{ij} &= K_\alpha(\delta(s_i), \delta(s_j)) = \langle Uv_j, Uv_i \rangle = \langle v_j, v_i \rangle = A_{ij}, \\
+B_{ij} &= K_\theta(s_i, s_j) = \langle Uv_j, v_i \rangle.
+\end{align*}
+The equality $D = A$ follows from unitarity of $U$. The full matrix $M$ is PSD because it is a Gram matrix. Block-diagonalizing via $c \mapsto (c+c', c-c')$ yields $A + \Re(B) \geq 0$ and $A - \Re(B) \geq 0$.
+\end{proof}
+
+\begin{remark}
+The contractivity bound \eqref{eq:contractivity} says the $\theta$-kernel is \emph{bounded} by the $\alpha$-kernel in the matrix order, but not necessarily positive. This is the maximal information extractable from the Olshanski semigroup extension: the PSD property of $K_\alpha$ on $\Gamma_\alpha(C)$ gives PSD of the full $2N \times 2N$ matrix, but an off-diagonal block of a PSD matrix is not PSD in general.
+\end{remark}
+
+\subsection{Restricted transfer}
+
+The obstruction identifies the correct restricted statement:
+
+\begin{proposition}[Transfer on the $\delta$-even sector]\label{prop:restricted_transfer}
+If $\omega$ is $\alpha$-RP and $\delta$-invariant, then $\theta$-RP holds on the $\delta$-even subspace:
+\begin{equation}
+\langle \Theta_\theta v, v \rangle \geq 0 \quad \text{for all } v \in \mathcal{E}_+^{\,\delta} := \{v \in \mathcal{E}_+ : U v = v\}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For $v \in \mathcal{E}_+^{\,\delta}$: $\langle v, U v \rangle = \langle v, v \rangle = \|v\|^2 \geq 0$.
+\end{proof}
+
+\begin{remark}
+This yields positivity on the $\delta$-even sector. Whether this sector is large enough and $S_\theta$-compatible to run the L\"uscher--Mack construction depends on analytic input specific to each $n$. In the known cases $n=2,3$, the full reconstruction holds for all states (not just $\delta$-even ones) by tube domain methods that extend the domain from $S_\alpha$ to $S_\theta$.
+\end{remark}
+
+\begin{remark}[Parity-violating theories]\label{rem:parity_violating}
+Physically, the $(-1)$-eigenspace of $U$ consists of $\delta$-odd states. For $n=3$ (conformal case), these are the parity-odd states. Any reconstruction scheme that relies on $\delta$-even restriction will miss part of a parity-violating theory; recovering the full theory requires the full analytic continuation machinery (as in \cite{LM75} and modern CFT treatments).
+\end{remark}
+
+\begin{remark}[The obstruction as an abstract vs.\ concrete phenomenon]
+\label{rem:abstract-obstruction}
+The $\delta$-odd obstruction identified above lives in the 
+\emph{abstract} GNS Hilbert space $\HH$ of the bridge form, 
+not in any specific physical representation. For a given QFT, 
+the relevant question is whether $\delta$-odd $K$-types 
+\emph{actually appear} in the GNS decomposition---that is, 
+whether the $(-1)$-eigenspace $\HH^-$ of $U$ is nontrivial.
+
+It turns out that for scalar fields (and more generally for 
+fields with positive $\delta$-structure $J_\tau = +\mathrm{id}$), 
+the $\delta$-odd sector is \emph{empty}: the rank-2 lattice 
+structure of $K$-types on the Type~IV domain forces all scalar 
+$K$-types to be $\delta$-even 
+\cite[Theorem~7.5]{Author_CauchySzego}. The obstruction 
+identified here is therefore real as an algebraic possibility 
+but vacuous for these representations. This makes the abstract 
+analysis of this section complementary to, rather than in 
+tension with, the positive reconstruction results of the 
+companion papers: this paper explains \emph{what could go wrong}, 
+and \cite{Author_CauchySzego} shows \emph{why it doesn't}.
+\end{remark}
+
+\subsection{Why it works for $n=2$ and $n=3$}
+
+The obstruction is real when one insists on testing $\theta$-RP on the $S_\alpha$-generated domain $\mathcal{E}_+$. For $n=2$ and $n=3$, the Lorentzian reconstruction holds for \emph{all} states by extending to a different domain:
+
+For $n=2$: the split wedge construction \cite{Author_SplitWedge} uses tube domain analyticity and spectrum conditions to extend from the $S_\alpha$-domain to the $S_\theta$-domain. The Wightman reconstruction works on analytically continued correlators, not on $S_\alpha$-restricted data.
+
+For $n=3$: the conformal reconstruction uses the tube realization of Minkowski space as a Shilov boundary of the Hermitian symmetric domain $\SU(2,2)/S(U(2) \times U(2))$. The extension from Euclidean to Lorentzian is mediated by the tube, not by algebraic transfer on a fixed domain. See \cite{LM75,Poland19}.
+
+In both cases, the $V_4$ structure and cone preservation provide the \emph{algebraic skeleton} that organizes the reconstruction, while the \emph{analytic flesh} comes from case-specific methods.
+
+%----------------------------------------------------------------------
+\section{The Case $n=2$: QFT Recovery}\label{sec:n2}
+%----------------------------------------------------------------------
+
+For $n=2$, the exceptional isomorphism $\sso(4,\C) \cong \ssl(2,\C) \oplus \ssl(2,\C)$ (at the level of the simply connected cover $\Spin(4,\C) \cong \SL(2,\C) \times \SL(2,\C)$) makes everything explicit.
+
+\subsection{Involutions on $\ssl(2,\C) \oplus \ssl(2,\C)$}
+
+The real forms decompose as:
+\begin{align*}
+\sso(4) &\cong \ssu(2) \oplus \ssu(2), \\
+\sso(2,2) &\cong \ssl(2,\R) \oplus \ssl(2,\R), \\
+\sso(1,3) &\cong \ssl(2,\C)_\R.
+\end{align*}
+
+The holomorphic automorphisms in the product picture:
+\begin{alignat}{2}
+\alpha &\colon (X,Y) \mapsto (-X^T, -Y^T) &\qquad& \text{(Cartan on each factor)}, \\
+\delta &\colon (X,Y) \mapsto (Y,X) &\qquad& \text{(swap)}, \\
+\theta &\colon (X,Y) \mapsto (-Y^T, -X^T) &\qquad& \text{(swap + Cartan)}.
+\end{alignat}
+
+The swap automorphism $\delta$ corresponds to $\Ad(\Lambda)$ under the exceptional isomorphism.
+
+\subsection{Cone and preservation}
+
+The invariant cone is $C = C_1 \times C_2$ in $\ssl(2,\R) \oplus \ssl(2,\R)$, where each $C_i$ is the forward light cone. Since $C_1 = C_2$, the swap preserves $C$.
+
+\subsection{Both reconstructions}
+
+\begin{corollary}\label{cor:n2}
+For $n=2$, the bridge form $\SO_0(2,2)$ supports:
+\begin{enumerate}[label=(\roman*)]
+\item the $\alpha$-continuation to $\SO(4)$ (Osterwalder--Schrader / Euclidean reconstruction), and
+\item the $\theta$-continuation to $\SO_0(1,3)$ (Wightman / Lorentzian reconstruction),
+\end{enumerate}
+from a single positivity condition (split wedge positivity + $R$-invariance). This recovers the main result of \cite{Author_SplitWedge}, which proves both reconstructions using tube domain analyticity and the spectrum condition.
+\end{corollary}
+
+\begin{remark}
+In the split wedge paper, $R$-invariance is $\delta$-invariance (the swap). The Lorentzian reconstruction does \emph{not} proceed by abstract transfer from OS positivity; it uses the specific analytic properties of Wightman distributions. The $V_4$ structure explains \emph{why} both reconstructions exist and how they relate, while the proofs remain analytic.
+\end{remark}
+
+%----------------------------------------------------------------------
+\section{The Case $n=3$: The Conformal Bridge}\label{sec:n3}
+%----------------------------------------------------------------------
+
+For $n=3$, the bridge form is $\SO_0(2,4) \cong \SU(2,2)/\Z_2$, the conformal group of four-dimensional spacetime. We work via $\sso(6,\C) \cong \ssl(4,\C)$ (simply connected cover).
+
+\subsection{Real forms under $\ssl(4,\C)$}
+
+\begin{align*}
+\SO(6) &\leftrightarrow \SU(4), \\
+\SO_0(2,4) &\leftrightarrow \SU(2,2), \\
+\SO_0(1,5) &\leftrightarrow \SU^*(4).
+\end{align*}
+
+The antiholomorphic involutions on $\ssl(4,\C)$:
+\begin{align}
+\sigma_E(X) &= -\bar{X}^T, \\
+\sigma_B(X) &= -I_{2,2}\, \bar{X}^T\, I_{2,2}, \quad I_{2,2} = \diag(1,1,-1,-1), \\
+\sigma_L(X) &= J_2\, \bar{X}\, J_2^{-1}, \quad J_2 = \begin{pmatrix} 0 & -I_2 \\ I_2 & 0 \end{pmatrix}.
+\end{align}
+
+The holomorphic automorphisms: $\alpha = \Ad(I_{2,2})$ (inner) and $\beta := \sigma_L \circ \sigma_E\colon X \mapsto -J_2 X^T J_2^{-1}$ (outer, involves transpose). Note that $\beta$ corresponds to $\theta$ in the general notation of \S\ref{sec:involution_algebra}; we use a distinct letter because the explicit formula differs from $\Ad(I_{1,2n-1})$ under the exceptional isomorphism. These commute: the anticommutation $I_{2,2} J_2 = -J_2 I_{2,2}$ produces cancelling signs in the double conjugation.
+
+Under the exceptional isomorphism, the bridge automorphism $\delta = \Ad(\Lambda)$ of $\sso(6,\C)$ corresponds to the composition $\sigma_L \circ \sigma_B$ in $\ssl(4,\C)$, which is the holomorphic automorphism relating $\SU(2,2)$ and $\SU^*(4)$.
+
+\begin{table}[h]
+\centering
+\caption{Involution dictionary under exceptional isomorphisms}
+\label{tab:involution-dictionary}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+ & \multicolumn{2}{c}{$n=2$: $\sso(4,\C) \cong \ssl(2,\C)^{\oplus 2}$} & \multicolumn{2}{c}{$n=3$: $\sso(6,\C) \cong \ssl(4,\C)$} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+Label & $D$-series & $A$-series & $D$-series & $A$-series \\
+\midrule
+$\alpha$ & $\Ad(I_{2,2})$ & Cartan on each & $\Ad(I_{2,4})$ & $\Ad(I_{2,2})$ \\
+$\theta$ & $\Ad(I_{1,3})$ & swap $+$ Cartan & $\Ad(I_{1,5})$ & $\beta: X \mapsto -J_2 X^T J_2^{-1}$ \\
+$\delta$ & $\Ad(\Lambda)$ & swap & $\Ad(\Lambda)$ & $\sigma_L \circ \sigma_B$ \\
+\midrule
+$\alpha$-compact & $\SO(4)$ & $\SU(2)^2$ & $\SO(6)$ & $\SU(4)$ \\
+$\delta$-bridge & $\SO_0(2,2)$ & $\SL(2,\R)^2$ & $\SO_0(2,4)$ & $\SU(2,2)$ \\
+$\theta$-Lorentz & $\SO_0(1,3)$ & $\SL(2,\C)_\R$ & $\SO_0(1,5)$ & $\SU^*(4)$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The key verification is that $\delta$ in each column produces the same map on $\mfp$ (and hence the same action on the cone $C$). For $n=2$, the swap $(X,Y) \mapsto (Y,X)$ on $\ssl(2,\R)^2$ exchanges the two factors, which on the one-dimensional abelian subalgebra $\fa = \R \oplus \R$ is the permutation $(a_1, a_2) \mapsto (a_2, a_1)$, matching the spectral value permutation in the $D$-series. For $n=3$, $\sigma_L \circ \sigma_B$ acts on $\mfp \cong M_2(\C)$ as $B \mapsto B^T$, which preserves the (positive semidefinite) cone and permutes eigenvalues of the Hermitian form, again matching the $D$-series spectral swap.
+
+\subsection{Cone preservation for $\SU(2,2)$}
+
+The Hermitian symmetric space $\SU(2,2)/S(U(2) \times U(2))$ is tube-type. In the $\ssl(4,\C)$ picture, the bridge automorphism acts on $\p \cong M_2(\C)$ by $B \mapsto B^T$. The Jordan algebra spectral parameters (signed eigenvalues of the Hermitian matrix obtained via the Cayley transform) are invariant under transpose, so $\delta(C) = C$.
+
+\subsection{Both reconstructions for CFT}
+
+The $\alpha$-continuation (to $\SU(4) \cong \SO(6)$, compact) is the Euclidean conformal reconstruction: OS axioms for conformal correlators. The $\theta$-continuation (to $\SU^*(4) \cong \SO_0(1,5)$, Lorentzian) is the standard Lorentzian conformal reconstruction. The original proof that conformal RP on the tube domain yields Lorentzian unitarity is due to L\"uscher and Mack \cite{LM75}; for a modern treatment in the context of the conformal bootstrap, see \cite[Ch.~3]{Poland19}.
+
+Both reconstructions hold by the classical theory of conformal field theory, not by abstract transfer. The $V_4$ structure explains \emph{why} both are possible and identifies the bridge as the conformal group.
+
+\subsection{$\delta$-invariance and parity}
+
+\begin{remark}[Parity identification]\label{rem:parity}
+In four-dimensional CFT, $\delta$-invariance corresponds to parity invariance:
+\begin{itemize}
+\item For \textbf{scalar four-point functions}, $\delta$-invariance is automatic: the tensor structure is unique and parity-even.
+\item For \textbf{spinning operators}, $\delta$-invariance requires $(j_L, j_R) \leftrightarrow (j_R, j_L)$ symmetry in OPE coefficients.
+\end{itemize}
+This is consistent with the obstruction of \S\ref{sec:obstruction}: on a fixed $S_\alpha$-domain, abstract transfer works only on the parity-even sector. The full reconstruction for parity-violating theories requires the analytic extension to the Lorentzian tube domain.
+\end{remark}
+
+%----------------------------------------------------------------------
+\section{Simultaneous Reflection Positivity}\label{sec:simultaneous}
+%----------------------------------------------------------------------
+
+We formulate the precise open problem suggested by the algebraic structure, informed by the obstruction analysis of \S\ref{sec:obstruction}.
+
+\subsection{The conjecture}
+
+For scalar fields satisfying the Wightman axioms (or more 
+generally, fields with positive $\delta$-structure 
+$J_\tau = +\mathrm{id}$), simultaneous reflection positivity is 
+established unconditionally by the companion paper 
+\cite{Author_CauchySzego}: the $\delta$-evenness of all scalar 
+Hardy-space $K$-types eliminates the algebraic obstruction. The 
+following conjecture proposes an \emph{alternative} mechanism 
+applicable to general fields, including those with 
+$J_\tau \neq +\mathrm{id}$.
+
+\begin{conjecture}[Simultaneous RP via modular theory]\label{conj:simultaneous_RP}
+Let $n \geq 2$ and let $\omega$ be a state on $G_B = \SO_0(2,2n{-}2)$ that is:
+\begin{enumerate}[label=(\roman*)]
+\item $\alpha$-reflection positive with respect to $S_\alpha = K \exp(C)$;
+\item $\delta$-invariant;
+\item satisfies the \textbf{Bisognano--Wichmann property}: the modular conjugation $J_W$ of the von Neumann algebra $\mathcal{A}(W) = \pi(\BB(W))''$ (where $W \subset G_B/H_\theta$ is the wedge domain of the NCC symmetric space) implements the geometric reflection $\tau_\theta$, and the modular operator $\Delta_W$ generates the one-parameter group of boosts in $H_\theta$.
+\end{enumerate}
+Then $\omega$ is also $\theta$-reflection positive with respect to $S_\theta = H_\theta \exp(C_\theta)$, yielding simultaneous unitary representations of $\SO(2n)$ and $\SO_0(1,2n{-}1)$.
+\end{conjecture}
+
+\begin{remark}[Status and relation to the $\delta$-evenness approach]\label{rem:conj_discussion}
+The conjecture is verified for $n=2$ \cite{Author_SplitWedge} and $n=3$ (classical CFT). Conditions (i)--(ii) alone are insufficient (\Cref{prop:failure}). The role of condition (iii) is to replace the indefinite unitary insertion $U$ (eigenvalues $\pm 1$) with the positive modular operator $\Delta^{1/2}$ (spectrum in $\R_{>0}$), thereby overcoming the sign obstruction on $\delta$-odd states.
+
+For theories satisfying the Wightman axioms, condition (iii) is 
+not an independent assumption but a \emph{theorem}: 
+for $n=2$, this is the Bisognano--Wichmann theorem 
+\cite{BW75,BW76} (derived from the spectrum condition, 
+Lorentz covariance, and locality); for $n=3$, it follows from 
+the Brunetti--Guido--Longo theory of modular localisation 
+\cite{BGL02}. For general $n$, the recent work of Neeb, 
+\'Olafsson, and collaborators on wedge domains and standard 
+subspaces in NCC symmetric spaces \cite{NO23wedge,MNO23} 
+provides the natural framework.
+
+The modular-theoretic approach and the $\delta$-evenness approach 
+of \cite{Author_CauchySzego} resolve the obstruction by different 
+mechanisms. The $\delta$-evenness route shows the $R$-odd/\,$\delta$-odd 
+sector is \emph{empty} for scalar fields (and positive 
+$\delta$-structure fields generally), making the obstruction 
+vacuous. The modular-theoretic route replaces the indefinite 
+algebraic intertwiner with the positive modular operator, making 
+the obstruction irrelevant even when $\delta$-odd $K$-types are 
+present (as for $J_\tau = -\mathrm{id}$ fields). For Wightman 
+theories with $J_\tau = +\mathrm{id}$, both mechanisms apply and 
+give the same conclusion.
+\end{remark}
+
+\subsection{Evidence from the Shilov boundary}\label{sec:shilov}
+
+We present topological evidence that the geometric prerequisites for simultaneous RP hold for all $n$.
+
+The tube domain for $G_B/K$ (type $\mathrm{IV}_{2n-2}$ bounded symmetric domain) has Shilov boundary $\check{S} \cong S^{2n-3}$. The involutions $\alpha$ and $\theta$ act on $\check{S}$, and the fixed-point sets are subspheres.
+
+\begin{proposition}[Shilov boundary fixed-point intersection]\label{prop:shilov}
+For $n \geq 2$, the fixed-point sets of $\alpha$ and $\theta$ acting on the Shilov boundary $\check{S} \cong S^{2n-3}$ satisfy:
+\begin{alignat*}{3}
+\check{S}^{\,\alpha} &\cong S^{2n-5} &\qquad& (\text{codimension } 2), \\
+\check{S}^{\,\theta} &\cong S^{2n-4} &\qquad& (\text{codimension } 1), \\
+\check{S}^{\,\alpha} \cap \check{S}^{\,\theta} &\cong S^{2n-5} &\qquad& (\text{nonempty for } n \geq 3).
+\end{alignat*}
+For $n=2$: $\check{S}^{\,\alpha}$ is two isolated points, $\check{S}^{\,\theta}$ is a circle, and the intersection consists of two points. For $n=3$: $\check{S}^{\,\alpha} \cong S^1$ sits inside $\check{S}^{\,\theta} \cong S^2$, with intersection $S^1$. For all $n$, the intersection is nonempty and has dimension growing with $n$.
+\end{proposition}
+
+\begin{proof}
+In coordinates $(x_1, \ldots, x_{2n-2})$ on $\check{S} \cong S^{2n-3} \subset \R^{2n-2}$: $\alpha$ flips $(x_1, x_2)$, fixing the sphere $\{x_1 = x_2 = 0\} \cap S^{2n-3} = S^{2n-5}$; $\theta$ flips $x_1$, fixing $\{x_1 = 0\} \cap S^{2n-3} = S^{2n-4}$. The intersection is $\{x_1 = x_2 = 0\} \cap S^{2n-3} = S^{2n-5}$.
+\end{proof}
+
+\begin{remark}
+The nonemptiness of $\check{S}^{\,\alpha} \cap \check{S}^{\,\theta}$ means both involutions ``see'' the same piece of Shilov boundary. A Poisson integral reconstruction from Shilov boundary data would propagate positivity information from the $\alpha$-boundary to the $\theta$-boundary through this shared region. The growing dimension of the intersection with $n$ suggests the geometric prerequisites become \emph{more} favorable, not less, in higher rank. The obstruction to closing the argument by Shilov boundary methods alone is analytic, not topological: the Poisson kernel preserves function values but does not automatically preserve kernel positivity (\Cref{rem:sharp}).
+\end{remark}
+
+%----------------------------------------------------------------------
+\section{Discussion}\label{sec:discussion}
+%----------------------------------------------------------------------
+
+\subsection{The structural constant ``two''}
+
+The bridge form is $\SO_0(2,2n{-}2)$ for all $n \geq 2$: always exactly two timelike directions. This is forced by \Cref{prop:bridge_unique}. Among real forms $\SO_0(p,q)$, only $p=2$ is Hermitian for $n \geq 3$.
+
+For $n=2$, $\min(2,2) = 2$ and $p = q$ (split), so the Hermitian and split forms coincide. This echoes other dimensional thresholds: Ricci flow controls full curvature only in dimension~3; the $h$-cobordism theorem requires dimension $\geq 5$; exotic smooth structures on $\R^n$ exist only for $n=4$. Dimension~4 sits at the boundary in each case. Our result identifies another: the bridge transition from split-coincides-with-Hermitian ($n=2$) to split-differs-from-Hermitian ($n \geq 3$).
+
+\subsection{Extensions}\label{sec:extensions}
+
+\subsubsection*{The $A$-series}
+
+For $G_\C = \SL(2n,\C)$, the natural triple is $(\SU(2n),\, \SU(n,n),\, \SU^*(2n))$ with $\SU(n,n)$ as bridge. The invariant cone is the positive semidefinite cone in the Jordan algebra of $n \times n$ Hermitian matrices.
+
+\begin{proposition}[$A$-series cone preservation]\label{prop:A_series_cone}
+The $V_4$ structure extends to $\SL(2n,\C)$ with bridge $\SU(n,n)$. The bridge automorphism $\delta$ preserves the invariant cone $C \subset \p$, where $C$ is the cone of positive semidefinite matrices in the Jordan algebra $\Herm_n(\C)$.
+\end{proposition}
+
+\begin{proof}
+The $V_4$ structure is constructed analogously to the $D$-series: $\alpha = \Ad(I_{n,n})$ (Cartan involution of $\SU(n,n)$), $\delta = \sigma_L \circ \sigma_B$ (composition of the quaternionic and Hermitian involutions). The symmetric space $\SU(n,n)/S(U(n) \times U(n))$ is Hermitian of tube type, with Jordan algebra $\Herm_n(\C)$.
+
+For cone preservation: $\delta$ acts on $\p \cong \Herm_n(\C)$ by $H \mapsto H^T$ (transpose). To see this explicitly: the Cartan decomposition gives $\p = \{\begin{psmallmatrix} 0 & B \\ B^\dagger & 0 \end{psmallmatrix} : B \in M_n(\C)\}$. The composition $\sigma_L \circ \sigma_B$ maps $B \mapsto B^T$ (quaternionic conjugation negates the off-diagonal block, then Hermitian conjugation restores it with transpose). Via the Cayley transform $M_n(\C) \cong \Herm_n(\C)$, $B \mapsto B^T$ becomes $H \mapsto H^T$ on the Jordan algebra. This is consistent with the $V_4$ structure: $\delta$ acts as the spectral-value permutation automorphism on $\Herm_n(\C)$, which for rank-$n$ matrices is simply transpose (since the Jordan algebra is commutative, this is an automorphism, not merely an anti-automorphism).
+
+Transpose preserves positive semidefiniteness: $(A \circ B)^T = B^T \circ A^T = B \circ A = A \circ B$ (since $\Herm_n(\C)$ is commutative). Anti-automorphisms of a Euclidean Jordan algebra preserve the cone of squares \cite[Ch.~III]{FK94}: if $H = \sum a_i^2$, then $H^T = \sum (a_i^T)^2$. Since $C$ is the closure of the cone of squares, $\delta(C) = C$.
+
+Equivalently: positive semidefiniteness of a Hermitian matrix is an eigenvalue condition, and $H^T = \bar{H}$. For $H \in \Herm_n(\C)$, $\bar{H}$ has the same eigenvalues as $H$ (they are real), so $H \geq 0 \iff \bar{H} \geq 0$.
+\end{proof}
+
+\begin{remark}
+For $n=1$: $\SU(1,1) \cong \SL(2,\R)$, and the $A$-series bridge recovers one factor of the $D$-series $n=2$ case (via $\sso(2,2) \cong \ssl(2,\R) \oplus \ssl(2,\R)$). The cone is $\{a \in \R : a \geq 0\}$, trivially preserved.
+\end{remark}
+
+\begin{conjecture}[$A$-series simultaneous RP]\label{conj:A_series}
+Simultaneous $\alpha$-RP and $\theta$-RP holds for $\SU(n,n)$ under analogous conditions to \Cref{conj:simultaneous_RP}. The case $n=1$ ($\SU(1,1) \cong \SL(2,\R)$) is classical; the case $n=2$ corresponds to the conformal group $\SU(2,2)$ and is proved in \S\ref{sec:n3}. The general-$n$ case requires the same modular-theoretic input as the $D$-series.
+\end{conjecture}
+
+\subsubsection*{Steinmann relations}
+
+The $V_4$ structure of commuting involutions suggests a connection to Steinmann relations (vanishing of double discontinuities). Taking a discontinuity across the ``Euclidean cut'' ($\alpha$) and the ``Lorentzian cut'' ($\theta$) involves both involutions; their commutativity ($\alpha \circ \theta = \delta$, also an involution) may be the non-perturbative origin of Steinmann compatibility. A double discontinuity in overlapping channels is not two independent operations but a single $\delta$ action, and $\delta$-invariance constrains what survives. Making this precise requires the Borchers algebra language of \cite{Author_SplitWedge}. We defer this to future work.
+
+\subsection{What this paper does and does not establish}
+
+\emph{Established:} The algebraic structure---$V_4$, bridge uniqueness, cone preservation---and the compact continuation, for all $n \geq 2$. The obstruction to abstract transfer and the contractivity bound $|K_\theta| \leq K_\alpha$. The $A$-series extension. The full simultaneous reconstruction for $n=2$ (QFT) and $n=3$ (CFT).
+
+\emph{Not established here:} Simultaneous reconstruction for general $n$. The abstract transfer fails (\S\ref{sec:obstruction}). The resolution requires showing that the $\delta$-odd sector is absent from the physical Hilbert space. This is established in the companion paper \cite{Author_CauchySzego}, which proves that all scalar Hardy-space $K$-types on the Type~IV domain are $\delta$-even (a consequence of the rank-2 lattice structure), and that the vector-valued sign is controlled by the fiber intertwiner $J_\tau$. For $J_\tau = +\mathrm{id}$ (bosonic fields and Dirac fermions in even dimensions), the obstruction identified in \S\ref{sec:obstruction} is thereby shown to be vacuous on physical states.
+
+\emph{The relationship to companion papers:} The present paper provides the Lie-algebraic skeleton that identifies the $\delta$-odd obstruction as the sole obstacle to simultaneous reconstruction. The companion paper \cite{Author_CauchySzego} resolves this obstruction via Hardy-space analysis. Together, they supply the input for \cite{Author_SplitWedge}, whose bridge decomposition $\omega(F^{*_\theta} \cdot F) = \omega(F_+^{*_{\Theta_S}} \cdot F_+) - \omega(F_-^{*_{\Theta_S}} \cdot F_-)$ becomes positive-definite once the $\delta$-odd sector is eliminated. The logical dependence is: obstruction (here) $\to$ resolution (\cite{Author_CauchySzego}) $\to$ reconstruction (\cite{Author_SplitWedge}).
+
+\subsection{Formal verification}
+
+The algebraic core of this paper---bridge factorisation $\theta_E = R \circ \Theta_S$, the conjugation identity, dual cone geometry, and geometric coverage---has been formally verified in Lean~4 \cite{LeanVerification}. The formalization uncovered that the shift identity $\Theta_S(\xi' + a) = \Theta_S \xi' - a$ requires restriction to timelike translations $a = (a_u, a_v, 0, 0)$; this does not affect any results in this paper, which uses only timelike shifts. The Two-Point Trinity equivalence (Corollary~5.7 of \cite{Author_SplitWedge}) is stated as a formal bi-conditional but its proof legs rely on functional analysis (Wick rotation, OS reconstruction, analytic continuation through the extended tube) not yet available in Mathlib; the Lean formalization verifies the algebraic infrastructure but not the equivalence itself. The holomorphic extension to the Olshanski semigroup (\S\ref{sec:simultaneous}), including the contractivity bound, similarly invokes the Kr\"otz--Stanton theory \cite{KS04} and is not machine-verified.
+
+%----------------------------------------------------------------------
+\begin{thebibliography}{99}
+
+\bibitem{OS73}
+K.~Osterwalder and R.~Schrader,
+\emph{Axioms for Euclidean Green's functions},
+Commun.\ Math.\ Phys.\ \textbf{31} (1973), 83--112.
+
+\bibitem{OS75}
+K.~Osterwalder and R.~Schrader,
+\emph{Axioms for Euclidean Green's functions II},
+Commun.\ Math.\ Phys.\ \textbf{42} (1975), 281--305.
+
+\bibitem{LM75}
+M.~L\"uscher and G.~Mack,
+\emph{Global conformal invariance in quantum field theory},
+Commun.\ Math.\ Phys.\ \textbf{41} (1975), 203--234.
+
+\bibitem{BW75}
+J.~J.~Bisognano and E.~H.~Wichmann,
+\emph{On the duality condition for a Hermitian scalar field},
+J.\ Math.\ Phys.\ \textbf{16} (1975), 985--1007.
+
+\bibitem{BW76}
+J.~J.~Bisognano and E.~H.~Wichmann,
+\emph{On the duality condition for quantum fields},
+J.\ Math.\ Phys.\ \textbf{17} (1976), 303--321.
+
+\bibitem{Helminck88}
+A.~G.~Helminck,
+\emph{Algebraic groups with a commuting pair of involutions and semisimple symmetric spaces},
+Adv.\ Math.\ \textbf{71} (1988), 21--91.
+
+\bibitem{FK94}
+J.~Faraut and A.~Kor\'anyi,
+\emph{Analysis on Symmetric Cones},
+Oxford University Press, 1994.
+
+\bibitem{Neeb00}
+K.-H.~Neeb,
+\emph{Holomorphy and Convexity in Lie Theory},
+de Gruyter Expositions in Mathematics, vol.~28, Walter de Gruyter, 2000.
+
+\bibitem{BGL02}
+R.~Brunetti, D.~Guido, and R.~Longo,
+\emph{Modular localization and Wigner particles},
+Rev.\ Math.\ Phys.\ \textbf{14} (2002), 759--785.
+
+\bibitem{KS04}
+B.~Kr\"otz and R.~J.~Stanton,
+\emph{Holomorphic extensions of representations: (I) automorphic functions},
+Ann.\ of Math.\ \textbf{159} (2004), 641--724.
+
+\bibitem{Helgason}
+S.~Helgason,
+\emph{Differential Geometry, Lie Groups, and Symmetric Spaces},
+Academic Press, 1978.
+
+\bibitem{NO18}
+K.-H.~Neeb and G.~\'Olafsson,
+\emph{Reflection positivity: A representation theoretic perspective},
+Springer Briefs in Mathematical Physics, vol.~32, Springer, 2018.
+
+\bibitem{NO23}
+K.-H.~Neeb and G.~\'Olafsson,
+\emph{Reflection positivity on spheres},
+Anal.\ Math.\ Phys.\ \textbf{13} (2023), no.~1, Paper No.~9.
+
+\bibitem{NO23wedge}
+K.-H.~Neeb and G.~\'Olafsson,
+\emph{Wedge domains in non-compactly causal symmetric spaces},
+Geom.\ Dedicata \textbf{217} (2023), no.~2, Paper No.~30.
+
+\bibitem{MNO23}
+V.~Morinelli, K.-H.~Neeb, and G.~\'Olafsson,
+\emph{From Euler elements and 3-gradings to non-compactly causal symmetric spaces},
+J.\ Lie Theory \textbf{33} (2023), 377--432.
+
+\bibitem{Poland19}
+D.~Poland, S.~Rychkov, and A.~Vichi,
+\emph{The conformal bootstrap: Theory, numerical techniques, and applications},
+Rev.\ Mod.\ Phys.\ \textbf{91} (2019), 015002.
+
+\bibitem{Author_SplitWedge}
+A.~Abrahams,
+\emph{Split Signature as a Third Axiomatization of Parity-Invariant Quantum Field Theory},
+[submitted to Commun.\ Math.\ Phys.], 2026.
+
+\bibitem{Author_CauchySzego}
+A.~Abrahams,
+\emph{The Cauchy--Szeg\H{o} Kernel as Holomorphic Filter: Simultaneous Reflection Positivity via Analytic Continuation Through Type~IV Bounded Symmetric Domains},
+[submitted to Commun.\ Math.\ Phys.], 2026.
+
+\bibitem{LeanVerification}
+A.~Abrahams,
+``Formal verification of the complexified spacetime QFT framework in Lean~4,''
+available at \url{https://github.com/Neutrinic/three-slices}, 2026.
+Lean~4.28 / Mathlib; unified repository covering three papers.
+Bridge module: 18 theorems verified including bridge factorisation
+$\theta_E = R \circ \Theta_S$, bridge conjugation identity, translated
+kernel shift invariance (restricted to timelike translations), dual cone
+inclusion $(V_S^+)^* \subset V_S^+$, non-self-duality counterexample
+($g_S = -29$), and geometric coverage $\bigcup_s W^+(s) = E^+$.
+The formalization uncovered that the shift identity
+$\Theta_S(\xi' + a) = \Theta_S \xi' - a$ requires $a$ to be a timelike
+translation $a = (a_u, a_v, 0, 0)$, as $\Theta_S$ preserves spatial
+components.
+
+\end{thebibliography}
+
+\end{document}

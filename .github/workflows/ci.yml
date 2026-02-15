@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-lean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install elan
+        run: |
+          curl https://elan.lean-lang.org/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+
+      - name: Cache toolchain and Mathlib
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.elan
+            .lake
+          key: lean-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}
+          restore-keys: |
+            lean-${{ hashFiles('lean-toolchain') }}-
+
+      - name: Fetch dependencies
+        run: lake update
+
+      - name: Get Mathlib cache
+        run: lake exe cache get
+
+      - name: Build
+        run: lake build
+
+      - name: Check sorry count
+        run: |
+          SORRY_COUNT=$(grep -rnP '^\s+sorry\b' --include="*.lean" ComplexifiedQFT/ | wc -l)
+          echo "Sorry count: $SORRY_COUNT"
+          if [ "$SORRY_COUNT" -gt 2 ]; then
+            echo "::error::Sorry count increased beyond baseline of 2 (Trinity.lean)"
+            grep -rnP '^\s+sorry\b' --include="*.lean" ComplexifiedQFT/
+            exit 1
+          fi

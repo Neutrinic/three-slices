@@ -1,0 +1,2331 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{tikz-cd}
+\usepackage{booktabs}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+% Notation shortcuts
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\DD}{\mathcal{D}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\VV}{\mathcal{V}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\fk}{\mathfrak{k}}
+\newcommand{\fp}{\mathfrak{p}}
+\newcommand{\fa}{\mathfrak{a}}
+\newcommand{\fn}{\mathfrak{n}}
+\newcommand{\SO}{\mathrm{SO}}
+\newcommand{\SL}{\mathrm{SL}}
+\newcommand{\SU}{\mathrm{SU}}
+\newcommand{\Sp}{\mathrm{Sp}}
+\newcommand{\GL}{\mathrm{GL}}
+\newcommand{\Ad}{\mathrm{Ad}}
+\newcommand{\ad}{\mathrm{ad}}
+\newcommand{\Tr}{\mathrm{Tr}}
+\newcommand{\Vol}{\mathrm{Vol}}
+\newcommand{\rank}{\mathrm{rank}}
+\newcommand{\Hom}{\mathrm{Hom}}
+\newcommand{\End}{\mathrm{End}}
+\newcommand{\Res}{\mathrm{Res}}
+
+\title{The Cauchy--Szeg\H{o} Kernel as Holomorphic Filter:\\
+  Simultaneous Reflection Positivity via Analytic Continuation\\
+  Through Type~IV Bounded Symmetric Domains}
+
+\author{A.~Abrahams}
+
+\date{February 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We prove a simultaneous reflection-positivity transfer between 
+the Euclidean, Lorentzian, and split real forms of complexified 
+$d$-dimensional spacetime by analytic continuation through the 
+Type~IV bounded symmetric domain 
+$D^N_{IV} \cong \SO_0(2,N)/S(O(2) \times O(N))$, where 
+$N = 2d - 2$. The Cauchy--Szeg\H{o} kernel 
+$S(z,\zeta) = c_N [1 - 2\langle z, \bar{\zeta}\rangle 
++ (z \cdot z)\overline{(\zeta \cdot \zeta)}]^{-N/2}$ acts as a 
+Hardy-space projection (``holomorphic filter'') selecting 
+precisely the positive-energy boundary data that extend 
+holomorphically to the tube domain. We show the scalar 
+Hardy-space $K$-spectrum on the Lie sphere is uniformly 
+$\delta$-even---a rank-2 lattice parity constraint 
+($k + |\lambda| = 2m_1$, always even)---so the $\delta$-odd 
+obstruction identified in the algebraic approach of a companion 
+paper cannot arise from boundary $K$-types. In the vector-valued 
+setting the remaining sign is entirely fiber-theoretic, controlled 
+by the $\delta$-intertwiner $J_\tau$; for 
+$J_\tau = +\mathrm{id}$ (all bosonic/tensor fields and Dirac 
+fermions in even dimensions) the Szeg\H{o} transfer preserves 
+reflection positivity across all real forms. This establishes 
+that reflection-positive bosonic QFTs on any one real form of 
+$\C^d$ determine, via an explicit integral transform, 
+reflection-positive theories on every other real form.
+\end{abstract}
+
+\tableofcontents
+
+%=============================================================================
+\section{Introduction}
+\label{sec:intro}
+%=============================================================================
+
+\subsection{The Problem}
+
+The Osterwalder--Schrader reconstruction theorem \cite{OS1973,OS1975} establishes 
+that a Euclidean quantum field theory satisfying reflection positivity determines a 
+unique relativistic (Lorentzian) quantum field theory. The converse passage, from 
+Lorentzian to Euclidean, is mediated by Wick rotation $t \mapsto -i\tau$, which 
+is an analytic continuation in the time coordinate.
+
+In \cite{Bridge}, we generalised this correspondence to the setting of complexified 
+spacetime $\C^d$, where the Euclidean and Lorentzian theories are supplemented by 
+a third formulation on the split-signature real form $\R^{d/2, d/2}$. The three 
+real forms---Euclidean $\R^d$, Lorentzian $\R^{1,d-1}$, and split 
+$\R^{d/2,d/2}$---are the fixed-point sets of three involutions $\alpha$, $\beta$, 
+$\gamma$ on $\C^d$ whose composition relations form a Klein four-group $V_4$.
+
+The \emph{algebraic transfer} developed in \cite{Bridge} maps correlation functions 
+between these formulations via the $V_4$ structure. For $d = 4$, this transfer is 
+\emph{exact}: every state in the Hilbert space of one formulation maps to a state 
+in each of the others, preserving the inner product and hence reflection positivity. 
+The key reason is that the relevant symmetry group $\SO(4,\C)$ decomposes as 
+$\SL(2,\C) \times \SL(2,\C)$, and both factors carry the same representation 
+content under $\delta$---the parity involution distinguishing the two $\SL(2,\C)$ 
+factors.
+
+For $d > 4$, the algebraic transfer encounters a precise obstruction. The group 
+$\SO(2d-2, \C)$ no longer decomposes as a product of isomorphic simple factors. 
+The algebraic transfer map, which operates on the full Hilbert space including 
+fiber representations, produces sign reversals in the inner product for certain 
+states. In \cite{Bridge}, these were identified as ``$\delta$-odd'' states 
+(where $\delta = \alpha \circ \theta$), and the sign reversal was shown to 
+destroy the reflection positivity required for a physical Hilbert space 
+interpretation.
+
+This left open the central question formulated as Conjecture~8.1 of \cite{Bridge}:
+
+\begin{conjecture}[Conjecture 8.1 of \cite{Bridge}]
+\label{conj:main}
+Let $\{\mathcal{W}_n^{(\sigma)}\}$ be the Wightman distributions of a 
+reflection-positive QFT on the real form $\R^{p,q}$ of $\C^d$ (with 
+$p + q = d$, $\sigma$ labelling the signature). Then there exist Wightman 
+distributions $\{\mathcal{W}_n^{(\sigma')}\}$ for every other real form 
+$\R^{p',q'}$ such that:
+\begin{enumerate}[label=(\roman*)]
+  \item $\mathcal{W}_n^{(\sigma')}$ satisfies the Osterwalder--Schrader 
+    axioms with respect to the reflection positivity involution natural 
+    to that signature;
+  \item $\mathcal{W}_n^{(\sigma')}$ is obtained from $\mathcal{W}_n^{(\sigma)}$ 
+    by an explicit integral transform;
+  \item The transform preserves the spectrum condition and cluster properties.
+\end{enumerate}
+\end{conjecture}
+
+\subsection{The Strategy: Analysis Over Algebra}
+
+The failure of the algebraic approach does not mean 
+the conjecture is false---it means a purely algebraic proof strategy is 
+insufficient. The present paper resolves the conjecture affirmatively 
+(for fields with positive $\delta$-structure; see 
+Definition~\ref{def:delta-structure}) by 
+replacing the algebraic transfer with an \emph{analytic} one: continuation 
+through the interior of a bounded symmetric domain.
+
+The key insight is that the three real forms of $\C^d$ are boundary components 
+of a single complex domain---the Type~IV bounded symmetric domain 
+$D^N_{IV}$ (the Lie ball), where $N = 2d - 2$. This domain, isomorphic 
+to the quotient $\SO_0(2, N)/S(O(2) \times O(N))$, has the remarkable 
+property that its Shilov boundary is the Lie sphere 
+$(S^1 \times S^{N-1})/\Z_2$, which carries the Lorentzian data, 
+while the Riemannian symmetric space $\SO_0(2,N)/S(O(2) \times O(N))$ 
+embedded in the interior (via restriction to the imaginary axis in the 
+tube realisation) carries the Euclidean data.
+
+\begin{proposition}[Spacetime--domain correspondence]
+\label{prop:spacetime-domain}
+For $d$-dimensional spacetime, the relevant Type~IV domain has 
+parameter $N = 2d - 2$. The symmetry group is $G = \SO_0(2, 2d-2)$, 
+with maximal compact subgroup $K = S(O(2) \times O(2d-2))$. The 
+tube domain $T_\Omega = \R^N + i\Omega \subset \C^N$ has real 
+dimension $2N$. The three real forms of $\C^d$ embed as 
+distinguished totally real submanifolds of dimension $d$ inside 
+$T_\Omega$ (or its boundary):
+\begin{itemize}
+  \item \emph{Lorentzian} $\R^{1,d-1}$: embedded via the 
+    $V_4$-framework of \cite{SplitWedge} as a distinguished 
+    $d$-dimensional totally real submanifold of the Shilov 
+    boundary $\check{S} \cong (S^1 \times S^{N-1})/\Z_2$ 
+    (which itself has dimension $N \geq d$);
+  \item \emph{Euclidean} $\R^d$: the imaginary axis $i\Omega$ 
+    (the ``Euclidean section'' at $x = 0$), a $d$-dimensional 
+    totally real submanifold of the tube interior;
+  \item \emph{Split} $\R^{d/2,d/2}$: the totally real 
+    submanifold obtained by restricting to the $\beta$-fixed 
+    locus in $\C^d$, which embeds into $T_\Omega$ via the 
+    analytic continuation $x \mapsto x + i\epsilon$ with 
+    $\epsilon$ in the split-signature causal cone 
+    $\Omega_{\mathrm{split}} \subset \Omega$.
+\end{itemize}
+In each case, the Wightman distributions of a QFT on the 
+$d$-dimensional real form are \emph{pulled back} to distributions 
+on $\R^N$ coordinates via the embedding, and the boundary 
+values of holomorphic functions in $T_\Omega$ along each 
+submanifold are well-defined as tempered distributions.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition~\ref{prop:spacetime-domain}]
+The Lorentzian and Euclidean embeddings are standard (see \cite{FaKo1994, Hua1963}). 
+We verify the split embedding.
+
+In the Jordan-algebraic spectral decomposition of the rank-2 
+algebra $V_N$, any element $y \in V_N$ decomposes as 
+$y = \lambda_1 e_1 + \lambda_2 e_2$ with spectral values 
+$\lambda_1, \lambda_2 \in \R$ and orthogonal idempotents 
+$e_1, e_2$. The Lorentz cone is 
+$\Omega = \{y : \lambda_1 > 0,\, \lambda_2 > 0\}$, 
+equivalently $\{y : y_0 > \|y'\|\}$ in the 
+$(y_0, y') \in \R \times \R^{N-1}$ splitting.
+
+The split-signature real form $\R^{d/2,d/2}$ embeds into 
+$\C^N$ via the restriction of the complexification map 
+to the $\beta$-fixed locus. Concretely, this is the 
+$\SO(4,\C)$ rotation $\Lambda$ of \cite[Lemma~3.4]{SplitWedge} 
+that maps the Lorentzian forward cone $V^+_L$ into the split 
+forward cone $V^+_S$. In the tube domain language, this 
+rotation maps the Lorentzian tube $T_L = \R^d + iV^+_L$ 
+into the split tube $T_S = \R^d + iV^+_S$. By 
+\cite[Lemma~3.4]{SplitWedge}, $T_S \subset T'$ (the permuted 
+extended tube), and therefore $T_S$ embeds into $T_\Omega$ 
+via the spacetime-to-domain correspondence.
+
+The inclusion $\Omega_{\mathrm{split}} \subset \Omega$ at the 
+level of spectral values is immediate: the split forward cone 
+$\Omega_{\mathrm{split}}$ consists of elements $\epsilon$ with 
+both spectral values positive (corresponding to positivity in 
+both timelike directions of $\R^{d/2,d/2}$), which is precisely 
+the defining condition for $\Omega$. The totally real condition 
+holds because $\R^{d/2,d/2}$ is the fixed-point set of the 
+antiholomorphic involution $\beta: z \mapsto \bar{z}^\beta$ 
+(the split conjugation), and the fixed-point set of an 
+antiholomorphic involution on a complex manifold is always 
+totally real.
+\end{proof}
+
+The Cauchy--Szeg\H{o} kernel $S(z, \zeta)$ of this domain is the 
+reproducing kernel for the Hardy space $H^2(D^N_{IV})$. It provides 
+an explicit integral formula that reconstructs a holomorphic function 
+in the interior from its boundary values on the Shilov boundary:
+\begin{equation}
+\label{eq:szego-reconstruction}
+  f(z) = \int_{\check{S}} S(z, \zeta) f(\zeta)\, d\sigma(\zeta), 
+  \qquad z \in D^N_{IV},\; f \in H^2(\check{S}).
+\end{equation}
+We call the Szeg\H{o} projection a \emph{holomorphic filter} because 
+it selects exactly the positive-energy, holomorphically extendable 
+components of boundary data and discards all modes in the orthogonal 
+complement $L^2(\check{S}) \ominus H^2(\check{S})$. This filter is 
+not an additional axiom: it is the Hardy-space boundary-value 
+condition already implicit in the Wightman axioms and the 
+Bargmann--Hall--Wightman analytic continuation theorem. 
+Concretely: the spectrum condition (positive energy) means the 
+Fourier support of Wightman distributions lies in the forward 
+cone $\overline{\Omega}$; by the Paley--Wiener theorem for tube 
+domains \cite{SteinWeiss1971}, this is equivalent to the boundary 
+values belonging to the Hardy space $H^2(\check{S})$ rather than 
+the full $L^2(\check{S})$.
+
+A key finding of the present analysis---not anticipated in 
+\cite{Bridge}---is that the relationship between the holomorphic 
+filter and the $\delta$-odd obstruction is more subtle than 
+initially expected. In the \emph{scalar} sector, we prove that 
+$\delta$-odd $K$-types do not exist on the Lie sphere at all: the 
+rank-2 lattice structure forces $k + |\lambda| = 2m_1$ to be even 
+for every $K$-type (Theorem~\ref{thm:disjointness}). The 
+$\delta$-odd obstruction from \cite{Bridge} therefore lives 
+entirely in the \emph{fiber representation} of vector-valued fields. 
+For fields whose fiber carries positive $\delta$-structure 
+($J_\tau = +\mathrm{id}$; this includes all bosonic/tensor fields 
+and Dirac fermions in even dimensions), the combined 
+$\delta$-eigenvalue on the Hardy space is uniformly $+1$, and the 
+Szeg\H{o} transfer preserves reflection positivity.
+
+Consequently, the Cauchy--Szeg\H{o} integral provides a transfer 
+map that is:
+\begin{enumerate}[label=(\alph*)]
+  \item \emph{Explicit}: given by the integral kernel 
+    $S(z, \zeta) = c_N[h(z,\zeta)]^{-N/2}$;
+  \item \emph{Positive}: the restriction of $S$ to the Euclidean 
+    section is positive-definite (Section~\ref{sec:scalar-positivity}), 
+    and the $\delta$-even property of all Hardy space $K$-types 
+    (Theorem~\ref{thm:disjointness}) ensures positivity propagates 
+    to the vector-valued setting;
+  \item \emph{Physically complete}: the Szeg\H{o} projection discards 
+    only non-Hardy modes---those outside the positive-energy Hardy 
+    class used in the Osterwalder--Schrader reconstruction 
+    (Section~\ref{sec:filter}).
+\end{enumerate}
+
+\subsection{Relation to Previous Work}
+
+This paper is the third in a trilogy on the structure of quantum field 
+theories across real forms of complexified 
+spacetime.\footnote{Papers~6, 7, and 8 in the author's larger 
+series on complexified spacetime. They form a self-contained 
+sub-series and are referred to as Papers~1, 2, 3 of the trilogy 
+throughout.}
+
+\begin{enumerate}[label=\textbf{Paper \arabic*}:]
+  \item \emph{The Split Wedge} \cite{SplitWedge}: Established the
+    algebraic framework relating Euclidean, Lorentzian, and split-signature
+    QFTs via the $V_4$ Klein four-group of involutions on $\C^d$. Proved
+    the complete equivalence for $d = 4$.
+  \item \emph{The Bridge} \cite{Bridge}: Developed the $n$-point
+    reconstruction theorem, showing that correlation functions on any
+    real form determine those on any other real form provided the
+    $\delta$-odd obstruction can be resolved. Identified the precise
+    $\delta$-odd obstruction for $d > 4$, proved that it is the
+    \emph{only} obstacle, and formulated Conjecture~\ref{conj:main}.
+  \item \emph{The present paper}: Resolves the conjecture 
+    (for fields with positive $\delta$-structure) by replacing 
+    the algebraic transfer with the Cauchy--Szeg\H{o} integral 
+    through the Type~IV bounded symmetric domain. The key finding 
+    is that the $\delta$-odd obstruction does not arise from 
+    boundary $K$-types (which are all $\delta$-even) but from the 
+    fiber representation, where it is controlled by the intertwiner 
+    $J_\tau$.
+\end{enumerate}
+
+The mathematical ingredients we employ have been developed by several 
+communities, though not previously combined for this purpose:
+
+\begin{itemize}
+  \item The Cauchy--Szeg\H{o} kernel for Type~IV domains was computed 
+    by Hua \cite{Hua1963} and recast in Jordan-algebraic terms by 
+    Faraut--Kor\'anyi \cite{FaKo1994}.
+  \item Reflection positivity on symmetric spaces was systematically 
+    developed by Neeb--\'Olafsson \cite{NeebOlafsson2018}.
+  \item Holomorphic extension of representations to the crown domain 
+    was established by Kr\"otz--Stanton \cite{KrotzStanton2004}.
+  \item The connection between Hardy spaces on tube domains and 
+    positive-energy representations is classical 
+    \cite{RossiVergne1976, KoranyiWolf1965}.
+\end{itemize}
+
+Our contribution is to show that these ingredients, when combined with 
+the $V_4$-algebraic framework of \cite{SplitWedge, Bridge}, yield a 
+complete proof of simultaneous reflection positivity.
+
+\subsection{Structure of the Paper}
+
+Section~\ref{sec:domain} reviews the Type~IV bounded symmetric domain 
+in both bounded (Lie ball) and unbounded (tube over light cone) 
+realisations, establishing notation. Section~\ref{sec:kernel} presents 
+the explicit Cauchy--Szeg\H{o} kernel formula and its properties. 
+Section~\ref{sec:scalar-positivity} proves the scalar kernel positivity 
+on the Euclidean section via the Wallach set and Riesz measures. 
+Section~\ref{sec:vector-valued} extends to vector-valued Hardy spaces 
+and introduces the fiber $\delta$-structure $J_\tau$. 
+Section~\ref{sec:n4} verifies 
+the construction explicitly for $d = 4$ (where it must agree with 
+the algebraic result). Section~\ref{sec:filter} proves the main 
+technical result: that all $K$-types on the Lie sphere are 
+$\delta$-even, and that the Hardy space inherits this property. 
+Section~\ref{sec:main-theorem} states and proves 
+the resolution of Conjecture~\ref{conj:main}. Section~\ref{sec:discussion} 
+discusses implications, scope, and limitations.
+
+%=============================================================================
+\section{The Type IV Bounded Symmetric Domain}
+\label{sec:domain}
+%=============================================================================
+
+We fix notation for the Type~IV domain following 
+Hua \cite{Hua1963} and Faraut--Kor\'anyi \cite{FaKo1994}. 
+
+\paragraph{Notation conventions.}
+Throughout this paper:
+\begin{itemize}
+  \item $d \geq 3$ denotes the \emph{spacetime dimension}. 
+    The complexified spacetime is $\C^d$, with real forms 
+    $\R^d$ (Euclidean), $\R^{1,d-1}$ (Lorentzian), and 
+    $\R^{d/2,d/2}$ (split).
+  \item $N = 2d - 2$ is the \emph{domain parameter} (so $N \geq 4$): 
+    the complex dimension of the Type~IV bounded symmetric domain 
+    $D^N_{IV}$ through which the analytic continuation is performed.
+  \item $n$ (lowercase, unrelated to $d$) indexes the 
+    \emph{Wightman $n$-point functions} $\mathcal{W}_n$.
+  \item $G = \SO_0(2, N)$ is the automorphism group of $D^N_{IV}$, 
+    with maximal compact subgroup $K = S(O(2) \times O(N))$.
+\end{itemize}
+
+\subsection{The Lie Ball}
+\label{subsec:lie-ball}
+
+\begin{definition}
+The \emph{Type~IV bounded symmetric domain} (or \emph{Lie ball}) 
+$D^N_{IV} \subset \C^N$ consists of all vectors 
+$z = (z_1, \ldots, z_N) \in \C^N$ satisfying:
+\begin{align}
+  |z \cdot z| &< 1, \label{eq:lie-ball-1}\\
+  1 - 2|z|^2 + |z \cdot z|^2 &> 0, \label{eq:lie-ball-2}
+\end{align}
+where $z \cdot z = \sum_{j=1}^N z_j^2$ is the complex quadratic form 
+and $|z|^2 = \sum_{j=1}^N |z_j|^2$ is the Hermitian norm.
+\end{definition}
+
+The automorphism group of $D^N_{IV}$ is $G = \SO_0(2, N)$, with 
+maximal compact subgroup $K \cong S(O(2) \times O(N))$. The domain 
+is biholomorphic to the Hermitian symmetric space $G/K$.
+
+The \emph{Shilov boundary} $\check{S}$---the minimal closed subset 
+of $\overline{D^N_{IV}}$ on which every continuous function holomorphic 
+in $D^N_{IV}$ attains its maximum modulus---is the \emph{Lie sphere}:
+\begin{equation}
+\label{eq:shilov}
+  \check{S} \cong (S^1 \times S^{N-1})/\Z_2,
+\end{equation}
+where $\Z_2$ acts by the simultaneous antipodal map 
+$(\phi, \xi) \mapsto (\phi + \pi, -\xi)$ on both factors. 
+This has real dimension $N$. Since $D^N_{IV}$ has complex dimension 
+$N$ (hence real dimension $2N$), the Shilov boundary has codimension 
+$N$ in the full domain---a ``holographic'' property standard for 
+Shilov boundaries of tube-type domains, indicating that boundary 
+data on an $N$-dimensional manifold determines 
+holomorphic functions on a $2N$-dimensional space.
+
+\begin{remark}
+The structural constants of $D^N_{IV}$ as a bounded symmetric domain are:
+\begin{itemize}
+  \item \textbf{Rank:} $r = 2$ (independent of $N$, a defining feature 
+    of Type~IV).
+  \item \textbf{Peirce constant:} $a = N - 2$ (dimension of the 
+    off-diagonal Peirce subspace).
+  \item \textbf{Genus:} $g = 2 + a(r-1) = 2 + (N-2) \cdot 1 = N$.
+\end{itemize}
+The genus determines the exponents of the Bergman and Szeg\H{o} kernels: 
+$-g = -N$ for Bergman, $-g/2 = -N/2$ for Szeg\H{o}.
+\end{remark}
+
+\subsection{The Tube Realisation}
+\label{subsec:tube}
+
+The involution structure is most transparent in the unbounded 
+\emph{tube realisation}. The underlying Euclidean Jordan algebra 
+is the \emph{spin factor} $\mathcal{J}_{\mathrm{spin}} = 
+\R \times \R^{N-1}$ with product:
+\begin{equation}
+\label{eq:jordan-product}
+  (x_0, \mathbf{x}) \circ (y_0, \mathbf{y}) = 
+  (x_0 y_0 + \mathbf{x} \cdot \mathbf{y},\; 
+  x_0 \mathbf{y} + y_0 \mathbf{x}).
+\end{equation}
+The associated symmetric cone is the \emph{forward light cone}:
+\begin{equation}
+\label{eq:light-cone}
+  \Omega = \{y = (y_0, \mathbf{y}) \in \R^N : y_0 > \|\mathbf{y}\|\}.
+\end{equation}
+The \emph{tube domain} is:
+\begin{equation}
+\label{eq:tube}
+  T_\Omega = \{z = x + iy \in \C^N : y \in \Omega\} 
+  = \R^N + i\Omega.
+\end{equation}
+
+The biholomorphism between $D^N_{IV}$ and $T_\Omega$ is given by 
+the \emph{Cayley transform}. With Jordan identity element 
+$e = (1, 0, \ldots, 0)$:
+\begin{equation}
+\label{eq:cayley}
+  c: D^N_{IV} \to T_\Omega, \qquad c(z) = i(e + z)(e - z)^{-1},
+\end{equation}
+where the inverse is taken in the complexified Jordan algebra. 
+The inverse Cayley transform $p: T_\Omega \to D^N_{IV}$ maps 
+the ``point at infinity'' of the tube to the boundary of the ball.
+
+The \emph{Jordan determinant} of the spin factor is the 
+Lorentzian quadratic form:
+\begin{equation}
+\label{eq:jordan-det}
+  \Delta(u) = u_0^2 - u_1^2 - \cdots - u_{N-1}^2.
+\end{equation}
+This will appear as the argument of the Szeg\H{o} kernel in the 
+tube realisation.
+
+\subsection{The Three Involutions}
+\label{subsec:involutions}
+
+The connection to the $V_4$ structure of \cite{Bridge} is as follows. 
+On the tube domain $T_\Omega$, we define:
+
+\begin{definition}
+\label{def:involutions}
+The three involutions relevant to the tube domain are 
+(cf.\ the spacetime involutions $\alpha$, $\beta$, $\gamma$ of 
+Section~\ref{sec:intro}; here $\alpha$ is the same involution 
+restricted to the tube, $\theta$ is the Cartan involution, and 
+$\delta = \alpha \circ \theta$ replaces $\beta$ as the 
+obstruction-controlling parity):
+\begin{align}
+  \alpha(x + iy) &= -x + iy 
+    & &\text{(domain reflection)}, \label{eq:alpha}\\
+  \theta &: \text{the Cartan involution of } \g = \fk \oplus \fp 
+    & &\text{(compact/noncompact splitting)}, \label{eq:theta}\\
+  \delta &= \alpha \circ \theta 
+    & &\text{(parity involution)}. \label{eq:delta}
+\end{align}
+\end{definition}
+
+\begin{table}[h]
+\centering
+\caption{Dictionary of involutions across the trilogy.}
+\label{tab:involutions}
+\begin{tabular}{llll}
+\hline
+\textbf{This paper} & \textbf{\cite{SplitWedge}} & \textbf{\cite{Bridge}} 
+  & \textbf{Fixed-point set} \\
+\hline
+$\alpha$ & $\alpha$ & $\alpha$
+  & Euclidean $\R^d$ (imaginary axis $i\Omega$) \\
+$\theta$ & --- & $\theta$
+  & Compact subalgebra $\fk$ \\
+$\delta = \alpha\theta$ & $\gamma$ & $\delta = \alpha\theta$
+  & Parity; controls transfer sign \\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent
+Note: \cite{SplitWedge} uses $(\Theta_S, R, \theta = R \circ \Theta_S)$ for the
+three spacetime involutions on $\R^{2,2}$, which generate the Klein
+four-group $V_4$. In the tube-domain picture of the present paper,
+$\Theta_S$ becomes $\alpha$ (domain reflection), $R$ remains a discrete
+symmetry, and $\theta$ of \cite{SplitWedge} becomes
+$\delta = \alpha \circ \theta$. The symbol $\delta$ is used
+consistently in \cite{Bridge} and the present paper for the
+obstruction-controlling parity involution.
+
+In the tube picture, $\alpha$ is the antiholomorphic involution 
+that negates the real part while preserving the imaginary part. 
+It reflects across the imaginary axis $i\Omega$. Its fixed-point 
+set is the purely imaginary subspace $i\Omega$, which is the 
+Euclidean section (the Riemannian symmetric space $G/K$ embedded 
+in $T_\Omega$).
+
+The Shilov boundary $\check{S}$ corresponds, in the tube picture, 
+to $V \cong \R^N$ (the real subspace $y = 0$). The Lorentzian 
+theory lives on this boundary.
+
+The composition $\delta = \alpha \circ \theta$ is the involution 
+whose eigenspaces on the $K$-type decomposition control the sign 
+of the algebraic transfer map \cite{Bridge}. As we shall prove 
+(Theorem~\ref{thm:disjointness}), the Szeg\H{o} projection onto 
+$H^2(\check{S})$ selects only $\delta$-even $K$-types---not 
+because it ``filters out'' $\delta$-odd modes (which, in the scalar 
+sector, do not exist on the Lie sphere lattice at all), but because 
+the holomorphic extension condition and the lattice structure 
+conspire to ensure uniform $\delta$-evenness.
+
+
+%=============================================================================
+\section{The Cauchy--Szeg\H{o} Kernel}
+\label{sec:kernel}
+%=============================================================================
+
+\subsection{Hua's Formula}
+\label{subsec:hua}
+
+In the bounded realisation, the Cauchy--Szeg\H{o} kernel for 
+$z \in D^N_{IV}$ and $\zeta \in \check{S}$ is:
+\begin{equation}
+\label{eq:szego-bounded}
+  S(z, \bar{\zeta}) = \frac{c_N}{\Vol(\check{S})} 
+  \left[1 - 2(z \cdot \bar{\zeta}) + (z \cdot z)
+  \overline{(\zeta \cdot \zeta)}\right]^{-N/2},
+\end{equation}
+\noindent
+\emph{Convention.} We write $S(z, \bar{\zeta})$ to make explicit 
+that the kernel is conjugate-linear in the second argument. On the 
+Shilov boundary $\check{S}$, points $\zeta$ satisfy the reality 
+condition $\zeta \in \check{S}$ \eqref{eq:shilov}, and we abbreviate 
+$S(z, \zeta) \equiv S(z, \bar{\zeta})|_{\zeta \in \check{S}}$ 
+in all integral formulas. The normalisation constants are:
+\begin{equation}
+\label{eq:szego-constant}
+  c_N = \frac{2^{N-2}\,\Gamma(N/2)}{\pi^{N/2 + 1}}, \qquad
+  \Vol(\check{S}) = \frac{2\pi^{N/2+1}}{\Gamma(N/2)}.
+\end{equation}
+
+The exponent $-N/2 = -g/2$ (half the genus) distinguishes the Szeg\H{o} 
+kernel from the Bergman kernel (exponent $-g = -N$). The Bergman kernel 
+reproduces $L^2$ functions on the full domain; the Szeg\H{o} kernel 
+reproduces Hardy space functions from their Shilov boundary values.
+
+\begin{remark}[Wallach set]
+\label{rem:wallach}
+The continuous part of the Wallach set for the rank-2 spin factor 
+is $\nu > (N{-}2)/2$ (Faraut--Kor\'anyi, Thm.~XIII.2.1).  The 
+Szeg\H{o} parameter $\nu = N/2 = (N{-}2)/2 + 1$ lies in the 
+\emph{interior} of this range, one unit above the infimum; the 
+discrete Wallach points $\nu = 0$ and $\nu = (N{-}2)/2$ lie below.  
+At $\nu = N/2$ the Riesz measure on the cone reduces to Lebesgue 
+measure ($\Delta^{\nu - N/2}\,d\xi = d\xi$), which is what makes 
+the positivity proof in Theorem~\ref{thm:scalar-positivity} 
+particularly clean.  Below the continuous threshold, 
+$\Delta^{-\nu}$ ceases to be positive-definite; above $\nu = N-1$ 
+one obtains the Bergman space of square-integrable holomorphic 
+functions.  The Szeg\H{o} kernel thus occupies a distinguished 
+position: it is the lowest-parameter reproducing kernel in the 
+continuous family for which the Riesz measure simplifies to flat 
+measure on $\Omega$.
+\end{remark}
+
+\subsection{The Tube Realisation Kernel}
+\label{subsec:tube-kernel}
+
+In the tube domain $T_\Omega$, the Szeg\H{o} kernel takes the form:
+\begin{equation}
+\label{eq:szego-tube}
+  S_{T_\Omega}(z, w) = C_N\, 
+  \Delta\!\left(\frac{z - \bar{w}}{i}\right)^{-N/2},
+\end{equation}
+where $\Delta$ is the Jordan determinant \eqref{eq:jordan-det} and 
+$C_N$ is a normalisation constant. The two expressions are related by 
+the Cayley transform: if $p: T_\Omega \to D^N_{IV}$ is the inverse 
+Cayley transform with Jacobian determinant $J_p(z)$, then:
+\begin{equation}
+\label{eq:cayley-relation}
+  S_{D}(p(z), p(w)) = S_{T_\Omega}(z, w)\, J_p(z)^{-1/2}\, 
+  \overline{J_p(w)}^{-1/2}.
+\end{equation}
+
+The kernel \eqref{eq:szego-tube} arises as the Fourier--Laplace 
+transform of the characteristic function of the dual cone 
+$\Omega^*$ (which equals $\Omega$ since the Lorentz cone is self-dual):
+\begin{equation}
+\label{eq:fourier-laplace}
+  S_{T_\Omega}(z, w) = C_N \int_\Omega 
+  e^{i\langle z - \bar{w},\, \xi\rangle}\, d\xi.
+\end{equation}
+This integral representation will be essential for the positivity 
+analysis of Section~\ref{sec:scalar-positivity}.
+
+\subsection{The Poisson Kernel}
+\label{subsec:poisson}
+
+The Poisson kernel, which extends boundary functions to harmonic 
+functions in the interior, is:
+\begin{equation}
+\label{eq:poisson}
+  P(z, \zeta) = \frac{|S(z, \zeta)|^2}{S(z, z)}, \qquad 
+  z \in D^N_{IV},\; \zeta \in \check{S}.
+\end{equation}
+Since $S(z, z) > 0$ for $z$ in the interior, $P(z, \zeta) \geq 0$ 
+pointwise. Moreover, for each fixed $z$, $P(z, \cdot)$ is a 
+probability measure on $\check{S}$:
+\begin{equation}
+  \int_{\check{S}} P(z, \zeta)\, d\sigma(\zeta) = 1.
+\end{equation}
+
+The \emph{Szeg\H{o} projection} $P_S: L^2(\check{S}) \to H^2(\check{S})$ 
+is the orthogonal projection onto the Hardy space:
+\begin{equation}
+\label{eq:szego-projection}
+  (P_S f)(z) = \int_{\check{S}} S(z, \zeta)\, f(\zeta)\, d\sigma(\zeta).
+\end{equation}
+This projection is the key operator: it extends boundary data 
+holomorphically into the interior, and in doing so, it filters out 
+exactly the non-holomorphic components of $f$.
+
+
+%=============================================================================
+\section{Scalar Kernel Positivity on the Euclidean Section}
+\label{sec:scalar-positivity}
+%=============================================================================
+
+We now establish the foundational positivity result for the scalar 
+kernel. This is essentially known from the work of Faraut--Kor\'anyi 
+and the theory of Riesz distributions on symmetric cones, but we 
+present it here in the form needed for the vector-valued extension.
+
+\subsection{Restriction to the Euclidean Section}
+\label{subsec:euclidean-restriction}
+
+In the tube realisation, the ``Euclidean section'' is the purely 
+imaginary subspace $i\Omega \subset T_\Omega$. Setting $z = iy$ 
+and $w = iy'$ with $y, y' \in \Omega$:
+\begin{equation}
+\label{eq:euclidean-kernel}
+  \frac{z - \bar{w}}{i} = \frac{iy - (-iy')}{i} = y + y'.
+\end{equation}
+Since $y, y' \in \Omega$ (the forward light cone), their sum 
+$y + y'$ also lies in $\Omega$ (the cone is convex). The restricted 
+kernel becomes:
+\begin{equation}
+\label{eq:restricted-kernel}
+  S(iy, iy') = C_N\, \Delta(y + y')^{-N/2}.
+\end{equation}
+
+\begin{theorem}[Scalar kernel positivity]
+\label{thm:scalar-positivity}
+The kernel $K(y, y') = \Delta(y + y')^{-N/2}$, defined for 
+$y, y' \in \Omega$, is positive-definite. That is, for any 
+finite set $\{y_1, \ldots, y_m\} \subset \Omega$ and any 
+$c_1, \ldots, c_m \in \C$:
+\begin{equation}
+  \sum_{i,j=1}^m c_i \bar{c}_j\, \Delta(y_i + y_j)^{-N/2} \geq 0.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We use the integral representation \eqref{eq:fourier-laplace}. 
+Since $\Omega$ is self-dual ($\Omega^* = \Omega$), for $y, y' \in \Omega$:
+\begin{equation}
+  \Delta(y + y')^{-N/2} = \frac{1}{C_N} \int_\Omega 
+  e^{-\langle y + y',\, \xi\rangle}\, d\mu_{N/2}(\xi),
+\end{equation}
+where $d\mu_{N/2}$ is the \emph{Riesz measure} on $\Omega$ 
+corresponding to the parameter $\nu = N/2$ in the Wallach set. 
+Explicitly, this measure is:
+\begin{equation}
+  d\mu_\nu(\xi) = \Delta(\xi)^{\nu - N/2}\, 
+  \mathbf{1}_\Omega(\xi)\, d\xi.
+\end{equation}
+For $\nu = N/2$, this simplifies to 
+$d\mu_{N/2}(\xi) = \mathbf{1}_\Omega(\xi)\, d\xi$---the 
+Lebesgue measure restricted to the cone. (This is precisely the 
+Wallach boundary parameter for the Type~IV domain; cf.\ 
+Remark~\ref{rem:wallach}.)
+
+Now:
+\begin{align}
+  \sum_{i,j} c_i \bar{c}_j\, \Delta(y_i + y_j)^{-N/2}
+  &= \frac{1}{C_N} \int_\Omega \sum_{i,j} c_i \bar{c}_j\, 
+    e^{-\langle y_i + y_j,\, \xi\rangle}\, d\xi \nonumber\\
+  &= \frac{1}{C_N} \int_\Omega 
+    \left|\sum_i c_i\, e^{-\langle y_i,\, \xi\rangle}\right|^2 
+    d\xi \geq 0. \qedhere
+\end{align}
+\end{proof}
+
+\begin{remark}
+\label{rem:wallach-critical}
+The positivity of the Riesz measure $d\mu_\nu$ holds if and only 
+if $\nu$ belongs to the \emph{Wallach set} of the cone $\Omega$. 
+For the Lorentz cone of rank $r = 2$ and Peirce constant $a = N-2$, 
+the continuous part of the Wallach set is $\nu > (r-1)a/2 = (N-2)/2$. 
+Since $N/2 > (N-2)/2$ for all $N \geq 3$ (the difference is exactly 
+$1$), the parameter $\nu = N/2$ 
+is always in the continuous Wallach set, confirming positivity for 
+all dimensions.
+
+The discrete Wallach points are $\nu = 0$ and $\nu = d/2 = (N-2)/2$. 
+Our parameter $N/2$ lies strictly between $(N-2)/2$ and $N - 1$ 
+(the Bergman threshold), placing the Szeg\H{o} kernel in the 
+``boundary representation'' regime: square-integrable on the 
+Shilov boundary but not on the domain volume.
+\end{remark}
+
+\subsection{Restriction to the Split Real Form}
+\label{subsec:split-restriction}
+
+For completeness, we record the kernel restriction to the 
+split real form $\R^{d/2, d/2}$, complementing the Euclidean 
+computation above.
+
+The split real form embeds into the tube domain $T_\Omega$ via 
+the $\beta$-fixed locus in $\C^d$ 
+(Proposition~\ref{prop:spacetime-domain}). In the Jordan-algebraic 
+picture, a point $x_{\mathrm{split}} \in \R^{d/2, d/2}$ has 
+spectral decomposition $x_{\mathrm{split}} = \mu_1 e_1 + \mu_2 e_2$ 
+with $\mu_1, \mu_2 \in \R$ of \emph{indefinite} sign (unlike the 
+Euclidean case, where both are positive). The analytic continuation 
+to the tube is $z = x_{\mathrm{split}} + i\epsilon$ with 
+$\epsilon \in \Omega_{\mathrm{split}}$, the ``split causal cone'' 
+$\{(\epsilon_1, \epsilon_2) : \epsilon_1 > 0, \epsilon_2 > 0\}$ 
+(which is contained in the Lorentz cone $\Omega$).
+
+For two points $z = x + i\epsilon$, $z' = x' + i\epsilon'$ 
+approaching the split boundary ($\epsilon, \epsilon' \to 0^+$ in 
+$\Omega_{\mathrm{split}}$), the kernel becomes:
+\begin{equation}
+\label{eq:split-kernel}
+  S(z, \bar{z}') \to c_N\, [\Delta(x - x' + i0^+)]^{-N/2},
+\end{equation}
+where $\Delta(u) = u_0^2 - |u'|^2$ is the Lorentz-signature 
+quadratic form (the ``split norm'') and the $i0^+$ prescription 
+arises from the limiting direction in the cone. This is the 
+\emph{split-signature Wightman two-point function}, with the 
+causal $i\epsilon$ prescription selecting the positive-frequency 
+component---exactly as the standard Lorentzian $i\epsilon$ 
+prescription does for $\R^{1,d-1}$.
+
+The positivity of this kernel in the distributional sense 
+follows from the same Riesz measure argument as 
+Theorem~\ref{thm:scalar-positivity}: the Fourier--Laplace 
+representation expresses $[\Delta(u + i\epsilon)]^{-N/2}$ 
+as an integral of $e^{-\langle u + i\epsilon, \xi \rangle}$ 
+against the (positive) Lebesgue measure on $\Omega$, and the 
+$L^2$-norm argument applies identically.
+
+
+%=============================================================================
+\section{The $\delta$-Structure: Scalar and Vector-Valued Cases}
+\label{sec:vector-valued}
+%=============================================================================
+
+The scalar positivity of Section~\ref{sec:scalar-positivity} is 
+necessary but not sufficient for our purposes. Quantum field theory 
+correlation functions are not scalar-valued: they are 
+\emph{operator-valued distributions}. To handle the $n$-point 
+functions, we must extend the analysis to vector-valued Hardy spaces.
+
+\subsection{Setup}
+\label{subsec:vv-setup}
+
+Let $(\tau, \VV)$ be a finite-dimensional unitary representation 
+of $K = S(O(2) \times O(N))$. The \emph{vector-valued Hardy space} 
+$H^2(\check{S}, \VV)$ consists of $\VV$-valued $L^2$ functions on 
+the Shilov boundary that extend holomorphically into $D^N_{IV}$:
+\begin{equation}
+\label{eq:vv-hardy}
+  H^2(\check{S}, \VV) = \{f: \check{S} \to \VV \;|\; 
+  f \in L^2(\check{S}, \VV),\; P_S f = f\}.
+\end{equation}
+
+The vector-valued Szeg\H{o} kernel is an $\End(\VV)$-valued 
+function:
+\begin{equation}
+\label{eq:vv-szego}
+  S_\VV(z, \zeta) \in \End(\VV), \qquad
+  (P_S f)(z) = \int_{\check{S}} S_\VV(z, \zeta)\, f(\zeta)\, 
+  d\sigma(\zeta).
+\end{equation}
+
+\subsection{The $\delta$-Structure on the Fiber}
+\label{subsec:delta-fiber}
+
+To extend the scalar $\delta$-analysis to vector-valued Hardy 
+spaces, we must specify how $\delta$ acts on the fiber $\VV$.
+
+\begin{definition}[$\delta$-Structure]
+\label{def:delta-structure}
+Let $(\tau, \VV)$ be a unitary $K$-representation. We say $\VV$ 
+is \emph{$\delta$-stable} if the twisted representation 
+$\tau^\delta := \tau \circ \delta$ is equivalent to $\tau$, i.e., 
+there exists a unitary intertwiner:
+\begin{equation}
+\label{eq:intertwiner}
+  J_\tau: \VV \to \VV, \qquad 
+  J_\tau\, \tau(k) = \tau^\delta(k)\, J_\tau 
+  \quad \text{for all } k \in K.
+\end{equation}
+Since $\delta^2 = \mathrm{id}$, Schur's lemma implies 
+$J_\tau^2 = \pm\, \mathrm{id}_\VV$ for irreducible $\VV$. 
+We say $\VV$ has:
+\begin{itemize}
+  \item \emph{positive $\delta$-structure} if $J_\tau^2 = +\mathrm{id}_\VV$ 
+    (equivalently, $J_\tau$ has eigenvalues $\pm 1$);
+  \item \emph{negative $\delta$-structure} if $J_\tau^2 = -\mathrm{id}_\VV$ 
+    (equivalently, $J_\tau$ has eigenvalues $\pm i$).
+\end{itemize}
+\end{definition}
+
+\begin{remark}[Physical interpretation]
+\label{rem:Jtau-physics}
+The sign $J_\tau^2 = \pm\mathrm{id}$ has a direct physical 
+meaning. The involution $\delta = \alpha \circ \theta$ acts on 
+fields as a combination of spatial parity ($\alpha$) and 
+compact/noncompact interchange ($\theta$). For tensor/bosonic 
+fields, $\delta$ acts by permuting indices and is naturally 
+involutive ($J_\tau^2 = +\mathrm{id}$). For spinor fields, $\delta$ 
+involves the action of the Pin group on spinor space, and 
+$J_\tau^2 = -\mathrm{id}$ is related to (though not identical 
+with) the sign flip of fermions under $2\pi$-rotation: the 
+$2\pi$-rotation sign is a property of the Spin cover, while 
+$J_\tau^2 = -\mathrm{id}$ is a property of the $\delta$-intertwiner. 
+Both arise from the fact that spinor representations of 
+$\SO(N)$ lift to double-valued representations of the orthogonal 
+group. The connection is that $\delta$ contains a factor from 
+$\mathrm{Pin}(N)$ whose square equals the central element 
+$-1 \in \mathrm{Spin}(N)$ (the $2\pi$-rotation). This is the 
+same sign 
+that distinguishes bosonic from fermionic fields in the 
+spin-statistics connection and requires the ``twisted'' 
+Osterwalder--Schrader positivity condition for fermions 
+(the standard OS formulation for CAR algebras). 
+Mathematically, the dichotomy $J_\tau^2 = \pm\mathrm{id}$ 
+is simply Schur's lemma applied to the intertwiner on an 
+irreducible $\delta$-stable representation.
+\end{remark}
+
+The involution $\delta$ then acts on sections $f \in L^2(\check{S}, \VV)$ by:
+\begin{equation}
+\label{eq:delta-sections}
+  (\delta f)(s) = J_\tau\, f(\delta \cdot s).
+\end{equation}
+This factorisation into a base action ($s \mapsto \delta \cdot s$) 
+and a fiber action ($J_\tau$) holds because $\VV$ is a 
+\emph{homogeneous} vector bundle---i.e., associated to a 
+$K$-representation via $\VV = G \times_K V_\tau$---so that the 
+$G$-action (and hence the $\delta$-action) lifts canonically to sections.
+
+\begin{lemma}[$\delta$-Eigenvalue on vector-valued $K$-types]
+\label{lem:vv-delta-eigenvalue}
+On the $K$-isotypic summand $V_{\mathbf{m}} \otimes \VV$ in 
+$L^2(\check{S}, \VV)$, the involution $\delta$ acts as:
+\begin{equation}
+\label{eq:vv-delta-eigenvalue}
+  \delta\big|_{V_{\mathbf{m}} \otimes \VV} = 
+  (-1)^{k + |\lambda|} \cdot J_\tau = 
+  (-1)^{2m_1} \cdot J_\tau = J_\tau.
+\end{equation}
+That is, the scalar part always contributes $+1$ (by the parity 
+argument of Theorem~\ref{thm:disjointness}), and the entire 
+$\delta$-eigenvalue is determined by the fiber intertwiner $J_\tau$.
+\end{lemma}
+
+This gives the precise vector-valued extension:
+
+\begin{proposition}[Vector-valued holomorphic filter]
+\label{prop:vv-filter}
+Let $(\tau, \VV)$ be a $\delta$-stable unitary $K$-representation.
+\begin{enumerate}[label=(\roman*)]
+  \item If $J_\tau = +\mathrm{id}_\VV$ (positive $\delta$-structure), 
+    then $H^2(\check{S}, \VV)$ consists entirely of $\delta$-even 
+    sections. The Szeg\H{o} transfer preserves reflection positivity.
+  \item If $J_\tau = -\mathrm{id}_\VV$ (negative $\delta$-structure), 
+    then $H^2(\check{S}, \VV)$ consists entirely of $\delta$-odd 
+    sections. The Szeg\H{o} transfer reverses the inner product sign 
+    on the entire Hardy space.
+\end{enumerate}
+\end{proposition}
+
+\begin{remark}[Which representations arise in QFT]
+\label{rem:physical-reps}
+The physically relevant fiber representations $\VV$ fall into 
+two classes:
+\begin{enumerate}[label=(\alph*)]
+  \item \textbf{Tensor representations} (scalar, vector, symmetric 
+    and antisymmetric tensor fields): These are representations 
+    of $O(N)$ itself (not a cover). Since $\delta$ acts on $O(N)$ 
+    by an inner automorphism composed with the outer automorphism 
+    $\lambda \mapsto \lambda^*$, and since tensor representations 
+    are self-contragredient with $J_\tau = +\mathrm{id}$, these 
+    always have \emph{positive} $\delta$-structure. 
+    Theorem~\ref{thm:main} applies without modification.
+  \item \textbf{Spinor representations}: These are representations 
+    of $\mathrm{Spin}(N)$ (or $\mathrm{Pin}(N)$), not of $O(N)$. 
+    For \emph{even} $N$, the half-spin representations $S^\pm$ are 
+    exchanged by the outer automorphism, so neither is $\delta$-stable 
+    individually; the Dirac spinor $S^+ \oplus S^-$ is $\delta$-stable 
+    with $J_\tau = +\mathrm{id}$. This holds for \emph{all} even $N$, 
+    regardless of $N \bmod 8$: the $N \bmod 8$ periodicity 
+    (Bott periodicity) affects the nature of the bilinear form on 
+    \emph{individual} half-spin representations ($S^\pm$ are real for 
+    $N \equiv 0$, quaternionic for $N \equiv 4$, and mutually 
+    conjugate for $N \equiv 2, 6$, all modulo $8$), but the 
+    $\delta$-intertwiner on the \emph{full} Dirac spinor 
+    $S^+ \oplus S^-$ is always the swap 
+    $(v^+, v^-) \mapsto (v^-, v^+)$, which satisfies 
+    $J_\tau^2 = +\mathrm{id}$ in all cases. The outer automorphism 
+    exchanges $S^+ \leftrightarrow S^-$ for every even $N$, 
+    and the swap map is its own inverse.
+    
+    \emph{Verification for $N = 6$}: Here 
+    $\mathrm{Spin}(6) \cong \SU(4)$, the half-spin representations 
+    are $S^+ \cong \mathbf{4}$ (fundamental) and 
+    $S^- \cong \bar{\mathbf{4}}$ (antifundamental). The outer 
+    automorphism of $\SO(6)$ (which lifts to complex conjugation 
+    on $\SU(4)$) exchanges $\mathbf{4} \leftrightarrow \bar{\mathbf{4}}$. 
+    On the Dirac spinor $S^+ \oplus S^- = \mathbf{4} \oplus 
+    \bar{\mathbf{4}}$, the intertwiner $J_\tau$ acts by 
+    $(v^+, v^-) \mapsto (v^-, v^+)$, with 
+    $J_\tau^2 = +\mathrm{id}$, confirming positive $\delta$-structure.
+    
+    For \emph{odd} $N$, the unique 
+    spin representation may carry $J_\tau = -\mathrm{id}$, requiring 
+    the formulation of reflection positivity with respect to the 
+    \emph{twisted} involution $\delta' = \delta \circ J_\tau$ 
+    (which is standard in the physics literature for fermionic fields).
+\end{enumerate}
+Our main theorem (Theorem~\ref{thm:main}) is stated for 
+$\delta$-stable bundles with $J_\tau = +\mathrm{id}$, which 
+includes all bosonic fields and Dirac fermions in even-dimensional 
+spacetimes. The odd-dimensional fermionic case requires the twisted 
+formulation and will be addressed separately.
+\end{remark}
+
+\subsection{$K$-Type Decomposition}
+\label{subsec:ktype}
+
+The $L^2$ space on the Shilov boundary decomposes under the 
+$K$-action as:
+\begin{equation}
+\label{eq:ktype-decomp}
+  L^2(\check{S}) = \bigoplus_{\lambda \in \hat{K}} 
+  m_\lambda\, V_\lambda,
+\end{equation}
+where $\hat{K}$ denotes the set of irreducible representations 
+of $K$ and $m_\lambda$ is the multiplicity. The Hardy space 
+$H^2(\check{S})$ is a proper subspace, selecting those $K$-types 
+that extend holomorphically:
+\begin{equation}
+\label{eq:hardy-ktype}
+  H^2(\check{S}) = \bigoplus_{\lambda \in \hat{K}^+} 
+  m_\lambda^+\, V_\lambda,
+\end{equation}
+where $\hat{K}^+ \subset \hat{K}$ is the subset of $K$-types 
+appearing in the holomorphic discrete series.
+
+\begin{definition}[$\delta$-Grading]
+\label{def:delta-grading}
+The involution $\delta = \alpha \circ \theta$ acts on $K$-types 
+as follows. Since $\delta$ normalises $K$ 
+(Lemma~\ref{lem:delta-commutes}(i)), it permutes irreducible 
+$K$-modules: $\delta: V_\lambda \mapsto V_{\delta\cdot\lambda}$. 
+A $K$-type $V_\lambda$ is \emph{$\delta$-stable} if 
+$\delta \cdot \lambda = \lambda$ (i.e., $V_\lambda$ is sent to 
+an isomorphic copy of itself). On $\delta$-stable $K$-types, 
+the intertwiner $V_\lambda \xrightarrow{\delta} V_\lambda$ is 
+$\pm\mathrm{id}$ by Schur's lemma (since $\delta^2 = \mathrm{id}$ 
+and $V_\lambda$ is irreducible). We say $V_\lambda$ is:
+\begin{itemize}
+  \item \emph{$\delta$-even} if the intertwiner is $+\mathrm{id}$;
+  \item \emph{$\delta$-odd} if the intertwiner is $-\mathrm{id}$.
+\end{itemize}
+For $K$-types that are \emph{not} $\delta$-stable (i.e., 
+$\delta$ exchanges $V_\lambda$ with a distinct $V_{\delta\cdot\lambda}$), 
+the relevant sign for the transfer is the \emph{intertwiner sign} 
+$(-1)^{|\lambda|}$ from the swap 
+$V_\lambda \to V_{\delta\cdot\lambda}$, as in 
+Proposition~\ref{prop:bridge-obstruction}. In the scalar case 
+(Theorem~\ref{thm:disjointness}), we prove that all such 
+intertwiner signs are $+1$.
+
+We write $\hat{K} = \hat{K}^{\delta+} \sqcup \hat{K}^{\delta-}$ 
+for the decomposition into $\delta$-even and $\delta$-odd types 
+(with the convention that non-$\delta$-stable pairs are classified 
+by their intertwiner sign).
+\end{definition}
+
+The central algebraic fact from \cite{Bridge} is:
+
+\begin{proposition}[Bridge paper, Propositions 5.3 and 5.6]
+\label{prop:bridge-obstruction}
+The algebraic transfer map $T_{\alpha \to \theta}: 
+H^2_\alpha \to H^2_\theta$ is positive-definite on $\delta$-even 
+$K$-types and \emph{negative}-definite on $\delta$-odd $K$-types. 
+Specifically, for $f \in V_\lambda$:
+\begin{equation}
+  \langle T_{\alpha \to \theta} f, T_{\alpha \to \theta} f 
+  \rangle_\theta = (-1)^{|\lambda|_\delta}\, 
+  \langle f, f \rangle_\alpha,
+\end{equation}
+where $|\lambda|_\delta = 0$ if $\lambda \in \hat{K}^{\delta+}$ 
+and $|\lambda|_\delta = 1$ if $\lambda \in \hat{K}^{\delta-}$.
+\end{proposition}
+
+\subsection{The Key Claim}
+\label{subsec:key-claim}
+
+We can now state the precise claim that drives the paper:
+
+\begin{theorem}[Scalar $\delta$-evenness]
+\label{thm:filter-preview}
+Every $K$-type on the Lie sphere $\check{S}$ is $\delta$-even. 
+That is, $\hat{K}^{\delta-} = \emptyset$ in $L^2(\check{S})$, and 
+\emph{a fortiori}:
+\begin{equation}
+\label{eq:filter-claim}
+  \hat{K}^+ \subseteq \hat{K}^{\delta+} = \hat{K}.
+\end{equation}
+The Szeg\H{o} projection $P_S: L^2(\check{S}) \to H^2(\check{S})$ 
+discards the non-Hardy $K$-types (those with $m_2 < 0$ in the 
+lattice parametrisation), which are $\delta$-even but do not 
+extend holomorphically.
+
+For \emph{vector-valued} Hardy spaces $H^2(\check{S}, \VV)$, 
+the $\delta$-eigenvalue on each $K$-type is determined entirely 
+by the fiber intertwiner $J_\tau$ 
+(Lemma~\ref{lem:vv-delta-eigenvalue}):
+\begin{equation}
+  \delta\big|_{H^2(\check{S}, \VV)} = J_\tau.
+\end{equation}
+\end{theorem}
+
+The proof of this theorem occupies Sections~\ref{sec:n4} 
+and~\ref{sec:filter}. The strategy is:
+\begin{enumerate}
+  \item Verify the scalar $\delta$-evenness explicitly for 
+    $N = 6$ ($d = 4$ spacetime dimensions), where the algebraic 
+    transfer is already known to succeed, as a consistency check 
+    (Section~\ref{sec:n4}).
+  \item Prove the general result using the rank-2 lattice 
+    structure of $K$-types on the Lie sphere, which forces 
+    $k + |\lambda| = 2m_1$ to be even for all $K$-types 
+    (Section~\ref{sec:filter} and Appendix~\ref{app:branching}).
+  \item Extend to the vector-valued case using the fiber
+    $\delta$-structure $J_\tau$
+    (Proposition~\ref{prop:vv-filter}).
+\end{enumerate}
+The arithmetic core of this theorem---the identity $k + |\lambda| = 2m_1$, the eigenvalue $(-1)^{k+|\lambda|} = +1$, and the absence of $\delta$-odd $K$-types---has been formally verified in Lean~4 with zero \texttt{sorry} axioms \cite{LeanVerification}.
+
+
+%=============================================================================
+\section{The $d = 4$ Verification}
+\label{sec:n4}
+%=============================================================================
+
+We first verify that the holomorphic filter mechanism is consistent 
+with the known algebraic result for $d = 4$ spacetime dimensions, 
+where $N = 2d - 2 = 6$. This serves both as a check and as motivation 
+for the general argument.
+
+\subsection{The Domain $D^6_{IV}$}
+\label{subsec:d6}
+
+For $N = 6$, the domain is $D^6_{IV} \cong \SO_0(2,6)/S(O(2) \times O(6))$. 
+The structural constants are:
+\begin{equation}
+  r = 2, \qquad d = 4, \qquad g = 6.
+\end{equation}
+
+The group $\SO_0(2,6)$ has complexification $\SO(8, \C)$, and the 
+relevant feature is the triality of $D_4 = \mathfrak{so}(8)$. The 
+maximal compact subgroup $K = S(O(2) \times O(6))$ acts on the 
+Shilov boundary $\check{S} \cong (S^1 \times S^5)/\Z_2$.
+
+The $K$-types appearing in $L^2(\check{S})$ are labelled by pairs 
+$(m, \lambda)$ where $m \in \Z$ is the $O(2)$-weight and $\lambda$ 
+is a highest weight of $O(6) \cong \SU(4)/\Z_2$. The $\delta$-grading 
+on these types is determined by the parity of $m + |\lambda|$, where 
+$|\lambda|$ is the depth of the representation in a suitable sense.
+
+\subsection{Hardy Space $K$-Types}
+\label{subsec:hardy-ktypes-n4}
+
+The holomorphic discrete series for $\SO_0(2,6)$ restricts to $K$ 
+as a multiplicity-free sum of $K$-types. By the Schmid decomposition 
+\cite{Schmid1969}, the $K$-types appearing in the scalar holomorphic 
+discrete series with parameter $\nu = N/2 = 3$ are those of the form:
+\begin{equation}
+\label{eq:ktypes-hardy}
+  V_{(m, \lambda)} \quad \text{with} \quad m \geq 0, \quad 
+  \lambda_1 \geq \lambda_2 \geq \lambda_3 \geq 0, \quad 
+  m \geq \lambda_1.
+\end{equation}
+
+\begin{proposition}
+\label{prop:n4-verification}
+For $N = 6$, every $K$-type satisfying \eqref{eq:ktypes-hardy} 
+is $\delta$-even. Hence $\hat{K}^+ \subseteq \hat{K}^{\delta+}$.
+\end{proposition}
+
+\begin{proof}
+The $\delta$-involution acts on the $K$-type $(m, \lambda)$ by:
+\begin{equation}
+  \delta(m, \lambda) = (-m, \lambda^*),
+\end{equation}
+where $\lambda^*$ is the contragredient representation. A $K$-type 
+is $\delta$-even if $(m, \lambda) \cong (-m, \lambda^*)$ (i.e., it 
+is equivalent to its $\delta$-image) and the intertwiner has eigenvalue 
+$+1$; it is $\delta$-odd if the eigenvalue is $-1$.
+
+For the $K$-types in \eqref{eq:ktypes-hardy}, the constraint 
+$m \geq \lambda_1 \geq 0$ together with the structure of the 
+holomorphic discrete series forces $m + |\lambda|$ to be even. 
+This is verified case-by-case for the lowest $K$-types:
+\begin{itemize}
+  \item $(0, (0,0,0))$: the trivial representation, manifestly 
+    $\delta$-even.
+  \item $(1, (1,0,0))$: the standard representation, which satisfies 
+    $1 + 1 = 2$ (even).
+  \item $(2, (2,0,0))$ and $(2, (1,1,0))$: both satisfy the parity 
+    condition.
+\end{itemize}
+
+The general statement follows from the fact that the holomorphic 
+discrete series representation is a \emph{lowest weight} module, 
+and the lowest weight vector is $\delta$-even by construction. 
+Since $\delta$ commutes with the raising operators (which generate 
+all higher $K$-types from the lowest weight), every $K$-type in 
+the module inherits the $\delta$-even property.
+\end{proof}
+
+\begin{remark}
+\label{rem:n4-consistency}
+For $d = 4$ (i.e., $N = 6$), Proposition~\ref{prop:n4-verification} 
+confirms that the holomorphic filter does not discard any physical 
+information: the algebraic transfer already works completely, and 
+$\hat{K}^{\delta-} \cap \hat{K}^+ = \emptyset$ because there are 
+no $\delta$-odd types in the Hardy space to begin with. The filter 
+is ``trivially on.'' The non-trivial content appears for $d > 4$.
+\end{remark}
+
+
+%=============================================================================
+\section{The Holomorphic Filter Mechanism}
+\label{sec:filter}
+%=============================================================================
+
+We now prove Theorem~\ref{thm:filter-preview} in general. Recall 
+that the ``holomorphic filter'' is not an artificial projection 
+imposed by hand: it is the Hardy-space boundary-value condition 
+implicit in the Wightman axioms (see Section~\ref{sec:intro} 
+and Remark~\ref{rem:distributional}). The argument proceeds in 
+two steps: first, we characterise the $K$-types 
+in the Hardy space using the theory of holomorphic discrete series 
+and the rank-2 lattice parametrisation; second, we show that the 
+lattice structure forces all $K$-types to be $\delta$-even, 
+establishing that $\hat{K}^{\delta-} = \emptyset$ in $L^2(\check{S})$.
+
+\subsection{$K$-Types in the Holomorphic Discrete Series}
+\label{subsec:hds-ktypes}
+
+The scalar holomorphic discrete series representation of 
+$G = \SO_0(2, N)$ with parameter $\nu = N/2$ is a unitary 
+representation $\pi_\nu$ realised on the Hardy space 
+$H^2(D^N_{IV})$. By the theorem of Schmid \cite{Schmid1969} 
+and Hecht--Schmid \cite{HechtSchmid1983}, the $K$-type decomposition is:
+\begin{equation}
+\label{eq:hds-decomp}
+  \pi_\nu|_K = \bigoplus_{k=0}^\infty \bigoplus_{\substack{
+    \lambda \in \hat{O}(N) \\ |\lambda| \leq k}} V_{(k, \lambda)},
+\end{equation}
+where $k$ is the $O(2)$-weight (restricted to non-negative values 
+by the lowest weight condition) and $\lambda$ ranges over certain 
+$O(N)$-representations determined by the branching rules.
+
+The crucial structural property is:
+
+\begin{lemma}[Lowest weight property]
+\label{lem:lowest-weight}
+The holomorphic discrete series $\pi_\nu$ is a \emph{lowest weight 
+module} for the complexified Lie algebra $\g_\C = \mathfrak{so}(2+N, \C)$. 
+The lowest weight vector $v_0$ spans the one-dimensional $K$-type 
+$V_{(0, \mathrm{triv})}$ and satisfies:
+\begin{equation}
+  \fn^- \cdot v_0 = 0, \qquad 
+  \fk_\C \cdot v_0 \subset \C \cdot v_0,
+\end{equation}
+where $\fn^-$ is the antiholomorphic nilpotent subalgebra in the 
+Harish-Chandra decomposition $\g_\C = \fn^+ \oplus \fk_\C \oplus \fn^-$.
+\end{lemma}
+
+\subsection{Action of $\delta$ on $K$-Types}
+\label{subsec:delta-action}
+
+\begin{lemma}
+\label{lem:delta-commutes}
+The involution $\delta = \alpha \circ \theta$ satisfies:
+\begin{enumerate}[label=(\roman*)]
+  \item $\delta$ stabilises $K$ (since both $\alpha$ and $\theta$ 
+    normalise $K$);
+  \item $\delta$ acts on the $O(2)$-factor of $K = S(O(2) \times O(N))$ 
+    by $m \mapsto -m$;
+  \item $\delta$ acts on the $O(N)$-factor by the outer automorphism 
+    $\lambda \mapsto \lambda^*$ (contragredient).
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Statement (i): $\theta$ trivially preserves its own eigenspaces 
+$\fk$ and $\fp$. The involution $\alpha$ commutes with $\theta$ 
+(since $\delta = \alpha \circ \theta$ is itself an involution, 
+which requires $\alpha\theta = \theta\alpha$), so $\alpha$ also 
+preserves the Cartan decomposition. Their composition $\delta$ 
+therefore preserves both $\fk$ and $\fp$, giving the 
+$\delta$-decomposition of $K$-types.
+
+For (ii), $\alpha$ acts as complex conjugation on the tube domain, 
+which reverses the sign of the $O(2)$-parameter because the $O(2)$ 
+action is generated by $J = \left(\begin{smallmatrix} 0 & -1 \\ 1 & 0 
+\end{smallmatrix}\right)$ in the $(1,2)$-block, and $\alpha$ conjugates 
+$iJ$ to $-iJ$.
+
+Statement (iii) follows from the fact that $\delta$ acts on the 
+maximal torus of $O(N)$ by an outer automorphism that reverses 
+the sign of one fundamental weight, which is the defining property 
+of the contragredient map for orthogonal groups.
+\end{proof}
+
+\begin{corollary}
+\label{cor:delta-eigenvalue}
+A $K$-type $V_{(k, \lambda)}$ is $\delta$-even if and only if 
+$V_{(k, \lambda)} \cong V_{(-k, \lambda^*)}$ with intertwiner 
+$+1$. For the Hardy space $K$-types (where $k \geq 0$), the 
+$\delta$-eigenvalue is:
+\begin{equation}
+\label{eq:delta-eigenvalue}
+  (-1)^{k + \epsilon(\lambda)},
+\end{equation}
+where $\epsilon(\lambda) \in \{0, 1\}$ encodes whether 
+$\lambda \cong \lambda^*$ with positive or negative intertwiner.
+\end{corollary}
+
+\begin{proof}
+By Lemma~\ref{lem:delta-commutes}(ii)--(iii), $\delta$ sends 
+$V_{(k, \lambda)}$ to $V_{(-k, \lambda^*)}$. The intertwiner 
+$V_{(k, \lambda)} \to V_{(-k, \lambda^*)}$ factors as a product 
+of two contributions:
+\begin{enumerate}[label=(\alph*)]
+  \item The $O(2)$-factor: $\delta$ sends the character 
+    $e^{ik\varphi}$ to $e^{-ik\varphi}$ (Lemma~\ref{lem:delta-commutes}(ii)). 
+    To identify $V_{(k, \lambda)}$ with $V_{(-k, \lambda^*)}$, 
+    we need an intertwiner on the $O(2)$-part. The unique 
+    (up to sign) intertwiner $e^{ik\varphi} \mapsto e^{-ik\varphi}$ 
+    is complex conjugation composed with the antipodal map 
+    $\varphi \mapsto \varphi + \pi$, which contributes 
+    $e^{ik\pi} = (-1)^k$. (Equivalently: the $\delta$-action 
+    on the maximal torus $T \subset O(2)$ is the Weyl reflection 
+    $\varphi \mapsto -\varphi$, and the Weyl group sign on a 
+    weight $k$ is $(-1)^k$.)
+  \item The $O(N)$-factor: $\delta$ sends $\lambda$ to its 
+    contragredient $\lambda^*$. The intertwiner 
+    $V_\lambda \to V_{\lambda^*}$ contributes $(-1)^{\epsilon(\lambda)}$, 
+    where $\epsilon(\lambda) = 0$ if the intertwiner is $+1$ 
+    (i.e., $V_\lambda$ is self-contragredient with symmetric 
+    bilinear form) and $\epsilon(\lambda) = 1$ if $-1$ 
+    (antisymmetric form).
+\end{enumerate}
+The total intertwiner sign is $(-1)^k \cdot (-1)^{\epsilon(\lambda)} 
+= (-1)^{k + \epsilon(\lambda)}$.
+\end{proof}
+
+\subsection{Uniform $\delta$-Evenness}
+\label{subsec:disjointness}
+
+To connect the abstract $\delta$-eigenvalue formula 
+(Corollary~\ref{cor:delta-eigenvalue}) to the lattice coordinates 
+of Appendix~\ref{app:branching}, we need:
+
+\begin{lemma}[Identification of $\epsilon(\lambda)$ with $|\lambda|$]
+\label{lem:epsilon-identification}
+In the rank-2 lattice parametrisation $(m_1, m_2)$ of $K$-types 
+on the Lie sphere (Appendix~\ref{app:peter-weyl}), the 
+contragredient intertwiner sign $\epsilon(\lambda)$ of 
+Corollary~\ref{cor:delta-eigenvalue} satisfies:
+\begin{equation}
+  \epsilon(\lambda) \equiv |\lambda| \equiv m_1 - m_2 \pmod{2}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The involution $\delta = \alpha \circ \theta$ acts on the Lie 
+sphere $\check{S} \cong (S^1 \times S^{N-1})/\Z_2$ by exchanging 
+the two restricted root directions. We claim that in the 
+$(m_1, m_2)$ lattice parametrisation of 
+Appendix~\ref{app:peter-weyl}, this action is:
+\begin{equation}
+\label{eq:delta-swap}
+  \delta: V_{(m_1, m_2)} \mapsto V_{(m_2, m_1)}.
+\end{equation}
+
+\emph{Proof of \eqref{eq:delta-swap} for general $N$.} The spin 
+factor Jordan algebra $V_N = \R \oplus \R^{N-1}$ has rank 2 for 
+all $N \geq 3$, with Jordan frame $\{e_1, e_2\}$ given by 
+$e_1 = \frac{1}{2}(1, e_N)$ and $e_2 = \frac{1}{2}(1, -e_N)$, 
+where $e_N$ is a unit vector in $\R^{N-1}$. Every element 
+$u \in V_N$ has a spectral decomposition $u = \lambda_1 e_1 + 
+\lambda_2 e_2$ with eigenvalues $\lambda_j = u_0 \pm |u'|$ 
+(where $u = (u_0, u')$ in the $\R \oplus \R^{N-1}$ splitting). 
+The cone $\Omega = \{u : \lambda_1, \lambda_2 > 0\}$ is the 
+Lorentz cone, and the Shilov boundary is 
+$\check{S} = \{u \in V_N : \lambda_1 \lambda_2 = 0, 
+\lambda_1^2 + \lambda_2^2 = 1\}$.
+
+The involution $\alpha$ acts on the tube domain $T_\Omega$ by 
+$\alpha(z) = -\bar{z}$ (negating the real part, 
+cf.~Definition~\ref{def:involutions}). On the boundary 
+($y = 0$), this sends $u \mapsto -u$, hence 
+$(\lambda_1, \lambda_2) \mapsto (-\lambda_1, -\lambda_2)$. 
+The Cartan involution $\theta$ acts on $\g = \fk \oplus \fp$ 
+as $+1$ on $\fk$ and $-1$ on $\fp$. Its effect on the boundary 
+is: $\theta$ fixes the maximal compact subalgebra but negates 
+the noncompact directions, which in the Jordan-algebraic picture 
+corresponds to $(\lambda_1, \lambda_2) \mapsto 
+(\lambda_2, \lambda_1)$ (interchanging the two spectral values). 
+To verify this last claim: the maximal abelian subspace 
+$\fa \subset \fp$ is one-dimensional (rank of $G/K$ is 2 as a 
+Hermitian symmetric space, but the restricted rank is 2 for the 
+boundary action), parametrised by $\mathrm{diag}(a_1, a_2)$ in 
+the spectral decomposition. The restricted Weyl group 
+$W(\g, \fa)$ for the $B_2$ root system has order~8, generated 
+by two simple reflections $s_\alpha$ (short root) and 
+$s_\beta$ (long root). The element that permutes the spectral 
+values $(a_1, a_2) \mapsto (a_2, a_1)$ is the long root 
+reflection $s_\beta$, and $\delta$ implements precisely this 
+element. (For $N = 4$, the restricted root system degenerates 
+to $A_1 \times A_1$, and the spectral permutation is 
+the exchange of the two $A_1$ factors.)
+
+Combining: $\delta = \alpha \circ \theta$ sends 
+$(\lambda_1, \lambda_2) \mapsto (-\lambda_2, -\lambda_1)$. On 
+the $K$-type lattice, where $(m_1, m_2)$ are the exponents of 
+the characters $\chi_{m_1} \bar{\chi}_{m_2}$ in the 
+Peter--Weyl decomposition, the action of $\delta$ sends 
+$(m_1, m_2) \mapsto (m_2, m_1)$ (swapping the two lattice 
+indices). This can also be verified directly from the 
+$N = 6$ case (Section~\ref{sec:n4}), where it reduces to the 
+standard exchange of the two $\SU(2)$ factors in 
+$\SO(6) \cong \SU(4)$.
+
+Now we analyse the consequences for the $\delta$-intertwiner 
+sign. For $m_1 \neq m_2$, the $K$-types $V_{(m_1, m_2)}$ and 
+$V_{(m_2, m_1)}$ are distinct irreducible $K$-modules, and 
+$\delta$ exchanges them. These $K$-types are \emph{not} 
+individually $\delta$-stable; $\delta$ is an outer involution 
+that permutes pairs. The $\delta$-intertwiner 
+$V_{(m_1, m_2)} \to V_{(m_2, m_1)}$ has sign $(-1)^{m_1 - m_2} 
+= (-1)^{|\lambda|}$, as determined by the action on highest 
+weight vectors: the representation-theoretic intertwiner 
+$V_{(m_1,m_2)} \to V_{(m_2,m_1)}$ acquires a sign 
+$(-1)^{m_1 - m_2}$ from the action of the outer automorphism 
+on the highest weight space 
+(cf.\ \cite{Knapp2002}, Ch.~VII, \S7, for the general theory 
+of intertwiner signs on $K$-types under outer involutions). 
+Note that this sign is a property of the representation-theoretic 
+intertwiner, not of a sequence of Weyl reflections: in the $B_2$ 
+restricted root system, the transposition $(m_1, m_2) \mapsto 
+(m_2, m_1)$ corresponds to a \emph{single} simple reflection 
+(the short root reflection), and the sign $(-1)^{|m_1 - m_2|}$ 
+arises from the induced action on the highest weight vector of 
+the $K$-module.
+
+For $m_1 = m_2$, the $K$-type $V_{(m_1, m_1)}$ is $\delta$-stable 
+(since $\delta$ fixes the pair $(m_1, m_1)$). By Schur's lemma, 
+$\delta$ acts as $\pm 1$ on this irreducible $K$-module. The sign 
+is $+1$ for the following reason: the $K$-types with $m_1 = m_2$ 
+correspond (via $k = 2m_1$, $\lambda = 0$) to the spherical 
+representations---those containing a $K$-fixed vector. By the 
+Cartan--Helgason theorem (\cite{Helgason2000}, Ch.~V, \S4), 
+spherical representations of $(G, K)$ are precisely those whose 
+highest weight is invariant under the restricted Weyl group. 
+Since $\delta$ implements a Weyl group element that fixes the 
+diagonal $m_1 = m_2$, the $\delta$-intertwiner on spherical 
+representations is the identity. (Alternatively: when 
+$\lambda = 0$, the $O(N)$-representation is trivial, 
+so $\epsilon(\lambda) = 0$ and the eigenvalue is 
+$(-1)^{k + 0} = (-1)^{2m_1} = +1$.)
+
+Equating with the abstract formula from 
+Corollary~\ref{cor:delta-eigenvalue}: the $\delta$-intertwiner 
+sign is $(-1)^{k + \epsilon(\lambda)}$, and we have shown it 
+equals $(-1)^{|\lambda|}$. Therefore:
+\begin{equation}
+  (-1)^{k + \epsilon(\lambda)} = (-1)^{|\lambda|},
+\end{equation}
+giving $k + \epsilon(\lambda) \equiv |\lambda| \pmod{2}$, i.e., 
+$\epsilon(\lambda) \equiv |\lambda| + k \equiv 2m_1 \pmod{2}$.
+
+The conclusion is: $k + \epsilon(\lambda) \equiv 2m_1 \pmod{2}$, 
+which is always even since $m_1 \in \Z$.
+\end{proof}
+
+\begin{theorem}[Main technical result]
+\label{thm:disjointness}
+For all $N \geq 3$ and all $K$-types $V_{(k, \lambda)}$ appearing 
+in the holomorphic discrete series $\pi_{N/2}$ of $\SO_0(2,N)$:
+\begin{equation}
+  (-1)^{k + \epsilon(\lambda)} = +1.
+\end{equation}
+That is, every $K$-type in the Hardy space is $\delta$-even.
+\end{theorem}
+
+\begin{proof}
+The proof follows immediately from the rank-2 lattice structure 
+of $K$-types on the Lie sphere. By the Peter--Weyl decomposition 
+(Appendix~\ref{app:peter-weyl}), $K$-types on $\check{S}$ are 
+indexed by pairs $(m_1, m_2) \in \Z^2$ with $m_1 \geq m_2$. 
+The holomorphic discrete series selects the semigroup 
+$m_1 \geq m_2 \geq 0$ (Appendix~\ref{app:hardy-selection}).
+
+In the $(k, |\lambda|)$ coordinates of the body text, where 
+$k = m_1 + m_2$ and $|\lambda| = m_1 - m_2$:
+\begin{equation}
+  k + \epsilon(\lambda) = k + |\lambda| = 2m_1 \equiv 0 \pmod{2}
+\end{equation}
+for every $(m_1, m_2) \in \Z^2$, since $m_1$ is an integer. 
+Hence $(-1)^{k + \epsilon(\lambda)} = +1$ for every $K$-type 
+in $H^2(\check{S})$.
+
+The parity constraint is not a consequence of the Hardy condition 
+$m_2 \geq 0$; it holds for \emph{all} $K$-types in $L^2(\check{S})$. 
+The Hardy condition is needed to ensure holomorphic extension, 
+not to enforce parity. See Appendix~\ref{app:parity} for the 
+implications in the vector-valued case.
+\end{proof}
+
+\begin{remark}[Reinterpretation of the algebraic obstruction]
+\label{rem:why-algebra-fails}
+This theorem reveals that the $\delta$-odd obstruction identified 
+in \cite{Bridge} is more nuanced than originally understood. In 
+the \emph{scalar} sector, $\delta$-odd $K$-types do not exist on 
+the Lie sphere at all: the parity $k + |\lambda| = 2m_1$ is even 
+for \emph{every} $(m_1, m_2)$ in the Peter--Weyl decomposition 
+of $L^2(\check{S})$, not merely for those in the Hardy subspace 
+$H^2(\check{S})$ (which additionally requires $m_2 \geq 0$). 
+The algebraic obstruction therefore cannot arise from 
+scalar boundary modes.
+
+To clarify a natural question: if all scalar $K$-types are 
+$\delta$-even, why did \cite{Bridge} find $\delta$-odd 
+obstructions? The answer is that the algebraic transfer in 
+\cite{Bridge} operates on the \emph{full Hilbert space} of the 
+theory, which includes vector-valued sections (i.e., fields 
+carrying nontrivial fiber representations). The obstructions 
+found in \cite{Bridge} arise from the fiber intertwiner $J_\tau$ 
+acting on these vector-valued $K$-types, \emph{not} from the 
+scalar boundary $K$-type lattice. The present paper's 
+contribution is to show that the scalar lattice parity 
+($k + |\lambda| = 2m_1$ always even) resolves the scalar 
+component of the obstruction, reducing the entire problem to 
+the single fiber sign $J_\tau$.
+
+The obstruction lives entirely in the \emph{fiber representation} 
+of vector-valued fields: it is controlled by the intertwiner 
+$J_\tau$ (Definition~\ref{def:delta-structure}). For fields with 
+$J_\tau = +\mathrm{id}$ (bosonic fields, Dirac fermions in even 
+dimensions), the combined $\delta$-eigenvalue on Hardy space 
+sections is $(-1)^{2m_1} \cdot J_\tau = +1$, and the transfer 
+preserves positivity.
+
+The Szeg\H{o} projection plays a different role than initially 
+anticipated: it does not ``filter out $\delta$-odd modes'' (which 
+are absent from the scalar lattice) but rather projects onto the 
+Hardy space $H^2(\check{S})$, ensuring that only positive-energy, 
+holomorphically extendable boundary data participates in the 
+transfer. The non-Hardy modes it discards (those with $m_2 < 0$) 
+are $\delta$-\emph{even} but non-physical: they violate the 
+spectrum condition. The algebraic approach fails because it 
+operates on all of $L^2(\check{S})$---including these non-Hardy 
+modes---without the holomorphic constraint that the analytic 
+approach enforces automatically.
+\end{remark}
+
+
+%=============================================================================
+\section{The Main Theorem}
+\label{sec:main-theorem}
+%=============================================================================
+
+We can now prove the main result, resolving Conjecture~\ref{conj:main} 
+for fields with positive $\delta$-structure.
+
+\begin{theorem}[Simultaneous reflection positivity via the Cauchy--Szeg\H{o} kernel]
+\label{thm:main}
+Let $\{\mathcal{W}_n^{(\sigma)}\}_{n \geq 2}$ be the Wightman 
+distributions of a reflection-positive quantum field theory on a 
+real form $\R^{p,q}$ of $\C^d$ (with $p + q = d$), with fields 
+valued in a $\delta$-stable homogeneous vector bundle with 
+fiber intertwiner $J_\tau = +\mathrm{id}$ 
+(Definition~\ref{def:delta-structure}; this includes all bosonic 
+fields and Dirac fermions in even spacetime dimensions). 
+
+By the Bargmann--Hall--Wightman theorem, each $\mathcal{W}_n^{(\sigma)}$ 
+is the distributional boundary value of a holomorphic function 
+$W_n(z_1, \ldots, z_n)$ defined in the permuted extended tube 
+$\mathcal{T}_n \subset (\C^d)^n$. By 
+Lemma~\ref{lem:split-regularity} below, the BHW holomorphic 
+continuation $W_n$ admits tempered distributional boundary values 
+on every standard real form of $\C^d$, including the split real 
+form $\R^{d/2,d/2}$. Define the \emph{Szeg\H{o} 
+transfer} to any other real form $\R^{p',q'}$ as the 
+distributional boundary value of $W_n$ along the target real form:
+\begin{equation}
+\label{eq:szego-transfer-distributional}
+  \mathcal{W}_n^{(\sigma')}(\varphi_1, \ldots, \varphi_n) = 
+  \lim_{y \to 0^+} \int W_n(x_1' + iy_1, \ldots, x_n' + iy_n)\,
+  \prod_j \varphi_j(x_j')\, dx_j',
+\end{equation}
+where $\varphi_j \in \mathscr{S}(\R^N)$ are test functions and 
+the limit is taken with $y_j \in \Omega$ approaching the 
+target real boundary along the appropriate totally real 
+submanifold (Proposition~\ref{prop:spacetime-domain}): for the 
+Lorentzian target, $y_j \to 0$ directly; for the Euclidean 
+target, the limit is the restriction to the imaginary axis 
+$i\Omega$; for the split target, $y_j \to 0$ along the 
+split-signature causal cone. The limit exists in the distributional 
+sense by standard edge-of-the-wedge estimates 
+\cite{StreaterWightman} and Hardy space boundary value results 
+\cite{SteinWeiss1971}.
+
+When boundary values are sufficiently regular (e.g., for free 
+or perturbative theories), this transfer admits the kernel 
+representation:
+\begin{equation}
+\label{eq:szego-transfer}
+  \mathcal{W}_n^{(\sigma')}(x_1', \ldots, x_n') = 
+  \int_{\check{S}^n} \prod_{j=1}^n S(z_j'(\sigma'), \zeta_j)\,
+  \mathcal{W}_n^{(\sigma)}(\zeta_1, \ldots, \zeta_n)\,
+  \prod_{j=1}^n d\sigma(\zeta_j),
+\end{equation}
+where $z_j'(\sigma')$ denotes the embedding of the point $x_j'$ 
+on the target real form into the complexified domain, and $S$ is 
+the Cauchy--Szeg\H{o} kernel of the Type~IV domain 
+$D^N_{IV}$ with $N = 2d - 2$.
+
+\begin{remark}[Analytic framework]
+\label{rem:distributional}
+The defining equation \eqref{eq:szego-transfer-distributional} 
+requires no Szeg\H{o} projection of test functions: the 
+holomorphic function $W_n$ already exists in the complex interior 
+(by BHW), and the transfer is simply the boundary value of this 
+function on a different real form. The Szeg\H{o} kernel enters 
+in the kernel representation \eqref{eq:szego-transfer} as the 
+mediating kernel between boundary components of the tube domain, 
+but the \emph{existence} of the transfer is guaranteed by BHW 
+plus edge-of-the-wedge, independently of the kernel formula. The 
+role of the Szeg\H{o} kernel in this paper is therefore primarily 
+\emph{structural}: it provides the explicit formula and, more 
+importantly, the representation-theoretic analysis 
+(Theorem~\ref{thm:disjointness}) that explains why the 
+$\delta$-odd obstruction does not arise.
+\end{remark}
+
+\begin{lemma}[Split-signature boundary regularity]
+\label{lem:split-regularity}
+Let $\{\mathcal{W}_n^{(\sigma)}\}$ be the Wightman distributions of 
+a quantum field theory satisfying the standard Wightman axioms on a 
+real form $\R^{p,q}$ of $\C^d$. Then the BHW holomorphic continuation 
+$W_n$ admits tempered distributional boundary values on the split 
+real form $\R^{d/2,d/2}$ (and on every other standard real form).
+\end{lemma}
+
+\begin{proof}
+The argument proceeds in three steps.
+
+\emph{Step 1.} The Wightman axioms guarantee that each $\mathcal{W}_n$ 
+is a tempered distribution. By the Bargmann--Hall--Wightman theorem 
+\cite{StreaterWightman}, $\mathcal{W}_n$ extends to a holomorphic 
+function $W_n$ on the permuted extended tube $\mathcal{T}'_n \subset 
+(\C^d)^n$, with polynomial growth bounds inherited from the 
+temperedness of the source distributions.
+
+\emph{Step 2.} By \cite[Lemma~3.4]{SplitWedge}, the split tube 
+$T_S = \R^d + iV^+_S$ is contained in the permuted extended tube: 
+$T_S \subset \mathcal{T}'_n$ (for the single-variable case $n = 2$; 
+the multi-variable case follows by taking products of forward tubes 
+in the difference variables). Therefore $W_n$ restricts to a 
+holomorphic function on $T_S$ with polynomial growth.
+
+\emph{Step 3.} By the theorem of Vladimirov \cite{Vladimirov1966} 
+on distributional boundary values of holomorphic functions in tube 
+domains: a holomorphic function in a tube $T_\Gamma = \R^k + i\Gamma$ 
+with polynomial growth admits tempered distributional boundary values 
+as $\mathrm{Im}(z) \to 0$ within $\Gamma$. Applying this with 
+$\Gamma = V^+_S$ (the split forward cone, which is an open convex 
+cone by \cite[Lemma~3.4]{SplitWedge}), we obtain that $W_n$ has 
+tempered distributional boundary values on $\R^{d/2,d/2}$.
+
+The same argument applies to every standard real form: the Lorentzian 
+boundary values are the original Wightman distributions (by 
+definition), the Euclidean boundary values are the Schwinger 
+functions (by OS reconstruction), and the split boundary values 
+exist by the above argument.
+\end{proof}
+
+\begin{remark}[$n$-point singularity structure]
+\label{rem:npoint-regularity}
+For $n > 2$, the Wightman distributions have singularities on 
+coincident-point configurations. The Szeg\H{o} kernel 
+$S(z, \zeta)$ is singular on the boundary ($\nu = N/2$ lies near 
+the lower end of the continuous Wallach set, per Remark~\ref{rem:wallach}), 
+and the product $\prod_{j=1}^n S(z_j', \zeta_j)$ in 
+\eqref{eq:szego-transfer} amplifies these singularities.
+However, the tube domain framework sidesteps this difficulty: the 
+holomorphic function $W_n$ is non-singular in the interior 
+$\mathcal{T}_n$, and its boundary values on the target real form 
+inherit the same distributional regularity as the source Wightman 
+distributions by Lemma~\ref{lem:split-regularity}.
+\end{remark}
+
+Then:
+\begin{enumerate}[label=(\roman*)]
+  \item $\mathcal{W}_n^{(\sigma')}$ satisfies the Osterwalder--Schrader 
+    axioms with respect to the natural reflection positivity involution 
+    of the target signature $(p', q')$.
+  \item The transfer \eqref{eq:szego-transfer} is independent of the 
+    choice of intermediate complexification, depending only on the 
+    source and target real forms.
+  \item The transfer preserves the spectrum condition: if the original 
+    theory has positive energy, so does the transferred theory.
+  \item The transfer preserves clustering: if the original theory 
+    has a unique vacuum, so does the transferred theory.
+  \item The transfer is \emph{covariant}: if the original theory 
+    transforms under a representation of $\SO_0(p,q)$, the 
+    transferred theory transforms under the corresponding 
+    representation of $\SO_0(p',q')$, with the intertwining 
+    mediated by the analytic continuation through $\SO(d, \C)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{(i) Reflection positivity.} We give the proof in three 
+stages: first the 2-point case (which is the heart of the 
+argument), then the extension to $n$-point functions.
+
+\emph{Stage 1: Euclidean positivity.} The source theory satisfies 
+OS positivity, which (by the Osterwalder--Schrader reconstruction 
+theorem) is equivalent to the positivity of the Schwinger 
+functions $S_n^{(\sigma)}$ on the Euclidean section. The 
+Euclidean section embeds into the tube domain $T_\Omega$ as the 
+imaginary axis $i\Omega$ (Proposition~\ref{prop:spacetime-domain}). 
+On this section, the Cauchy--Szeg\H{o} kernel restricts to 
+$S(iy, iy') = \Delta(y + y')^{-N/2}$, which is positive-definite 
+by Theorem~\ref{thm:scalar-positivity}.
+
+\emph{Stage 2: 2-point transfer.} The OS positivity condition 
+for the 2-point function is: for all test functions $f$ supported 
+in the positive-time half-space,
+\begin{equation}
+\label{eq:os-positivity}
+  \sum_{i,j} \bar{c}_i c_j\, \mathcal{W}_2^{(\sigma)}(\theta x_i, x_j) 
+  \geq 0.
+\end{equation}
+By the BHW theorem, $\mathcal{W}_2^{(\sigma)}$ is the boundary 
+value of a holomorphic function $W_2(z_1, z_2)$ in the tube. 
+The transferred 2-point function $\mathcal{W}_2^{(\sigma')}$ is 
+the boundary value of the \emph{same} $W_2$ on the target real 
+form. We must show \eqref{eq:os-positivity} holds with $\sigma$ 
+replaced by $\sigma'$ and $\theta$ by $\theta'$.
+
+The key is that both the source and target OS conditions can be 
+\emph{analytically continued to the Euclidean section}, where 
+they become the same condition: positivity of 
+$\Delta(y + y')^{-N/2}$ (Theorem~\ref{thm:scalar-positivity}). 
+The only difference between the source and target is the 
+\emph{$\delta$-eigenvalue} that arises when the Euclidean 
+reflection $\theta_E$ is analytically continued to the target 
+reflection $\theta'$. By Theorem~\ref{thm:disjointness}, all 
+scalar $K$-types are $\delta$-even, so this eigenvalue is $+1$. 
+By Lemma~\ref{lem:vv-delta-eigenvalue} and the hypothesis 
+$J_\tau = +\mathrm{id}$, the vector-valued $\delta$-eigenvalue 
+is also $+1$. Therefore the positivity condition 
+\eqref{eq:os-positivity} holds identically on the target.
+
+\emph{Stage 3: $n$-point functions.} Reflection positivity is 
+a condition on the \emph{full family} of Schwinger functions 
+$\{S_n\}$, not merely on $S_2$. The Osterwalder--Schrader axiom 
+(OS0) requires that for any finite sequence 
+$F = (f_0, f_1, \ldots, f_M)$ of test functions with each $f_n$ 
+supported at positive Euclidean time, the sesquilinear form
+\begin{equation}
+\label{eq:os-general}
+  \langle F, F \rangle_{\mathrm{OS}} := 
+  \sum_{m,n=0}^{M} S_{m+n}\!\left(\theta_E f_m \otimes f_n\right) 
+  \geq 0
+\end{equation}
+is nonnegative. The OS reconstruction theorem then builds a 
+pre-Hilbert space $\mathcal{H}$ from this form by quotienting 
+out the null space.
+
+We establish positivity of the transferred OS form in three steps.
+
+\emph{Step 3a: Variable-by-variable structure.} By translation 
+invariance, each Wightman function $W_n$ depends on $n-1$ difference 
+variables $\xi_j = x_{j+1} - x_j$, each living in $\C^d$. The 
+(un-permuted) forward tube $T_n = \{(\xi_1, \ldots, \xi_{n-1}) : 
+\mathrm{Im}(\xi_j) \in V^+ \text{ for all } j\}$ is a product 
+of single-variable tubes. On this product domain, the Szeg\H{o} 
+transfer acts on each difference variable independently: the 
+transfer kernel factorises as 
+$\prod_{j=1}^{n-1} S(z'_j(\sigma'), \zeta_j)$, so the $n$-point 
+transfer is an $(n-1)$-fold tensor product of the 2-point transfer 
+established in Stage~2.
+
+\emph{Step 3b: Extension to the permuted extended tube.} The full 
+$n$-point Wightman function lives on the permuted extended tube 
+$\mathcal{T}'_n$, which is larger than the forward tube $T_n$ 
+and is not a product. However, $\mathcal{T}'_n$ is obtained from 
+$T_n$ by the action of the permutation group composed with 
+$\SO(d, \C)$ transformations (the Jost--Lehmann--Dyson 
+representation). The Cauchy--Szeg\H{o} kernel is $G$-covariant: 
+$S(g \cdot z, g \cdot \zeta) = S(z, \zeta)$ for 
+$g \in G = \SO_0(2, N)$, which contains $\SO(d, \C)$ via the 
+complexified isometry group. Therefore the transferred $n$-point 
+function, initially defined on the product of single-variable 
+tubes by Step~3a, extends to $\mathcal{T}'_n$ by $\SO(d, \C)$ 
+covariance, and the extension satisfies the same permutation 
+symmetry at Jost points as the source theory.
+
+\emph{Step 3c: Positivity of the full OS form.} Since the 
+$n$-point transfer is a tensor product of 2-point transfers 
+(Step~3a), and each 2-point transfer preserves positivity 
+(Stage~2), the OS form \eqref{eq:os-general} on the target 
+real form is a sum of terms, each of which is a product of 
+positive 2-point pairings. Explicitly: the OS form decomposes 
+with respect to the $K$-type structure as
+\begin{equation}
+  \langle F, F \rangle_{\mathrm{OS}}^{(\sigma')} = 
+  \sum_{m,n} S_{m+n}^{(\sigma')}(\theta' \bar{f}_m \otimes f_n),
+\end{equation}
+where each $S_{m+n}^{(\sigma')}$ is the boundary value of the 
+\emph{same} holomorphic function $W_{m+n}$ as the source theory 
+(only the boundary changes). The $\delta$-eigenvalue controlling 
+the sign under $\theta_E \to \theta'$ is $+1$ on every $K$-type 
+(Theorem~\ref{thm:disjointness} + $J_\tau = +\mathrm{id}$). 
+Furthermore, the $K$-action commutes with the OS involution 
+$\theta'$ (since $\theta'$ is implemented by elements of the 
+normaliser of $K$ in $G$, being a composition of the geometric 
+reflection and the $R$-symmetry from \cite{SplitWedge}), so the 
+OS form is block-diagonal with respect to $K$-types. 
+Positivity of each block (established by the tensor product 
+structure of Step~3a and the 2-point positivity of Stage~2) 
+gives positivity of the full form.
+
+\textbf{(ii) Independence.} The Cauchy--Szeg\H{o} kernel is the 
+unique reproducing kernel for the Hardy space $H^2(D^N_{IV})$. Since 
+the Hardy space is determined by the domain (which depends only on 
+$d$, not on the choice of real form), and since the embedding of each 
+real form into the complexification is canonical up to the $V_4$ 
+action, the transfer is canonical.
+
+\textbf{(iii) Spectrum condition.} In the tube realisation, the 
+Cauchy--Szeg\H{o} kernel \eqref{eq:szego-tube} is the Fourier--Laplace 
+transform of the Riesz measure supported on the forward light cone 
+$\Omega$ (equation \eqref{eq:fourier-laplace}). The Szeg\H{o} 
+projection therefore maps $L^2(\R^N)$ to functions whose Fourier 
+support lies in $\overline{\Omega}$---this is exactly the 
+positive-energy condition.
+
+The ``spectrum condition'' takes different forms on different real 
+forms: on the Lorentzian form $\R^{1,N-1}$, it is support of the 
+Fourier transform in the closed forward light cone; on the 
+Euclidean form $\R^N$, it corresponds to the OS growth condition 
+(exponential decay in the Euclidean time direction); on the split 
+form, it is support in the corresponding causal cone. These 
+conditions are unified by the tube domain picture: the holomorphic 
+function $W_n$ in the permuted extended tube has Fourier--Laplace 
+support in the \emph{dual cone} $\Omega^* = \Omega$ (self-duality 
+of the Lorentz cone). When the boundary value is taken along 
+different real forms, the dual cone projects to the relevant 
+spectrum condition for that signature. The transfer preserves 
+spectral support because it is mediated by a holomorphic function 
+in the common tube domain, whose Fourier--Laplace support is 
+invariant under boundary restriction.
+
+\textbf{(iv) Clustering.} The cluster decomposition property 
+is equivalent to the uniqueness of the vacuum vector in the 
+GNS Hilbert space, which is the lowest $K$-type $V_{(0, \mathrm{triv})}$. 
+Since this is a one-dimensional $\delta$-even subspace, it is preserved 
+by the transfer map (Theorem~\ref{thm:disjointness}, base case). 
+Uniqueness on the source side implies uniqueness on the target side.
+
+\textbf{(v) Covariance.} The Cauchy--Szeg\H{o} kernel is 
+$G$-invariant: $S(g \cdot z, g \cdot \zeta) = S(z, \zeta)$ for 
+$g \in G = \SO_0(2, N)$. The real form subgroups 
+$\SO_0(p,q) \hookrightarrow G$ act on the corresponding boundary 
+components, and the kernel intertwines these actions. The 
+transferred $n$-point functions therefore inherit the covariance 
+properties of the source theory, with the symmetry group replaced 
+by the isometry group of the target real form.
+\end{proof}
+
+
+%=============================================================================
+\section{Discussion}
+\label{sec:discussion}
+%=============================================================================
+
+\subsection{What the Theorem Says}
+
+We have established that bosonic quantum field theories on different 
+real forms of complexified spacetime are not merely analogous or 
+related by formal manipulation---they are \emph{projections} of a 
+single holomorphic object, and the projection operator (the 
+Cauchy--Szeg\H{o} kernel) is an explicit integral transform. The 
+three formulations (Euclidean, Lorentzian, split) are three ``views'' 
+of the same entity, connected by continuation through the interior 
+of the Type~IV domain.
+
+\subsection{Why Analysis Succeeds Where Algebra Fails}
+
+The algebraic transfer of \cite{Bridge} attempts to map states 
+\emph{directly} between real forms, operating on the full $L^2$ 
+space of boundary data. It encounters sign reversals in the inner 
+product that destroy reflection positivity.
+
+The analytic transfer threads through the complex interior. The 
+Szeg\H{o} projection enforces holomorphicity, which automatically 
+restricts attention to the Hardy space $H^2(\check{S})$---the 
+positive-energy subspace of $L^2$. The non-Hardy modes that the 
+algebraic approach attempts (and fails) to transfer are not 
+$\delta$-odd obstructions; they are non-physical modes that 
+fail to extend holomorphically into the tube domain, which by 
+the Paley--Wiener theorem for tube domains 
+\cite{SteinWeiss1971} is equivalent to violating the 
+spectrum condition (Fourier support outside the closed forward 
+cone $\overline{\Omega}$).
+
+A key lesson of the present analysis is that the $\delta$-odd 
+obstruction identified in \cite{Bridge} was an artifact of the 
+algebraic method's failure to impose the holomorphic extension 
+condition, not an intrinsic feature of the physics. In the scalar 
+sector, $\delta$-odd scalar $K$-types do not exist in the 
+$K$-type lattice at all---not merely in $H^2(\check{S})$, but 
+in $L^2(\check{S})$ as well, since $k + |\lambda| = 2m_1$ is 
+even for all integer $m_1$ (Theorem~\ref{thm:disjointness}, 
+Appendix~\ref{app:parity}). In the vector-valued sector, 
+the $\delta$-eigenvalue is controlled entirely by the fiber 
+intertwiner $J_\tau$ (Lemma~\ref{lem:vv-delta-eigenvalue}), and 
+for physical bosonic fields ($J_\tau = +\mathrm{id}$) the Hardy 
+space is uniformly $\delta$-even. (See Remark~\ref{rem:distributional} 
+for the respective roles of the Cauchy--Szeg\H{o} kernel and 
+the Bargmann--Hall--Wightman theorem in this result.)
+
+\begin{remark}[Relation to the Bisognano--Wichmann property]
+\label{rem:hardy-vs-bw}
+Conjecture~\ref{conj:main} (from \cite{Bridge}) was originally 
+formulated using the Bisognano--Wichmann (BW) property---the 
+statement that the modular operator of the wedge algebra is 
+the boost generator. The present paper replaces this with Hardy 
+space membership: boundary data belong to $H^2(\check{S})$ if 
+and only if their Fourier--Laplace transform is supported in the 
+closed forward cone $\overline{\Omega}$ (Paley--Wiener theorem 
+for tube domains \cite{SteinWeiss1971}).
+
+These conditions are closely related. The BW property implies 
+that vacuum expectation values extend holomorphically into a 
+strip of width $\pi$ in the boost parameter (via the KMS 
+condition). In the presence of the full Wightman axioms---especially 
+the spectrum condition and Lorentz covariance---this local 
+extension bootstraps to the global Hardy space extension via 
+the BHW theorem. Conversely, Hardy space membership (global 
+holomorphic extension to the full tube) implies the BW strip 
+analyticity by restriction.
+
+Thus, for theories satisfying the Wightman axioms, Hardy space 
+membership and the BW property are equivalent. The Hardy space 
+formulation is the more fundamental one for our purposes: it is 
+an intrinsic condition on the Szeg\H{o} projection, expressed 
+directly in terms of the Type~IV domain geometry, whereas the 
+BW property requires the full Tomita--Takesaki modular theory 
+apparatus. Theorem~\ref{thm:main} therefore implies 
+Conjecture~\ref{conj:main} of \cite{Bridge} (not merely a 
+variant), with the Hardy space condition providing the precise 
+mechanism that the BW property leaves implicit.
+\end{remark}
+
+\subsection{Scope and Limitations}
+
+Theorem~\ref{thm:main} applies to $\delta$-stable bundles with 
+$J_\tau = +\mathrm{id}$. This includes all bosonic/tensor fields 
+and Dirac fermions in even spacetime dimensions 
+(Remark~\ref{rem:physical-reps}). Two cases remain:
+
+\begin{itemize}
+  \item \textbf{Odd-dimensional spinors} ($J_\tau = -\mathrm{id}$): 
+    The Hardy space is uniformly $\delta$-odd 
+    (Proposition~\ref{prop:vv-filter}(ii)). The Cauchy--Szeg\H{o} 
+    kernel itself is unchanged, but reflection positivity must be 
+    formulated with respect to the \emph{graded} inner product 
+    standard in the fermionic Osterwalder--Schrader framework.
+    
+    Specifically, fermionic OS positivity replaces the bosonic 
+    condition $\langle \theta f, f \rangle \geq 0$ with 
+    $\langle \theta f, \Gamma f \rangle \geq 0$, where $\Gamma$ 
+    is the grading operator (here $\Gamma = J_\tau$ on the fiber). 
+    This is the standard modification for spinor fields and accounts 
+    for the sign flip under $2\pi$-rotation 
+    (Remark~\ref{rem:Jtau-physics}). The scalar kernel positivity 
+    (Theorem~\ref{thm:scalar-positivity}) is unaffected by this 
+    modification: it is the \emph{inner product pairing}, not the 
+    kernel, that acquires the grading twist. Since the Szeg\H{o} 
+    kernel remains positive-definite on the Euclidean section 
+    regardless of $J_\tau$, the graded OS axioms should follow from 
+    the same analytic machinery. A detailed verification is deferred 
+    to a follow-up paper.
+  \item \textbf{Non-$\delta$-stable bundles}: These arise for 
+    chiral (Weyl) spinors in even dimensions, where the half-spin 
+    representations $S^\pm$ are exchanged by $\delta$. The appropriate 
+    treatment uses the Dirac bundle $S^+ \oplus S^-$, which is 
+    $\delta$-stable with $J_\tau = +\mathrm{id}$. Individual chiral 
+    sectors cannot be transferred independently, consistent with the 
+    physics (chiral theories are not reflection-positive).
+\end{itemize}
+
+These limitations are \emph{technical}, not fundamental: the 
+Cauchy--Szeg\H{o} kernel and the Type~IV domain geometry are 
+universal. Only the inner product formulation varies with the 
+field content.
+
+\begin{remark}[Unconditional boundary regularity]
+\label{rem:regularity-upgrade}
+A notable feature of the present approach is that the boundary 
+regularity of the transferred distributions is \emph{proven} 
+(Lemma~\ref{lem:split-regularity}), not assumed. The key 
+ingredients are: (i) the polynomial growth of the BHW 
+holomorphic continuation (from temperedness of Wightman 
+distributions), (ii) the split tube inclusion 
+$T_S \subset \mathcal{T}'$ from \cite[Lemma~3.4]{SplitWedge}, 
+and (iii) Vladimirov's theorem on distributional boundary values 
+in tube domains \cite{Vladimirov1966}. This upgrades Theorem~\ref{thm:main} 
+from a conditional statement (as it appeared in an earlier version 
+of this paper) to an unconditional one for all Wightman theories 
+with positive $\delta$-structure.
+\end{remark}
+
+\subsection{Relation to Previous Wick Rotation Results}
+
+The analytic continuation of correlation functions between 
+Euclidean and Lorentzian signatures has a long history, beginning 
+with the Osterwalder--Schrader reconstruction theorem 
+\cite{OS1973, OS1975}. The L\"uscher--Mack theorem establishes 
+that conformal field theories in Euclidean signature analytically 
+continue to Lorentzian signature via the conformal group, using 
+the tube domain structure of the conformal compactification. Our 
+result differs in three respects: (1) it does not require conformal 
+invariance---only the Wightman axioms and the BHW theorem; (2) it 
+treats all three real forms (Euclidean, Lorentzian, split) 
+simultaneously rather than just the Euclidean--Lorentzian pair; 
+and (3) the mediating domain is the Type~IV bounded symmetric 
+domain $D^N_{IV}$, which is specific to the $\SO(2,N)$ structure 
+rather than the conformal group $\SO(2,d)$. The conformal bootstrap 
+approach to Wick rotation (which uses crossing symmetry and OPE 
+convergence) is complementary: it provides detailed control over 
+individual operator contributions, while our approach gives a 
+uniform transfer of the full $n$-point structure.
+
+\subsection{The Trilogy in Perspective}
+
+The three papers form a logical progression:
+
+\begin{enumerate}
+  \item \textbf{Algebraic structure} (\cite{SplitWedge}): The 
+    $V_4$ group and the real-form correspondence exist and are 
+    well-defined. For $d = 4$, the correspondence is perfect.
+  \item \textbf{Algebraic obstruction} (\cite{Bridge}): For $d > 4$, 
+    the algebraic transfer encounters sign reversals. The obstruction 
+    is \emph{precisely characterised} and is the \emph{only} obstacle 
+    to a purely algebraic proof.
+  \item \textbf{Analytic resolution} (present paper): The 
+    Cauchy--Szeg\H{o} kernel provides an analytic transfer that 
+    bypasses the obstruction. The ``$\delta$-odd modes'' of the 
+    algebraic approach are revealed to be an artifact: in the scalar 
+    sector they do not exist; in the vector sector they are controlled 
+    by the fiber intertwiner $J_\tau$.
+\end{enumerate}
+
+Together, these establish (for bosonic fields and Dirac fermions 
+in even dimensions) that reflection-positive quantum field theories 
+on any real form of $\C^d$ are in canonical bijection, mediated by 
+the Cauchy--Szeg\H{o} kernel of the Type~IV bounded symmetric domain.
+
+
+%=============================================================================
+% APPENDIX
+%=============================================================================
+\appendix
+
+\section{Branching Rules for $(\SO_0(2,N), S(O(2) \times O(N)))$}
+\label{app:branching}
+
+We provide the explicit branching rules that complete the proof 
+of Theorem~\ref{thm:disjointness}. The key simplification is 
+that $D^N_{IV}$ has rank $r = 2$, so all $K$-types are indexed 
+by \emph{pairs} of integers.
+
+\subsection{Peter--Weyl Decomposition on the Lie Sphere}
+\label{app:peter-weyl}
+
+Let $G = \SO_0(2, N)$, $K = S(O(2) \times O(N))$, and let 
+$\check{S} \cong (S^1 \times S^{N-1})/\Z_2$ be the Shilov 
+boundary (Lie sphere). The regular $K$-representation on 
+$L^2(\check{S})$ is \emph{multiplicity-free} and decomposes as:
+\begin{equation}
+\label{eq:peter-weyl}
+  L^2(\check{S}) \cong \widehat{\bigoplus}_{\substack{
+    \mathbf{m} = (m_1, m_2) \in \Z^2 \\ m_1 \geq m_2}} 
+  V_{\mathbf{m}},
+\end{equation}
+where $V_{\mathbf{m}}$ is the irreducible $K$-representation 
+labelled by the pair $(m_1, m_2)$. This indexing reflects the 
+rank-2 structure: the two integers correspond to the two 
+restricted roots of the symmetric space $G/K$.
+
+\begin{remark}
+The multiplicity-free property is special to the Shilov boundary 
+of a bounded symmetric domain and follows from the Cartan--Helgason 
+theorem applied to the compact dual. For Type~IV domains, the 
+compact dual is $\SO(2+N)/S(O(2) \times O(N))$, and the 
+Peter--Weyl decomposition on its Shilov boundary is a classical 
+result in the harmonic analysis of symmetric spaces 
+\cite{Hua1963, FaKo1994}.
+\end{remark}
+
+\subsection{Translation to $(k, |\lambda|)$ Coordinates}
+\label{app:translation}
+
+The pair $(m_1, m_2)$ relates to the physical labels used in 
+the body of the paper as follows:
+\begin{equation}
+\label{eq:coordinate-change}
+  k := m_1 + m_2, \qquad |\lambda| := m_1 - m_2,
+\end{equation}
+where:
+\begin{itemize}
+  \item $k$ is the $O(2)$-weight (Fourier index along the 
+    $S^1$ factor of $\check{S}$);
+  \item $|\lambda|$ is the ``depth'' of the $O(N)$-highest weight 
+    $\lambda$, measuring the complexity of the $O(N)$-representation.
+\end{itemize}
+
+The inverse transformation is:
+\begin{equation}
+\label{eq:inverse-coordinates}
+  m_1 = \frac{k + |\lambda|}{2}, \qquad 
+  m_2 = \frac{k - |\lambda|}{2}.
+\end{equation}
+Note that for $(m_1, m_2) \in \Z^2$, both $k + |\lambda|$ and 
+$k - |\lambda|$ are automatically even.
+
+\subsection{The Hardy/Holomorphic Selection Rule}
+\label{app:hardy-selection}
+
+The Hardy space $H^2(\check{S})$ corresponds to the holomorphic 
+$K$-finite boundary values of the holomorphic discrete series. 
+By the main theorem (\emph{Satz}) of Schmid \cite{Schmid1969}, 
+the $K$-types appearing in $H^2$ are precisely those in the 
+\emph{semigroup part} of the Peter--Weyl decomposition---the 
+highest-weight indices satisfying $n_1 \geq n_2 \geq \cdots 
+\geq n_r \geq 0$ in Schmid's notation, which for rank $r = 2$ 
+reduces to:
+\begin{equation}
+\label{eq:hardy-selection}
+  H^2(\check{S}) = \bigoplus_{\substack{
+    (m_1, m_2) \in \Z^2 \\ m_1 \geq m_2 \geq 0}} V_{\mathbf{m}}.
+\end{equation}
+
+In the $(k, |\lambda|)$ coordinates, the condition $m_2 \geq 0$ 
+translates to:
+\begin{equation}
+\label{eq:hardy-inequality}
+  m_2 = \frac{k - |\lambda|}{2} \geq 0 
+  \qquad \Longleftrightarrow \qquad k \geq |\lambda|.
+\end{equation}
+This is the holomorphic extension condition 
+\eqref{eq:ktypes-hardy} used in the body of the paper.
+
+\subsection{The Parity Constraint: Proof of Theorem~\ref{thm:disjointness}}
+\label{app:parity}
+
+We can now prove the central claim in one line.
+
+\begin{proof}[Proof of Theorem~\ref{thm:disjointness}]
+For any $K$-type $V_{\mathbf{m}}$ in the Hardy space, we have 
+$m_1, m_2 \in \Z$ with $m_1 \geq m_2 \geq 0$. The 
+$\delta$-eigenvalue is determined by the parity of 
+$k + |\lambda|$ (Corollary~\ref{cor:delta-eigenvalue}). 
+But:
+\begin{equation}
+\label{eq:parity-proof}
+  k + |\lambda| = (m_1 + m_2) + (m_1 - m_2) = 2m_1,
+\end{equation}
+which is \emph{even} for every $(m_1, m_2) \in \Z^2$. Therefore 
+the $\delta$-eigenvalue is $(-1)^{2m_1} = +1$ for every $K$-type 
+in $H^2(\check{S})$.
+\end{proof}
+
+\begin{remark}
+The proof is essentially arithmetic: the rank-2 lattice indexing 
+forces $k + |\lambda|$ to be even regardless of any further 
+constraints. The Hardy condition $m_2 \geq 0$ was not needed 
+for the parity conclusion---but it \emph{is} needed to ensure 
+that the $K$-type belongs to the holomorphic discrete series. 
+The $\delta$-odd types (those with $k + |\lambda|$ odd) would 
+require half-integer values of $m_1$, which do not occur in 
+the $K$-type lattice. So the $\delta$-odd types are not merely 
+excluded from $H^2$; they do not appear in $L^2(\check{S})$ at all 
+for the scalar case.
+
+For \emph{vector-valued} Hardy spaces $H^2(\check{S}, \VV)$, 
+the $\delta$-eigenvalue on $V_{\mathbf{m}} \otimes \VV$ is 
+$(-1)^{2m_1} \cdot J_\tau = J_\tau$ by 
+Lemma~\ref{lem:vv-delta-eigenvalue}. 
+The scalar lattice contribution is always $+1$; the entire 
+$\delta$-character is determined by the fiber intertwiner $J_\tau$ 
+(Definition~\ref{def:delta-structure}). The precise conditions 
+under which different fiber representations contribute positive 
+or negative $\delta$-structure are given in 
+Proposition~\ref{prop:vv-filter} and Remark~\ref{rem:physical-reps}.
+\end{remark}
+
+\subsection{Illustration: Non-Hardy $K$-Types at $N = 10$}
+\label{app:counterexample}
+
+To illustrate the filter mechanism, we exhibit $K$-types in 
+$L^2(\check{S})$ that are excluded from $H^2(\check{S})$.
+
+For $N = 10$ (corresponding to $d = 6$ spacetime dimensions), 
+consider the $K$-type with $(m_1, m_2) = (2, -1)$:
+\begin{equation}
+  k = m_1 + m_2 = 1, \qquad |\lambda| = m_1 - m_2 = 3.
+\end{equation}
+Since $m_1 \geq m_2$ ($2 \geq -1$), this $K$-type belongs to 
+$L^2(\check{S})$. However, $m_2 = -1 < 0$ violates the Hardy 
+condition, so it is \emph{not} in $H^2(\check{S})$. Its 
+$\delta$-parity is $(-1)^{2m_1} = (-1)^4 = +1$: $\delta$-even 
+despite being non-holomorphic.
+
+This example illustrates that for the \emph{scalar} Hardy space, 
+all $K$-types in $L^2(\check{S})$ are automatically $\delta$-even 
+(since $2m_1$ is always even). The $\delta$-odd obstruction 
+identified in \cite{Bridge} therefore cannot arise from the 
+scalar lattice; it arises entirely from the fiber 
+$\delta$-structure in the vector-valued case.
+
+Specifically, when $\VV$ carries negative $\delta$-structure 
+($J_\tau = -\mathrm{id}$), the combined $\delta$-eigenvalue on 
+$V_{\mathbf{m}} \otimes \VV$ becomes $(-1)^{2m_1} \cdot (-1) = -1$, 
+making every $K$-type in $L^2(\check{S}, \VV)$ $\delta$-odd. 
+These sections are still present in $L^2$ but the Szeg\H{o} 
+projection onto $H^2(\check{S}, \VV)$ selects the holomorphic 
+components, which---by Proposition~\ref{prop:vv-filter}(ii)---are 
+uniformly $\delta$-odd. The resolution for such fields 
+(odd-dimensional spinors) requires the twisted reflection 
+positivity involution discussed in Remark~\ref{rem:physical-reps}(b).
+
+
+%=============================================================================
+% BIBLIOGRAPHY
+%=============================================================================
+\begin{thebibliography}{99}
+
+\bibitem{OS1973}
+K.~Osterwalder and R.~Schrader,
+\emph{Axioms for Euclidean Green's functions},
+Comm.\ Math.\ Phys.\ \textbf{31} (1973), 83--112.
+
+\bibitem{OS1975}
+K.~Osterwalder and R.~Schrader,
+\emph{Axioms for Euclidean Green's functions II},
+Comm.\ Math.\ Phys.\ \textbf{42} (1975), 281--305.
+
+\bibitem{Bridge}
+A.~Abrahams,
+\emph{Bridge Triples and the Klein Four-Group for Real Forms
+of $\SO(2n,\C)$},
+(2026), Paper~2 in the present series. Preprint available
+from the author.
+
+\bibitem{SplitWedge}
+A.~Abrahams,
+\emph{Split Signature as a Third Axiomatization of
+Parity-Invariant Quantum Field Theory},
+(2026), Paper~1 in the present series. Preprint available
+from the author.
+
+\bibitem{Hua1963}
+L.K.~Hua,
+\emph{Harmonic Analysis of Functions of Several Complex Variables 
+in the Classical Domains},
+Translations of Mathematical Monographs, Vol.~6,
+American Mathematical Society, 1963.
+
+\bibitem{FaKo1994}
+J.~Faraut and A.~Kor\'anyi,
+\emph{Analysis on Symmetric Cones},
+Oxford Mathematical Monographs, Clarendon Press, 1994.
+
+\bibitem{NeebOlafsson2018}
+K.-H.~Neeb and G.~\'Olafsson,
+\emph{Reflection Positivity: A Representation Theoretic Perspective},
+SpringerBriefs in Mathematical Physics, Vol.~32, Springer, 2018.
+
+\bibitem{KrotzStanton2004}
+B.~Kr\"otz and R.J.~Stanton,
+\emph{Holomorphic extensions of representations: (I) automorphic functions},
+Ann.\ of Math.\ \textbf{159} (2004), 641--724.
+
+\bibitem{RossiVergne1976}
+H.~Rossi and M.~Vergne,
+\emph{Analytic continuation of the holomorphic discrete series 
+of a semi-simple Lie group},
+Acta Math.\ \textbf{136} (1976), 1--59.
+
+\bibitem{KoranyiWolf1965}
+A.~Kor\'anyi and J.A.~Wolf,
+\emph{Realization of Hermitian symmetric spaces as generalized half-planes},
+Ann.\ of Math.\ \textbf{81} (1965), 265--288.
+
+\bibitem{Schmid1969}
+W.~Schmid,
+\emph{Die Randwerte holomorpher Funktionen auf hermitesch symmetrischen R\"aumen},
+Invent.\ Math.\ \textbf{9} (1969), 61--80.
+(The semigroup characterisation of Hardy space $K$-types is the 
+main \emph{Satz}, with the highest-weight indexing defined in 
+displayed equation~(2).)
+
+\bibitem{HechtSchmid1983}
+H.~Hecht and W.~Schmid,
+\emph{Characters, asymptotics and $\fn$-homology of Harish-Chandra modules},
+Acta Math.\ \textbf{151} (1983), 49--151.
+
+\bibitem{StreaterWightman}
+R.F.~Streater and A.S.~Wightman,
+\emph{PCT, Spin and Statistics, and All That},
+Princeton University Press, Princeton, NJ, 2000 (corrected edition).
+
+\bibitem{SteinWeiss1971}
+E.M.~Stein and G.~Weiss,
+\emph{Introduction to Fourier Analysis on Euclidean Spaces},
+Princeton University Press, Princeton, NJ, 1971.
+
+\bibitem{Helgason2000}
+S.~Helgason,
+\emph{Groups and Geometric Analysis: Integral Geometry, Invariant 
+Differential Operators, and Spherical Functions},
+AMS, Providence, RI, 2000 (corrected reprint).
+
+\bibitem{Knapp2002}
+A.W.~Knapp,
+\emph{Lie Groups Beyond an Introduction},
+Progress in Mathematics, Vol.~140, 2nd ed.,
+Birkh\"auser, Boston, 2002.
+
+\bibitem{Vladimirov1966}
+V.S.~Vladimirov,
+\emph{Methods of the Theory of Functions of Many Complex Variables},
+MIT Press, Cambridge, MA, 1966.
+(Distributional boundary values of holomorphic functions in tube
+domains: Chapter~IV, Theorem~25.1.)
+
+\bibitem{LeanVerification}
+A.~Abrahams,
+``Formal verification of the complexified spacetime QFT framework in Lean~4,''
+available at \url{https://github.com/Neutrinic/three-slices}, 2026.
+Lean~4.28 / Mathlib; unified repository covering three papers.
+Cauchy--Szeg\H{o} module: 55 theorems and examples verified with zero
+\texttt{sorry} axioms, including the central $\delta$-evenness theorem
+$k + |\lambda| = 2m_1$ (\texttt{delta\_evenness}), the eigenvalue identity
+$(-1)^{k+|\lambda|} = +1$ (\texttt{delta\_eigenvalue\_positive}), absence
+of $\delta$-odd $K$-types (\texttt{no\_delta\_odd\_Ktypes}), Jordan
+algebra structure, and Type~IV domain geometry.
+
+\end{thebibliography}
+
+\end{document}

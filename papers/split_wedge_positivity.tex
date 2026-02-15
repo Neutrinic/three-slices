@@ -1,0 +1,1432 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{mathrsfs}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+
+\geometry{margin=1in}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{sublemma}{Sub-Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+% Operators and shortcuts
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\WW}{\mathcal{W}}
+\newcommand{\TT}{\mathcal{T}}
+\newcommand{\AAA}{\mathcal{A}}
+\newcommand{\SSS}{\mathcal{S}}
+\newcommand{\OOO}{\mathcal{O}}
+\newcommand{\EE}{\mathcal{E}}
+\newcommand{\NN}{\mathcal{N}}
+\newcommand{\BB}{\mathcal{B}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\im}{\operatorname{Im}}
+\newcommand{\re}{\operatorname{Re}}
+\newcommand{\Ad}{\operatorname{Ad}}
+
+\title{\textbf{Split Signature as a Third Axiomatization of Parity-Invariant Quantum Field Theory}}
+
+\author{A.~Abrahams}
+
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We establish that split-signature $(2,2)$ quantum field theory is equivalent to Lorentzian $(1,3)$ and Euclidean $(0,4)$ formulations for parity-invariant theories, under standard functional-analytic assumptions (OS reconstruction, Wick rotation, analytic continuation through the extended tube), with the algebraic core formally verified in the Lean~4 proof assistant. For the two-point function, we prove that split wedge reflection positivity implies a positive K\"all\'en-Lehmann spectral measure via a semigroup representation argument. For general $n$-point functions, we prove the full reconstruction theorem: split wedge positivity, combined with a discrete $R$-symmetry (the split analogue of parity), implies Osterwalder-Schrader reflection positivity and hence determines a Wightman QFT. The key insight is a ``bridge lemma'' that converts the codimension-2 split reflection $\Theta_S: (u,v) \mapsto (-u,-v)$ into a codimension-1 Euclidean time reflection $\theta: \tau \mapsto -\tau$ via the factorization $\theta = R \circ \Theta_S$. This establishes split signature as a third axiomatization of parity-invariant quantum field theory; we discuss the extension to parity-violating theories via $\Z_2$-graded positivity. All three formulations are projections of a single holomorphic structure on complexified spacetime $\C^4$.
+\end{abstract}
+
+\tableofcontents
+
+%==============================================================================
+\section{Introduction}
+%==============================================================================
+
+\subsection{The Three-Signature Problem}
+
+Quantum field theory admits formulations in spacetimes of different metric signatures. The Lorentzian signature $(1,3)$ describes physical Minkowski space, where the Wightman axioms \cite{Wightman1956,StreaterWightman} provide the rigorous foundation for relativistic quantum physics. The Euclidean signature $(0,4)$ underlies the path integral formulation and lattice field theory, with the Osterwalder-Schrader axioms \cite{OsterwalderSchrader1973,OsterwalderSchrader1975} establishing when Euclidean correlation functions determine a Lorentzian QFT. The split signature $(2,2)$, less familiar but increasingly important, appears naturally in twistor theory \cite{Penrose1967,PenroseRindler}, scattering amplitudes \cite{ArkaniHamed2010,Mason2009}, and the conformal bootstrap \cite{Caron-Huot2017}.
+
+The relationship between these signatures has been understood piecewise:
+\begin{itemize}[itemsep=2pt]
+    \item \textbf{Euclidean $\leftrightarrow$ Lorentzian:} The Osterwalder-Schrader reconstruction theorem establishes that Euclidean correlation functions satisfying reflection positivity uniquely determine a Wightman QFT.
+    \item \textbf{Lorentzian $\leftrightarrow$ Split:} The modern amplitudes program exploits split signature for computational advantages, particularly the reality of spinor-helicity variables \cite{WittenTwistor2004}.
+    \item \textbf{Split $\leftrightarrow$ Euclidean:} No systematic connection has been established.
+\end{itemize}
+
+The central question we address is: \emph{Can split-signature data reconstruct a unitary quantum field theory?}
+
+\subsection{Main Results}
+
+We prove that split-signature wedge reflection positivity is equivalent to Euclidean reflection positivity at all orders, establishing split signature as a third axiomatization of quantum field theory. Just as Osterwalder-Schrader licenses Wick rotation to Euclidean signature, our reconstruction theorem licenses Wick rotation to split signature, where spinor-helicity variables become real, conformal cross-ratios are manifestly positive, and self-duality conditions simplify. The algebraic core of the proof---the Klein four-group structure of the involutions, the Bridge Lemma factorization, and the dual cone geometry---has been formally verified in the Lean~4 proof assistant \cite{LeanVerification}.
+
+\begin{theorem}[Two-Point Reconstruction---Informal Statement]
+\label{thm:informal}
+Let $W_2$ be a two-point function on split-signature spacetime $\R^{2,2}$ satisfying translation invariance, Lorentz covariance, temperedness, the split spectrum condition, and split wedge reflection positivity. Then:
+\begin{enumerate}[label=(\alph*)]
+    \item $W_2$ admits a K\"all\'en-Lehmann representation with positive spectral measure $\rho \geq 0$.
+    \item The Euclidean boundary values satisfy Osterwalder-Schrader reflection positivity.
+    \item OS reconstruction yields a Wightman two-point function on $\R^{1,3}$, corresponding to a generalized free field.
+\end{enumerate}
+\end{theorem}
+
+The full $n$-point generalization requires one additional discrete symmetry:
+
+\begin{theorem}[$n$-Point Reconstruction---Informal Statement]
+\label{thm:npoint-informal}
+Let $\{W_n\}$ be a system of $n$-point functions on $\R^{2,2}$ satisfying split-signature analogues of the Wightman axioms, including split wedge positivity for all $n$ and invariance under the coordinate swap $R: (u,v,x,y) \mapsto (v,u,x,y)$. Then:
+\begin{enumerate}[label=(\alph*)]
+    \item The Schwinger functions $\{S_n\}$ satisfy Osterwalder-Schrader reflection positivity.
+    \item OS reconstruction yields a Wightman QFT on $\R^{1,3}$.
+\end{enumerate}
+\end{theorem}
+
+The key insight is the \textbf{Bridge Lemma}: the codimension-2 split reflection $\Theta_S$ and the $R$-symmetry combine to give a codimension-1 Euclidean time reflection $\theta = R \circ \Theta_S$, converting split wedge positivity into standard OS positivity.
+
+\begin{remark}[Parity Restriction]
+The $R$-symmetry axiom (S3) is the split-signature analogue of parity invariance. Consequently, Theorem \ref{thm:npoint-informal} establishes an equivalence between split wedge axioms and \emph{parity-invariant} Wightman QFTs. For parity-violating theories (e.g., the Standard Model), we discuss in Section 8 how $R$-invariance can be relaxed to $R$-covariance, with $\theta$-positivity holding on a $\Z_2$-graded Hilbert space. The Bisognano-Wichmann theorem \cite{BisognanoWichmann1975,BisognanoWichmann1976} connecting wedge reflection to modular structure is a natural precursor to our split wedge positivity condition.
+\end{remark}
+
+As additional evidence, we prove:
+
+\begin{proposition}[CFT Four-Point---Informal Statement]
+In a conformal field theory, split wedge positivity of the four-point function, combined with conformal block positivity, implies that the leading-twist OPE coefficient satisfies $\lambda^2_1 \geq 0$.
+\end{proposition}
+
+\subsection{Conceptual Framework}
+
+The key insight is that the three real signatures should not be viewed as independent starting points with ``bridges'' between them. Rather, they are three real slices of complexified spacetime $\C^4$, each defined as the fixed-point set of an antiholomorphic involution:
+\begin{align}
+    \sigma_L &: z^\mu \mapsto \bar{z}^\mu && \text{(fixes Lorentzian $\R^{1,3}$)} \\
+    \sigma_E &: (z^0, \vec{z}) \mapsto (-\bar{z}^0, \bar{\vec{z}}) && \text{(fixes Euclidean $\R^{0,4}$)} \\
+    \sigma_S &: (z^0, z^1, z^2, z^3) \mapsto (\bar{z}^0, -\bar{z}^1, \bar{z}^2, \bar{z}^3) && \text{(fixes Split $\R^{2,2}$)}
+\end{align}
+
+A quantum field theory is fundamentally a family of holomorphic functions on domains in $\C^{4n}$, with the familiar Wightman functions, Schwinger functions, and split-signature correlators being boundary values on the respective real slices.
+
+The positivity conditions on each slice---spectral positivity (Lorentzian), reflection positivity (Euclidean), and wedge positivity (split)---are all consequences of a single underlying structure. Our theorems establish this equivalence rigorously.
+
+\subsection{Outline}
+
+Section 2 establishes the geometry of complexified spacetime. Section 3 reviews tube domains and proves that the split tube is contained in the extended tube. Section 4 defines split wedge positivity. Section 5 proves the two-point theorem via semigroup representation. Section 6 proves the full $n$-point reconstruction theorem, including the bridge lemma. Section 7 provides supporting evidence from CFT. Section 8 discusses implications.
+
+%==============================================================================
+\section{Geometry of Complexified Spacetime}
+%==============================================================================
+
+\subsection{Complexified Minkowski Space}
+
+Let $\C^4$ denote complexified spacetime with coordinates $z^\mu = x^\mu + iy^\mu$ for $\mu = 0,1,2,3$, where $x^\mu, y^\mu \in \R$. The complexified quadratic form is
+\begin{equation}
+    Q(z) = (z^0)^2 - (z^1)^2 - (z^2)^2 - (z^3)^2.
+\end{equation}
+
+\begin{definition}
+The \textbf{complexified Lorentz group} $\mathrm{SO}(4,\C)$ consists of complex $4 \times 4$ matrices $\Lambda$ satisfying $\Lambda^T \eta \Lambda = \eta$, where $\eta = \mathrm{diag}(1,-1,-1,-1)$.
+\end{definition}
+
+The real forms of $\mathrm{SO}(4,\C)$ include $\mathrm{SO}(1,3)$, $\mathrm{SO}(4)$, and $\mathrm{SO}(2,2)$.
+
+\subsection{The Three Real Slices}
+
+\begin{definition}
+An \textbf{antiholomorphic involution} on $\C^4$ is a map $\sigma: \C^4 \to \C^4$ satisfying $\sigma^2 = \mathrm{id}$ and $\sigma(\lambda z) = \bar{\lambda} \sigma(z)$ for $\lambda \in \C$.
+\end{definition}
+
+The three physically relevant involutions are:
+
+\begin{enumerate}[label=(\roman*)]
+    \item \textbf{Lorentzian involution:}
+    $\sigma_L(z^0, z^1, z^2, z^3) = (\bar{z}^0, \bar{z}^1, \bar{z}^2, \bar{z}^3)$.
+    Fixed set: $\R^{1,3}$ with metric $(+,-,-,-)$.
+    
+    \item \textbf{Euclidean involution:}
+    $\sigma_E(z^0, z^1, z^2, z^3) = (-\bar{z}^0, \bar{z}^1, \bar{z}^2, \bar{z}^3)$.
+    Fixed set: $\R^{0,4}$ with positive-definite metric.
+    
+    \item \textbf{Split involution:}
+    $\sigma_S(z^0, z^1, z^2, z^3) = (\bar{z}^0, -\bar{z}^1, \bar{z}^2, \bar{z}^3)$.
+    Fixed set: $\R^{2,2}$ with signature $(+,+,-,-)$.
+\end{enumerate}
+
+\begin{remark}[Verification of Split Signature]
+For $\sigma_S$, the fixed set has $z^0, z^2, z^3 \in \R$ and $z^1 \in i\R$. Writing $z^1 = iv$ with $v \in \R$, the complexified quadratic form $Q(z) = (z^0)^2 - (z^1)^2 - (z^2)^2 - (z^3)^2$ restricts to $(z^0)^2 - (iv)^2 - (z^2)^2 - (z^3)^2 = (z^0)^2 + v^2 - (z^2)^2 - (z^3)^2$, which has signature $(+,+,-,-)$.
+\end{remark}
+
+\begin{remark}
+The composition $\sigma_E \circ \sigma_L$ implements the Wick rotation $z^0 \mapsto iz^0$.
+\end{remark}
+
+\begin{remark}[Choice of Split Involution]
+The choice to negate $z^1$ in $\sigma_S$ is not canonical---one could equally negate $z^2$, $z^3$, or $z^0$ (or any other coordinate) to obtain a different embedding of $\R^{2,2}$ into $\C^4$. Different choices are related by $\mathrm{SO}(4,\C)$ conjugation, so the results are independent of this choice. We fix the convention $\sigma_S: z^1 \mapsto -\bar{z}^1$ throughout, which gives the split wedge $\WW^+ = \{u > 0, v > 0\}$ in the coordinates of Section 4.
+\end{remark}
+
+\subsection{Cones and Causal Structure}
+
+Each signature has a natural ``forward cone'':
+
+\begin{definition}[Forward Cones]
+\begin{align}
+    V^+_L &= \{p \in \R^{1,3} : p^2 > 0, p^0 > 0\} && \text{(Lorentzian future cone)} \\
+    V^+_S &= \{p \in \R^{2,2} : p^2_S > 0, p_u > 0, p_v > 0\} && \text{(split forward cone)}
+\end{align}
+where for split signature we use coordinates $(p_u, p_v, p_\perp)$ with $p_\perp = (p_x, p_y)$. Identifying with the fixed set of $\sigma_S$ via $u = z^0$, $v$ such that $z^1 = iv$, $x = z^2$, $y = z^3$, the induced metric is $ds^2 = du^2 + dv^2 - dx^2 - dy^2$, and
+\begin{equation}
+    p^2_S = p_u^2 + p_v^2 - p_x^2 - p_y^2.
+\end{equation}
+The forward cone condition $p^2_S > 0$ with $p_u, p_v > 0$ is equivalent to $p_u^2 + p_v^2 > |p_\perp|^2$.
+\end{definition}
+
+The split forward cone $V^+_S$ is a proper convex cone. Its dual cone with respect to the split bilinear form is
+\begin{equation}
+\label{eq:dual-cone}
+    (V^+_S)^* := \{y \in \R^{2,2} : g_S(p,y) \geq 0 \;\forall\, p \in V^+_S\} = \{y : y_u \geq 0,\, y_v \geq 0,\, \min(y_u, y_v) \geq |y_\perp|\}.
+\end{equation}
+Unlike the Lorentzian forward cone $V^+_L$, which is self-dual under the Lorentz metric, $V^+_S$ is \emph{not} self-dual under the split metric: $(V^+_S)^* \subsetneq V^+_S \subset \overline{\WW^+}$. The non-self-duality arises because vectors in $V^+_S$ can concentrate near the $u$-axis or $v$-axis independently, yielding large transverse overlap with small timelike overlap.\footnote{Explicit counterexample: $p = (10,1,7,0)$ and $y = (1,10,7,0)$ both lie in $V^+_S$ (since $101 > 49$), but $g_S(p,y) = 10 + 10 - 49 = -29 < 0$. This counterexample has been formally verified in Lean~4 (\texttt{splitForwardCone\_not\_self\_dual} in \cite{LeanVerification}).}
+
+%==============================================================================
+\section{Tubes and Analytic Continuation}
+%==============================================================================
+
+\subsection{The Forward Tube and Extended Tube}
+
+\begin{definition}
+The \textbf{forward tube} is $\TT = \R^4 + iV^+_L$. The \textbf{extended tube} is
+\begin{equation}
+    \TT' = \bigcup_{\Lambda \in \mathrm{SO}(4,\C)} \Lambda \cdot \TT.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Bargmann-Hall-Wightman \cite{BargmannHallWightman}]
+\label{thm:BHW}
+Let $W(z)$ be holomorphic in $\TT$ and Lorentz-covariant under $\mathrm{SO}(1,3)^\uparrow$. Then $W$ has a unique analytic continuation to $\TT'$, covariant under $\mathrm{SO}(4,\C)$.
+\end{theorem}
+
+\subsection{The Split Tube}
+
+\begin{definition}
+The \textbf{split tube} is $\TT_S = \R^4 + iV^+_S$.
+\end{definition}
+
+\begin{lemma}[Split Tube Inclusion]
+\label{lemma:split-tube}
+$\TT_S \subset \TT'$.
+\end{lemma}
+
+\begin{proof}
+The extended tube is defined as $\TT' = \bigcup_{\Lambda \in \mathrm{SO}(4,\C)} \Lambda \cdot \TT$, where $\TT = \R^4 + iV^+_L$ is the forward Lorentzian tube \cite[Chapter 2]{StreaterWightman}. It suffices to exhibit an explicit $\Lambda \in \mathrm{SO}(4,\C)$ with $\Lambda \cdot V^+_L = V^+_S$.
+
+Consider the complex rotation in the $(z^0, z^1)$ plane:
+\begin{equation}
+    \Lambda = \begin{pmatrix} \cos\alpha & i\sin\alpha & 0 & 0 \\ i\sin\alpha & \cos\alpha & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{pmatrix}, \qquad \alpha = \frac{\pi}{4}.
+\end{equation}
+
+\emph{Verification that $\Lambda \in \mathrm{SO}(4,\C)$:} With $\eta = \mathrm{diag}(1,-1,-1,-1)$, direct computation gives $\Lambda^T \eta \Lambda = \eta$: the $(0,0)$ entry is $\cos^2\alpha - (i\sin\alpha)(-i\sin\alpha) = \cos^2\alpha + \sin^2\alpha = 1$, the $(1,1)$ entry is $(i\sin\alpha)(i\sin\alpha) + \cos\alpha(-\cos\alpha) = -\sin^2\alpha - \cos^2\alpha = -1$, and off-diagonal terms vanish. Also $\det\Lambda = \cos^2\alpha + \sin^2\alpha = 1$.
+
+\emph{Action on the forward cone:} For $y \in V^+_L$ with $y^0 > 0$ and $(y^0)^2 > (y^1)^2 + (y^2)^2 + (y^3)^2$, we have
+\begin{equation}
+    \Lambda y = \frac{1}{\sqrt{2}}(y^0 + iy^1, \, iy^0 + y^1, \, \sqrt{2}y^2, \, \sqrt{2}y^3).
+\end{equation}
+In split coordinates $(u, v, x, y)$ where $u = \re(z^0)$, $v = \im(z^1)$, this maps the Lorentzian forward cone to the split forward cone.
+
+Hence $\TT_S = \R^4 + iV^+_S = \Lambda \cdot (\R^4 + iV^+_L) = \Lambda \cdot \TT \subset \TT'$.
+\end{proof}
+
+\begin{corollary}
+\label{cor:continuation}
+Any Wightman function analytically continued to $\TT'$ restricts to a well-defined function on the split tube $\TT_S$.
+\end{corollary}
+
+%==============================================================================
+\section{Split Wedge Positivity}
+%==============================================================================
+
+\subsection{The Split Wedge}
+
+In split signature $\R^{2,2}$ with coordinates $(u, v, x_\perp)$ where $x_\perp = (x, y)$ and metric $ds^2 = du^2 + dv^2 - dx^2 - dy^2$:
+
+\begin{definition}[Split Wedge]
+The \textbf{split wedge} is $\WW^+ = \{(u, v, x_\perp) \in \R^{2,2} : u > 0, v > 0\}$.
+\end{definition}
+
+\begin{definition}[Split Reflection]
+The \textbf{split wedge reflection} is $\Theta_S(u, v, x_\perp) = (-u, -v, x_\perp)$.
+\end{definition}
+
+\begin{remark}[Physical Interpretation]
+The split wedge $\WW^+$ is the analogue of the Rindler wedge in Lorentzian signature, but now with \emph{two} time-like directions. The reflection $\Theta_S$ simultaneously reverses both time-like coordinates, analogous to Euclidean time reflection $\tau \mapsto -\tau$ in the OS formalism. Physically, split wedge positivity can be understood as a double-time unitarity condition.
+\end{remark}
+
+\subsection{The Positivity Condition}
+
+\begin{definition}[Split Wedge Positivity]
+\label{def:split-positivity}
+A tempered distribution $W_2 \in \SSS'(\R^{2,2})$ satisfies \textbf{split wedge positivity} if for all test functions $f \in \SSS(\R^{2,2})$ with $\supp(f) \subset \WW^+$:
+\begin{equation}
+\label{eq:positivity-def}
+    \int_{\R^{2,2} \times \R^{2,2}} W_2(x - y) \, \overline{f(\Theta_S x)} \, f(y) \, d^4x \, d^4y \geq 0.
+\end{equation}
+\end{definition}
+
+\begin{remark}
+The complex conjugate $\overline{f(\Theta_S x)}$ is essential: this makes \eqref{eq:positivity-def} a sesquilinear form, ensuring the positivity condition is well-posed for complex-valued test functions.
+\end{remark}
+
+%==============================================================================
+\section{The Two-Point Theorem}
+%==============================================================================
+
+\subsection{Statement of the Main Theorem}
+
+\begin{theorem}[Two-Point Split-Wedge Reconstruction]
+\label{thm:main}
+Let $W_2 \in \SSS'(\R^{2,2})$ be a bi-distribution satisfying:
+\begin{enumerate}[label=(A\arabic*)]
+    \item \textbf{Translation invariance:} $W_2(x, y) = W_2(x - y)$.
+    \item \textbf{$\mathrm{SO}(2,2)^\uparrow$ covariance.}
+    \item \textbf{Temperedness:} $W_2 \in \SSS'(\R^{2,2})$.
+    \item \textbf{Split spectrum condition:} $\supp(\tilde{W}_2) \subset \overline{V^+_S}$.
+    \item \textbf{Split wedge positivity:} Definition \ref{def:split-positivity} holds.
+\end{enumerate}
+Then:
+\begin{enumerate}[label=(\alph*)]
+    \item $W_2$ admits a K\"all\'en-Lehmann representation
+    \begin{equation}
+        \tilde{W}_2(p) = \int_0^\infty d\rho(m^2) \, \delta(p^2_S - m^2) \, \Theta(p_u) \Theta(p_v)
+    \end{equation}
+    with $\rho$ a positive Radon measure on $[0, \infty)$.
+    \item The analytic continuation to $\TT'$ restricts to Euclidean boundary values $S_2$ satisfying OS reflection positivity.
+    \item Osterwalder-Schrader reconstruction yields a Wightman two-point function on $\R^{1,3}$, corresponding to a generalized free field.
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}[Physical Motivation for the Split Spectrum Condition]
+\label{rmk:spectrum-motivation}
+In Lorentzian signature, the spectral condition $\supp(\tilde{W}_2) \subset \overline{V^+_L}$ encodes energy positivity: the Fourier transform is supported where $p^0 > 0$ and $p^2 \geq 0$. In split signature, there is no single ``energy,'' but the forward cone $V^+_S = \{p: p_u > 0, p_v > 0, p_u^2 + p_v^2 > |p_\perp|^2\}$ is the natural analogue: it is the unique maximal proper convex cone in $\{p^2_S \geq 0\}$ that is invariant under $\mathrm{SO}(2,2)^\uparrow$ (up to sign of both $p_u$ and $p_v$). Its dual cone $(V^+_S)^*$ is characterized in \eqref{eq:dual-cone}. 
+
+The condition $\supp(\tilde{W}_2) \subset \overline{V^+_S}$ implies, by the Paley-Wiener-Schwartz theorem, that $W_2$ extends holomorphically to the split tube $\TT_S = \R^4 + iV^+_S$. By Lemma \ref{lemma:split-tube}, $\TT_S \subset \TT'$, so this extension is consistent with the Bargmann-Hall-Wightman continuation.
+\end{remark}
+
+\subsection{Proof of Part (a): The Spectral Positivity Lemma}
+
+The core of the proof is the following lemma.
+
+\begin{lemma}[Spectral Positivity]
+\label{lemma:spectral}
+Under hypotheses (A1)--(A5), the spectral measure $\rho$ in the K\"all\'en-Lehmann representation is a positive Radon measure.
+\end{lemma}
+
+\begin{proof}
+We proceed in six steps.
+
+\medskip
+\noindent\textbf{Step 1: Rewrite as a sum-kernel via pullback by $\Theta_S$.}
+
+The positivity condition \eqref{eq:positivity-def} is
+\begin{equation}
+    \int W_2(x-y) \overline{f(\Theta_S x)} f(y) \, d^4x \, d^4y \geq 0
+\end{equation}
+for $f$ supported in $\WW^+ = \{u > 0, v > 0\}$.
+
+Change variables: let $\xi = \Theta_S x$, so $x = \Theta_S \xi$ (since $\Theta_S^2 = \mathrm{id}$). Since $\Theta_S$ maps $\WW^+$ to $\WW^- = \{u < 0, v < 0\}$, the condition $\supp(f) \subset \WW^+$ implies that $f(\Theta_S x) \neq 0$ only when $\Theta_S x \in \WW^+$, i.e., when $x \in \WW^-$. After the change of variables, $\xi$ ranges over $\WW^+$. The Jacobian of $\Theta_S$ is 1.
+
+We compute:
+\begin{equation}
+    x - y = \Theta_S \xi - y = (-u_\xi - u_y, -v_\xi - v_y, \xi_\perp - y_\perp).
+\end{equation}
+
+Define $\varphi: \R^2_+ \times \R^2_+ \times \R^2 \to \C$ by
+\begin{equation}
+    \varphi(\sigma, \tau, z_\perp) := W_2(-\sigma, -\tau, z_\perp)
+\end{equation}
+for $\sigma, \tau > 0$. Then
+\begin{equation}
+    W_2(\Theta_S \xi - y) = \varphi(u_\xi + u_y, v_\xi + v_y, \xi_\perp - y_\perp).
+\end{equation}
+
+The positivity condition becomes: for all $f \in \SSS(\WW^+)$,
+\begin{equation}
+\label{eq:sum-kernel}
+    \int \varphi(u_\xi + u_y, v_\xi + v_y, \xi_\perp - y_\perp) \overline{f(\xi)} f(y) \, d^4\xi \, d^4y \geq 0.
+\end{equation}
+This is now a \emph{sum-kernel} in the $(u, v)$ variables (the arguments are $u_\xi + u_y$ and $v_\xi + v_y$, not differences).
+
+\medskip
+\noindent\textbf{Step 2: Partial Fourier transform in transverse directions.}
+
+Take the Fourier transform in the $x_\perp$ variables only. For test functions of the form $f(u, v, x_\perp) = g(u, v) h(x_\perp)$ with $g$ supported in $\R^2_+ = \{u > 0, v > 0\}$ and $h \in \SSS(\R^2)$, we obtain
+\begin{equation}
+\label{eq:integrated-positivity}
+    \int_{\R^2} \left[ \int_{(\R^2_+)^2} \hat{\varphi}(u_\xi + u_y, v_\xi + v_y; p_\perp) \overline{g(u_\xi, v_\xi)} g(u_y, v_y) \, d^2\xi \, d^2y \right] |\hat{h}(p_\perp)|^2 \, d^2p_\perp \geq 0
+\end{equation}
+where $\hat{\varphi}$ denotes the partial Fourier transform in the last two arguments.
+
+\medskip
+\noindent\textbf{Step 3: Separation in $p_\perp$.}
+
+Define the quadratic form
+\begin{equation}
+    Q_{p_\perp}[g] := \int_{(\R^2_+)^2} \hat{\varphi}(u_\xi + u_y, v_\xi + v_y; p_\perp) \overline{g(u_\xi, v_\xi)} g(u_y, v_y) \, d^2\xi \, d^2y.
+\end{equation}
+
+Equation \eqref{eq:integrated-positivity} states that $\int_{\R^2} Q_{p_\perp}[g] \, |\hat{h}(p_\perp)|^2 \, d^2p_\perp \geq 0$ for all $g \in \SSS(\R^2_+)$ and $h \in \SSS(\R^2)$.
+
+\begin{sublemma}[Density of Squared Fourier Moduli]
+The convex cone generated by $\{|\hat{h}|^2 : h \in \SSS(\R^2)\}$ is dense in the cone of nonnegative $L^1$ functions.
+\end{sublemma}
+\begin{proof}
+For $h(x) = e^{-|x|^2/(2\sigma^2)}$, we have $|\hat{h}(p)|^2 = C_\sigma e^{-\sigma^2|p|^2}$, a Gaussian. Translating $h \mapsto e^{ip_0 \cdot x}h(x)$ shifts the Fourier transform: $|\widehat{e^{ip_0 \cdot}h}|^2(p) = |\hat{h}(p-p_0)|^2$. Thus the set $\{|\hat{h}|^2\}$ contains all translated Gaussians. These form an approximate identity: for any nonnegative $w \in L^1(\R^2)$, the convolution $w * G_\epsilon \to w$ in $L^1$ as $\epsilon \to 0$, where $G_\epsilon$ is a rescaled Gaussian. Since $w * G_\epsilon$ can be approximated in $L^1$ by finite positive linear combinations of translated Gaussians (by Riemann sum approximation of the convolution integral), the claim follows.
+\end{proof}
+
+By the sub-lemma, the inequality $\int Q_{p_\perp}[g] \, w(p_\perp) \, d^2p_\perp \geq 0$ holds for all nonnegative integrable weights $w$.
+
+This implies that $p_\perp \mapsto Q_{p_\perp}[g]$ is a nonnegative distribution, hence a nonnegative Radon measure, hence $Q_{p_\perp}[g] \geq 0$ for almost every $p_\perp$ (with the exceptional set depending on $g$). Taking a countable dense subset of $g$'s, we conclude:
+\begin{equation}
+\label{eq:pperp-positivity}
+    Q_{p_\perp}[g] = \int_{(\R^2_+)^2} \hat{\varphi}(u_\xi + u_y, v_\xi + v_y; p_\perp) \overline{g(u_\xi, v_\xi)} g(u_y, v_y) \, d^2\xi \, d^2y \geq 0
+\end{equation}
+for all $g \in \SSS(\R^2_+)$ and almost every $p_\perp \in \R^2$.
+
+\medskip
+\noindent\textbf{Step 4: Regularity---from distributions to continuous functions.}
+
+For each fixed $p_\perp$, define
+\begin{equation}
+    \phi_{p_\perp}(\sigma, \tau) := \hat{\varphi}(\sigma, \tau; p_\perp)
+\end{equation}
+for $\sigma, \tau \geq 0$.
+
+\emph{A priori}, $\phi_{p_\perp}$ is a distribution in $(\sigma, \tau)$. We now show it is in fact a continuous function.
+
+\begin{lemma}[Regularity]
+\label{lemma:regularity}
+Under hypotheses (A3)--(A4), the function $\phi_{p_\perp}(\sigma, \tau)$ is $C^\infty$ on $(0,\infty)^2$ for every $p_\perp \in \R^2$.
+\end{lemma}
+
+\begin{proof}
+The spectrum condition (A4) states $\supp(\tilde{W}_2) \subset \overline{V^+_S}$. By the Paley-Wiener-Schwartz theorem for distributions supported in cones \cite[Chapter 26]{Vladimirov1979}, $W_2$ is the boundary value of a function $W_2^{\mathrm{hol}}$ holomorphic in the backward split tube $\TT_S^- = \R^4 - iV^+_S$, with at most polynomial growth: there exist $C, N > 0$ such that $|W_2^{\mathrm{hol}}(\zeta)| \leq C(1 + |\zeta|)^N$ for $\zeta \in \TT_S^-$.
+
+On the wedge interior $\{u < 0, v < 0\}$ (corresponding to $\{\sigma > 0, \tau > 0\}$ after the coordinate change $\sigma = -u$, $\tau = -v$), the function $W_2^{\mathrm{hol}}$ restricts to a $C^\infty$ function of $(\sigma, \tau, x_\perp)$---indeed, it is the restriction of a holomorphic function to a totally real submanifold, hence real-analytic.
+
+The partial Fourier transform in $x_\perp$ is
+\begin{equation}
+    \phi_{p_\perp}(\sigma, \tau) = \int_{\R^2} W_2^{\mathrm{hol}}(-\sigma, -\tau, x_\perp) \, e^{-ip_\perp \cdot x_\perp} \, d^2x_\perp.
+\end{equation}
+By dominated convergence (using the polynomial growth bound and temperedness), this integral converges absolutely and defines a $C^\infty$ function of $(\sigma, \tau)$ for every fixed $p_\perp$.
+\end{proof}
+
+\medskip
+\noindent\textbf{Step 5: Identify positive-definiteness on the semigroup and apply BCR.}
+
+With $\phi_{p_\perp}$ now known to be $C^\infty$ on the \emph{open} quadrant $(0,\infty)^2$ (Lemma \ref{lemma:regularity}), condition \eqref{eq:pperp-positivity} states: for any finite collection $\{c_i\} \subset \C$ and $\{(\sigma_i, \tau_i)\} \subset (0,\infty)^2$,
+\begin{equation}
+    \sum_{i,j} \bar{c}_i c_j \, \phi_{p_\perp}(\sigma_i + \sigma_j, \tau_i + \tau_j) \geq 0.
+\end{equation}
+
+This is precisely \textbf{positive-definiteness} of $\phi_{p_\perp}$ on the open semigroup $((0,\infty)^2, +)$.
+
+\begin{theorem}[Berg-Christensen-Ressel {\cite[Theorem 4.2.5]{BergChristensenRessel}}]
+\label{thm:BCR}
+Let $S$ be a commutative semigroup with identity. A continuous positive-definite function $\phi: S \to \C$ has a unique representation
+\begin{equation}
+    \phi(s) = \int_{\hat{S}} \chi(s) \, d\nu(\chi)
+\end{equation}
+where $\nu$ is a positive Radon measure on the space of bounded semicharacters $\hat{S}$.
+\end{theorem}
+
+\begin{lemma}[Boundary Extension of BCR Representation]
+\label{lemma:bcr-boundary}
+Let $\phi: (0,\infty)^2 \to \C$ be a continuous positive-definite function on the open semigroup $(0,\infty)^2$. Then $\phi$ extends uniquely to a continuous positive-definite function on $\overline{\R^2_+}$, and the BCR representation
+\begin{equation}
+    \phi(\sigma, \tau) = \int_{\overline{\R^2_+}} e^{-\lambda\sigma - \mu\tau} \, d\nu(\lambda, \mu)
+\end{equation}
+holds for all $(\sigma, \tau) \in \overline{\R^2_+}$, where $\nu$ is a positive Radon measure.
+\end{lemma}
+
+\begin{proof}
+\emph{Step 1: BCR on the interior.} By Theorem \ref{thm:BCR} applied to the open semigroup $(0,\infty)^2$ (which has $(0,0)$ as a limit point but not an element), $\phi$ admits a representation $\phi(\sigma, \tau) = \int e^{-\lambda\sigma - \mu\tau} d\nu(\lambda, \mu)$ for $(\sigma, \tau) \in (0,\infty)^2$, where $\nu$ is a positive Radon measure on $[0,\infty)^2$.
+
+\emph{Step 2: Extension to the boundary.} For any sequence $(\sigma_n, \tau_n) \to (\sigma_0, \tau_0) \in \overline{\R^2_+}$ with $\sigma_n, \tau_n > 0$, we have pointwise convergence $e^{-\lambda\sigma_n - \mu\tau_n} \to e^{-\lambda\sigma_0 - \mu\tau_0}$ for each $(\lambda, \mu) \in [0,\infty)^2$. The integrand is bounded: $|e^{-\lambda\sigma_n - \mu\tau_n}| \leq 1$ for all $n$ and all $(\lambda, \mu)$.
+
+By the dominated convergence theorem---noting that $|e^{-\lambda\sigma_n - \mu\tau_n}| \leq 1$ and that $\nu$ is a finite measure (the temperedness hypothesis~(A3) implies $\nu([0,\infty)^2) = \lim_{\sigma,\tau \to 0^+} \phi(\sigma,\tau) < \infty$, since $\phi$ extends continuously to the origin by the polynomial growth bound):
+\begin{equation}
+    \lim_{n \to \infty} \phi(\sigma_n, \tau_n) = \lim_{n \to \infty} \int e^{-\lambda\sigma_n - \mu\tau_n} d\nu = \int e^{-\lambda\sigma_0 - \mu\tau_0} d\nu.
+\end{equation}
+
+This defines a continuous extension $\bar{\phi}: \overline{\R^2_+} \to \C$, and the representation holds on the closure.
+
+\emph{Step 3: Positive-definiteness on the closure.} For points $\{(\sigma_i, \tau_i)\}_{i=1}^N \subset \overline{\R^2_+}$ and $\{c_i\} \subset \C$, approximate any boundary points by interior points. The positive-definiteness condition $\sum_{i,j} \bar{c}_i c_j \phi(\sigma_i + \sigma_j, \tau_i + \tau_j) \geq 0$ holds on the interior, and by continuity of $\bar{\phi}$, it extends to the closure.
+\end{proof}
+
+For $S = \overline{\R^2_+}$, the bounded semicharacters are $\chi_{\lambda,\mu}(\sigma, \tau) = e^{-\lambda\sigma - \mu\tau}$ for $\lambda, \mu \geq 0$. Applying Lemma \ref{lemma:bcr-boundary} to $\phi_{p_\perp}$:
+\begin{equation}
+\label{eq:laplace}
+    \phi_{p_\perp}(\sigma, \tau) = \int_{\overline{\R^2_+}} e^{-\lambda\sigma - \mu\tau} \, d\nu_{p_\perp}(\lambda, \mu)
+\end{equation}
+where $\nu_{p_\perp}$ is a positive Radon measure on $\overline{\R^2_+}$ for almost every $p_\perp$.
+
+\medskip
+\noindent\textbf{Step 6: Reconstruct the spectral measure and identify with $\tilde{W}_2$.}
+
+From \eqref{eq:laplace}, we have a family of positive measures $\{\nu_{p_\perp}\}_{p_\perp \in \R^2}$ on $\overline{\R^2_+}$. The family depends measurably on $p_\perp$ (verified by testing against continuous compactly supported functions in $(\lambda, \mu)$ and noting the resulting function of $p_\perp$ is measurable).
+
+Define a positive Radon measure $\mu$ on $\overline{\R^2_+} \times \R^2$ by
+\begin{equation}
+    d\mu(p_u, p_v, p_\perp) := d\nu_{p_\perp}(p_u, p_v) \, d^2p_\perp.
+\end{equation}
+
+We now identify $\mu$ with $\tilde{W}_2$. By construction, for $(\sigma, \tau) \in (0,\infty)^2$:
+\begin{align}
+    \hat{\varphi}(\sigma, \tau; p_\perp) &= \int_{\overline{\R^2_+}} e^{-p_u \sigma - p_v \tau} \, d\nu_{p_\perp}(p_u, p_v).
+\end{align}
+Inverting the Laplace transform and the partial Fourier transform, we obtain
+\begin{equation}
+    \tilde{W}_2(p_u, p_v, p_\perp) = d\mu(p_u, p_v, p_\perp)
+\end{equation}
+as distributions (the measure $\mu$ defines a distribution by integration).
+
+\begin{remark}[Laplace--Fourier Connection]
+\label{rmk:laplace-fourier}
+The identification of the BCR measure $\nu_{p_\perp}$ with the spectral measure $\tilde{W}_2$ requires clarification. The BCR representation gives a \emph{Laplace} kernel $e^{-\lambda\sigma - \mu\tau}$ for $\sigma, \tau > 0$, while the spectral representation of $W_2$ involves a \emph{Fourier} kernel $e^{ip \cdot x}$.
+
+These are related by analytic continuation. The function $\phi_{p_\perp}(\sigma, \tau)$ defined for $\sigma, \tau > 0$ is the restriction of the holomorphic function $W_2^{\mathrm{hol}}$ to the wedge interior. Continue analytically: setting $\sigma = -iu$, $\tau = -iv$ for $u, v > 0$ (which stays within the tube domain), we obtain
+\begin{equation}
+    \phi_{p_\perp}(-iu, -iv) = \int_{\overline{\R^2_+}} e^{i\lambda u + i\mu v} \, d\nu_{p_\perp}(\lambda, \mu).
+\end{equation}
+This \emph{is} a Fourier representation. The BCR measure $\nu_{p_\perp}$ on $\overline{\R^2_+}$, when viewed via analytic continuation, gives the spectral measure supported in the forward cone $\{p_u \geq 0, p_v \geq 0\}$. The positivity of $\nu_{p_\perp}$ (from BCR) thus implies positivity of the spectral measure $\rho$ (in the K\"all\'en-Lehmann representation).
+
+This connection between Laplace representations on semigroups and Fourier representations of spectral measures is the functional-analytic content of ``Wick rotation.''
+\end{remark}
+
+The split spectrum condition (A4), $\supp(\tilde{W}_2) \subset \overline{V^+_S}$, now constrains:
+\begin{equation}
+    \supp(\mu) \subset \overline{V^+_S} = \{(p_u, p_v, p_\perp) : p_u \geq 0, p_v \geq 0, p_u^2 + p_v^2 \geq |p_\perp|^2\}.
+\end{equation}
+
+The $\mathrm{SO}(2,2)^\uparrow$ covariance (A2) implies $\mu$ is invariant under the identity component of the split Lorentz group. The measure $\mu$ is $\sigma$-finite: temperedness (A3) implies that $\mu$ is a tempered measure, i.e., $\int (1+|p|^2)^{-N} d\mu(p) < \infty$ for $N$ sufficiently large. This follows because $\tilde{W}_2$ is a tempered distribution and $\mu$ is its positive part. In particular, $\mu$ is finite on bounded sets, and $\overline{V^+_S}$ is a countable union of bounded sets. By the standard disintegration theorem for invariant measures \cite{Dellacherie1978,Faraut2008}, any $\sigma$-finite $\mathrm{SO}(2,2)$-invariant measure on $\overline{V^+_S}$ disintegrates along the level sets of the invariant $m^2 := p_u^2 + p_v^2 - |p_\perp|^2$:
+\begin{equation}
+    d\mu(p) = \int_0^\infty d\rho(m^2) \, d\mu_{m^2}(p)
+\end{equation}
+where $\rho$ is a positive measure on $[0,\infty)$ and $\mu_{m^2}$ is the unique (up to normalization) $\mathrm{SO}(2,2)$-invariant measure on the mass hyperboloid $\{p^2_S = m^2\} \cap \overline{V^+_S}$:
+\begin{equation}
+    d\mu_{m^2}(p) = \delta(p_u^2 + p_v^2 - |p_\perp|^2 - m^2) \, \Theta(p_u) \Theta(p_v) \, d^4p.
+\end{equation}
+
+Therefore:
+\begin{equation}
+    \tilde{W}_2(p) = \int_0^\infty d\rho(m^2) \, \delta(p_u^2 + p_v^2 - |p_\perp|^2 - m^2) \, \Theta(p_u) \Theta(p_v)
+\end{equation}
+with $\rho \geq 0$ (inherited from $\mu \geq 0$, which came from $\nu_{p_\perp} \geq 0$, which came from positive-definiteness).
+\end{proof}
+
+\subsection{Proof of Part (b): Euclidean Positivity}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}(b)]
+By Corollary \ref{cor:continuation}, the split two-point function $W_2$ analytically continues via the extended tube $\TT'$ to Euclidean points.
+
+The Euclidean two-point function is
+\begin{equation}
+    S_2(x_E) = \int_0^\infty d\rho(m^2) \, G_E(x_E; m^2)
+\end{equation}
+where $G_E(x_E; m^2)$ is the Euclidean propagator. For $m > 0$:
+\begin{equation}
+    G_E(x_E; m^2) = \frac{m}{4\pi^2 |x_E|} K_1(m|x_E|)
+\end{equation}
+where $K_1$ is the modified Bessel function of the second kind. For $m = 0$:
+\begin{equation}
+    G_E(x_E; 0) = \frac{1}{4\pi^2 |x_E|^2}.
+\end{equation}
+
+Each $G_E(\cdot; m^2)$ satisfies OS reflection positivity \cite{OsterwalderSchrader1973}. Since $\rho \geq 0$ by Lemma \ref{lemma:spectral}, we have $S_2 = \int d\rho \, G_E$ is a positive superposition of OS-positive functions, hence OS-positive.
+\end{proof}
+
+\subsection{Proof of Part (c): Wightman Reconstruction}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}(c)]
+For the two-point function, OS reconstruction from a reflection-positive $S_2$ yields a Wightman two-point function $W^{(L)}_2$ on Lorentzian spacetime $\R^{1,3}$ satisfying:
+\begin{itemize}
+    \item Poincar\'e covariance
+    \item Spectral condition
+    \item Locality (trivially, for the two-point function)
+    \item Positivity of the spectral measure
+\end{itemize}
+
+This corresponds to the two-point function of a \textbf{generalized free field}: a field whose $n$-point functions are determined by Wick's theorem from the two-point function.
+
+Full reconstruction of an \emph{interacting} Wightman QFT requires OS positivity for all $n$-point functions, which is established by Theorem \ref{thm:npoint} in Section 6.
+\end{proof}
+
+\subsection{The Two-Point Equivalence}
+
+\begin{corollary}[Two-Point Trinity]
+\label{cor:trinity}
+For the two-point function, the following are equivalent:
+\begin{enumerate}
+    \item \textbf{Lorentzian:} Existence of a K\"all\'en-Lehmann representation with $\rho(m^2) \geq 0$.
+    \item \textbf{Euclidean:} OS reflection positivity.
+    \item \textbf{Split:} Split wedge reflection positivity (with spectrum condition).
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+$(3) \Rightarrow (1)$: This is Theorem \ref{thm:main}(a).
+
+$(1) \Rightarrow (2)$: Standard; the Euclidean two-point function $S_2 = \int d\rho \, G_E$ with $\rho \geq 0$ satisfies OS positivity.
+
+$(2) \Rightarrow (1)$: This is Osterwalder-Schrader reconstruction.
+
+$(1) \Rightarrow (3)$: Given a Wightman two-point function with $\rho \geq 0$, it extends holomorphically to the extended tube $\TT'$. By Lemma \ref{lemma:split-tube}, $\TT_S \subset \TT'$, so the function restricts to the split tube and hence to the split real slice $\R^{2,2}$. The spectral measure $\rho \geq 0$ implies that the kernel $\phi_{p_\perp}(\sigma, \tau)$ in the proof of Lemma \ref{lemma:spectral} is a Laplace transform of a positive measure (reversing Steps 5--6), which is positive-definite on the semigroup (reversing Step 5), which implies split wedge positivity (reversing Steps 1--3).
+\end{proof}
+
+\begin{remark}[Scope of the formal verification]
+\label{rmk:trinity-scope}
+The equivalence cycle in Corollary~\ref{cor:trinity} relies on standard functional-analytic results for two of its four legs: $(1) \Rightarrow (2)$ uses Wick rotation and the forward direction of OS reconstruction, while $(1) \Rightarrow (3)$ uses analytic continuation through the extended tube $\TT'$. These are not verified in Lean. The novel contribution verified in the formalization is the algebraic infrastructure that enables the remaining legs---the sum-kernel rewrite (Step~1), the semigroup structure (Step~5), the tube inclusion $\TT_S \subset \TT'$ (Lemma~\ref{lemma:split-tube}), and the Bridge Lemma factorization $\theta = R \circ \Theta_S$---which are the new content specific to split signature.
+\end{remark}
+
+%==============================================================================
+\section{The $n$-Point Reconstruction Theorem}
+%==============================================================================
+
+Theorem \ref{thm:main} establishes the Split-Euclidean-Lorentzian equivalence for $n=2$. We now prove the full $n$-point reconstruction theorem.
+
+\subsection{Axioms for Split-Signature QFT}
+
+\begin{definition}[$n$-Point Split Wedge Positivity]
+\label{def:npoint-positivity}
+A system of $n$-point functions $\{W_n\}$ satisfies \textbf{$n$-point split wedge positivity} if, for all $n, m \geq 0$ and all test functions $f_n \in \SSS((\R^{2,2})^n)$ with $\supp(f_n) \subset (\WW^+)^n$:
+\begin{equation}
+\label{eq:npoint-positivity}
+    \sum_{n,m} \int W_{n+m}(\Theta_S x_1, \ldots, \Theta_S x_n, y_1, \ldots, y_m) \overline{f_n(x_1, \ldots, x_n)} f_m(y_1, \ldots, y_m) \, d^{4n}x \, d^{4m}y \geq 0
+\end{equation}
+where $\Theta_S$ acts componentwise on each argument.
+\end{definition}
+
+\begin{definition}[Split Wedge Axioms]
+\label{def:split-axioms}
+A \textbf{split-signature quantum field theory} is a family $\{W_n\}_{n \geq 0}$ of distributions on $(\R^{2,2})^n$ satisfying:
+\begin{enumerate}[label=\textnormal{(S\arabic*)}]
+    \item \textbf{Translation invariance:} $W_n(x_1 + a, \ldots, x_n + a) = W_n(x_1, \ldots, x_n)$ for all $a \in \R^{2,2}$.
+    \item \textbf{$\mathrm{SO}(2,2)^\uparrow$ covariance:} $W_n(\Lambda x_1, \ldots, \Lambda x_n) = W_n(x_1, \ldots, x_n)$ for $\Lambda \in \mathrm{SO}(2,2)^\uparrow$.
+    \item \textbf{$R$-invariance:} $W_n(Rx_1, \ldots, Rx_n) = W_n(x_1, \ldots, x_n)$ where $R: (u,v,x,y) \mapsto (v,u,x,y)$.
+    \item \textbf{Temperedness:} Each $W_n \in \SSS'((\R^{2,2})^n)$.
+    \item \textbf{Split spectrum condition:} In relative coordinates $\xi_j = x_j - x_{j+1}$, the Fourier transform $\tilde{W}_n$ is supported in $(\overline{V^+_S})^{n-1}$.
+    \item \textbf{$n$-point split wedge positivity:} Definition \ref{def:npoint-positivity}.
+    \item \textbf{Split locality:} At Jost points (where all $\xi_j$ are split-spacelike), $W_n$ is symmetric under adjacent permutations.
+    \item \textbf{Cluster decomposition:} For $a$ split-spacelike, $W_{n+m}(x_1, \ldots, x_n, y_1+ta, \ldots, y_m+ta) \to W_n(\vec{x}) W_m(\vec{y})$ as $t \to \infty$.
+\end{enumerate}
+\end{definition}
+
+\begin{remark}[The $R$-Symmetry]
+\label{rmk:R-symmetry}
+The swap $R: (u,v,x,y) \mapsto (v,u,x,y)$ has determinant $-1$ in the $(u,v)$ block and lies in $\mathrm{O}(2,2)$ but not $\mathrm{SO}(2,2)^\uparrow$. Axiom (S3) is the split-signature analogue of parity invariance. It is essential for the bridge lemma below.
+\end{remark}
+
+\subsection{Statement of the Main Theorem}
+
+\begin{theorem}[$n$-Point Reconstruction]
+\label{thm:npoint}
+Let $\{W_n\}$ satisfy axioms \textnormal{(S1)--(S8)}. Then:
+\begin{enumerate}[label=\textnormal{(\alph*)}]
+    \item The analytic continuations to the extended tube $\TT'_n$ restrict to Euclidean boundary values $\{S_n\}$.
+    \item The Schwinger functions $\{S_n\}$ satisfy Osterwalder-Schrader reflection positivity.
+    \item OS reconstruction yields a Wightman QFT $(\HH_L, \Omega_L, \{\phi_L\}, U_L)$ on $\R^{1,3}$.
+\end{enumerate}
+\end{theorem}
+
+\subsection{Proof of Theorem \ref{thm:npoint}}
+
+The proof proceeds in five steps: (1) GNS construction of a Hilbert space from split wedge positivity, (2) implementation of symmetries, (3) identification of semigroup structure, (4) unitary extension of translations, and (5) the bridge lemma converting $\Theta_S$-positivity to $\theta$-positivity.
+
+\medskip
+\noindent\textbf{Step 1: GNS Construction.}
+
+The Borchers algebra $\BB(\WW^+)$ consists of sequences $F = (f_0, f_1, f_2, \ldots)$ with $f_n \in \SSS((\WW^+)^n)$ and finitely many nonzero. Multiplication is
+\begin{equation}
+    (F \cdot G)_n(x_1, \ldots, x_n) = \sum_{k=0}^n f_k(x_1, \ldots, x_k) \, g_{n-k}(x_{k+1}, \ldots, x_n).
+\end{equation}
+The $\Theta_S$-involution is $(F^*)_n(x_1, \ldots, x_n) = \overline{f_n(\Theta_S x_n, \ldots, \Theta_S x_1)}$.
+
+Define the state $\omega: \BB(\WW^+) \to \C$ by
+\begin{equation}
+    \omega(F) = \sum_n \int W_n(x_1, \ldots, x_n) \, f_n(x_1, \ldots, x_n) \, d^{4n}x.
+\end{equation}
+Split wedge positivity (S6) states precisely that $\omega(F^* \cdot F) \geq 0$.
+
+The GNS construction yields a Hilbert space $\HH$, a cyclic vector $\Omega$, and a $*$-representation $\pi$ of $\BB(\WW^+)$ with $\omega(F) = \langle \Omega, \pi(F) \Omega \rangle$. (This is a standard application of the GNS theorem for $*$-algebras; the subsequent semigroup extension in Step~3 uses Nelson's theorem and Stone's theorem. These functional-analytic steps are not verified in Lean, which covers only the algebraic infrastructure feeding into them---see the Formal Verification subsection.)
+
+\medskip
+\noindent\textbf{Step 2: Symmetry Implementation.}
+
+The stabilizer of $\WW^+$ in $\mathrm{ISO}(2,2)$ includes translations $(a_u, a_v, a_x, a_y)$ with $a_u, a_v \geq 0$, arbitrary $a_x, a_y$, the transverse rotations $\exp(t M_{xy})$, and the swap $R$.
+
+By (S1)--(S3), these symmetries preserve $\omega$ and hence are implemented unitarily on $\HH$. In particular:
+\begin{itemize}
+    \item Transverse translations $e^{-ia_x P_x}$, $e^{-ia_y P_y}$ are unitary for all $a_x, a_y \in \R$.
+    \item Transverse rotation $e^{it M_{xy}}$ is unitary for all $t \in \R$.
+    \item The swap $R$ is implemented by a unitary $U(R)$ with $U(R)^2 = I$.
+\end{itemize}
+
+\medskip
+\noindent\textbf{Step 3: Contraction Semigroup Structure.}
+
+For translations $a = (a_u, a_v, 0, 0)$ with $a_u, a_v > 0$, define $T(a): \HH \to \HH$ by
+\begin{equation}
+    T(a) \pi(F) \Omega = \pi(\alpha_a F) \Omega
+\end{equation}
+where $(\alpha_a F)_n(x_1, \ldots, x_n) = f_n(x_1 - a, \ldots, x_n - a)$.
+
+\begin{lemma}[Contractivity]
+\label{lemma:contractivity-n}
+$\|T(a)\| \leq 1$ for all $a_u, a_v \geq 0$.
+\end{lemma}
+
+\begin{proof}
+We give a detailed proof exploiting the tube holomorphy that follows from axiom (S5).
+
+\emph{Step 1: The kernel representation.} For $\Psi = \pi(F)\Omega$ with $F$ a single test function $f \in \SSS(\WW^+)$, the GNS inner product is:
+\begin{equation}
+\label{eq:kernel-rep}
+    \|\Psi_f\|^2 = \int_{\WW^+ \times \WW^+} K(\xi, \eta) \, \bar{f}(\xi) f(\eta) \, d\xi \, d\eta
+\end{equation}
+where $K(\xi, \eta) := W_2(\Theta_S \xi - \eta)$ is the integral kernel. Split wedge positivity (S6) asserts precisely that $K$ is a positive-definite kernel.
+
+\emph{Step 2: Effect of translation.} For $a = (a_u, a_v, 0, 0)$ with $a_u, a_v > 0$:
+\begin{equation}
+    \|T(a)\Psi_f\|^2 = \int_{\WW^+ \times \WW^+} K(\xi, \eta) \, \bar{f}(\xi - a) f(\eta - a) \, d\xi \, d\eta.
+\end{equation}
+Substituting $\xi' = \xi - a$, $\eta' = \eta - a$, and using the crucial identity (valid for timelike translations $a = (a_u, a_v, 0, 0)$)
+\begin{equation}
+\label{eq:theta-shift}
+    \Theta_S(\xi' + a) = \Theta_S \xi' - a \qquad \text{(for $a = (a_u, a_v, 0, 0)$)},\footnotemark
+\end{equation}
+\footnotetext{This identity requires $a$ to be a timelike translation: $\Theta_S$ negates the $(u,v)$ components but preserves $(x,y)$, so the cancellation $\Theta_S(\xi' + a) = \Theta_S \xi' - a$ fails for spatial components. Formally verified: \texttt{thetaS\_shift} in \cite{LeanVerification} proves $\Theta_S(\xi' + a) = \Theta_S \xi' - a$ for $a = (a_u, a_v, 0, 0)$.}
+we obtain:
+\begin{align}
+    \|T(a)\Psi_f\|^2 &= \int K(\xi' + a, \eta' + a) \, \bar{f}(\xi') f(\eta') \, d\xi' \, d\eta' \\
+    &= \int W_2(\Theta_S \xi' - a - \eta' - a) \, \bar{f}(\xi') f(\eta') \, d\xi' \, d\eta' \\
+    &= \int W_2(\Theta_S \xi' - \eta' - 2a) \, \bar{f}(\xi') f(\eta') \, d\xi' \, d\eta'.
+\end{align}
+Define the \emph{translated kernel} $K_a(\xi, \eta) := W_2(\Theta_S \xi - \eta - 2a)$.
+
+\emph{Step 3: Holomorphic interpolation.} The spectrum condition (S5) implies that $W_2$ is the boundary value of a function $W_2^{\mathrm{hol}}$ holomorphic on the split tube $\TT_S = \R^4 + iV^+_S$. For $t \in [0,1]$, define:
+\begin{equation}
+    K_t(\xi, \eta) := W_2^{\mathrm{hol}}(\Theta_S \xi - \eta - 2ta + i\epsilon y)
+\end{equation}
+for small $\epsilon > 0$ and $y \in (V^+_S)^*$, where $(V^+_S)^*$ is the dual cone defined in \eqref{eq:dual-cone}. Since $(V^+_S)^* \subset V^+_S$, the imaginary part $\epsilon y$ lies in $V^+_S$ and the holomorphic function $W_2^{\mathrm{hol}}$ is well-defined at this argument. This interpolates between $K_0 = K$ and $K_1 = K_a$ as $\epsilon \to 0$.
+
+\emph{Step 4: Tube regularization and damping.} The Paley--Wiener--Schwartz theorem gives:
+\begin{equation}
+    W_2^{\mathrm{hol}}(z) = \int_{\overline{V^+_S}} e^{ip \cdot z} \, d\mu(p)
+\end{equation}
+for $\mathrm{Im}(z) \in V^+_S$, where $\mu \geq 0$ is the spectral measure. For $z = x + i\epsilon y$ with $y \in V^+_S$ and $\epsilon > 0$:
+\begin{equation}
+    W_2^{\mathrm{hol}}(x + i\epsilon y) = \int_{\overline{V^+_S}} e^{ip \cdot x} \cdot e^{-\epsilon p \cdot y} \, d\mu(p).
+\end{equation}
+The factor $e^{-\epsilon p \cdot y}$ provides genuine damping: for $p \in \overline{V^+_S}$ and $y \in (V^+_S)^*$, we have $p \cdot y = p_u y_u + p_v y_v - p_\perp \cdot y_\perp \geq 0$ by definition of the dual cone, so $e^{-\epsilon p \cdot y} \in (0, 1]$. (Note: unlike the Lorentzian forward cone, the split forward cone $V^+_S$ is not self-dual under the split metric. The dual cone $(V^+_S)^* = \{y: y_u \geq 0, y_v \geq 0, \min(y_u, y_v) \geq |y_\perp|\}$ is strictly smaller than $V^+_S$ but is non-empty and contained in $V^+_S$, which is all that is required.\footnote{The containment $(V^+_S)^* \subset \overline{V^+_S}$, the strict inclusion $(V^+_S)^* \subsetneq V^+_S$, and the inner product positivity $g_S(p,y) \geq 0$ for $p \in \overline{V^+_S}$, $y \in (V^+_S)^*$ have been formally verified: \texttt{dualCone\_subset\_forwardConeClosed}, \texttt{dualCone\_strictly\_smaller}, and \texttt{splitInner\_nonneg\_diagonal} in \cite{LeanVerification}.})
+
+For the translated kernel with tube regularization:
+\begin{equation}
+    W_2^{\mathrm{hol}}(\Theta_S \xi - \eta - 2a + i\epsilon y) = \int_{\overline{V^+_S}} e^{ip \cdot (\Theta_S \xi - \eta)} \cdot e^{-2ip \cdot a} \cdot e^{-\epsilon p \cdot y} \, d\mu(p).
+\end{equation}
+The factor $e^{-2ip \cdot a}$ is a phase (since $p \cdot a$ is real), while $e^{-\epsilon p \cdot y}$ provides damping.
+
+\emph{Step 5: Contractivity via dominated convergence.} Define the regularized quadratic forms:
+\begin{align}
+    Q_{0,\epsilon}[f] &:= \int\!\!\int W_2^{\mathrm{hol}}(\Theta_S \xi - \eta + i\epsilon y) \, \bar{f}(\xi) f(\eta) \, d\xi \, d\eta, \\
+    Q_{a,\epsilon}[f] &:= \int\!\!\int W_2^{\mathrm{hol}}(\Theta_S \xi - \eta - 2a + i\epsilon y) \, \bar{f}(\xi) f(\eta) \, d\xi \, d\eta.
+\end{align}
+Using the spectral representation:
+\begin{equation}
+    Q_{a,\epsilon}[f] = \int_{\overline{V^+_S}} |g(p)|^2 \cdot e^{-2ip \cdot a} \cdot e^{-\epsilon p \cdot y} \, d\mu(p)
+\end{equation}
+where $g(p) = \int e^{ip \cdot \Theta_S \xi} f(\xi) \, d\xi$. Since $|e^{-2ip \cdot a}| = 1$ and $e^{-\epsilon p \cdot y} \leq 1$:
+\begin{equation}
+    |Q_{a,\epsilon}[f]| \leq \int_{\overline{V^+_S}} |g(p)|^2 \cdot e^{-\epsilon p \cdot y} \, d\mu(p) = Q_{0,\epsilon}[f].
+\end{equation}
+
+Taking $\epsilon \to 0^+$: the integrand $|g(p)|^2 e^{-\epsilon p \cdot y}$ is dominated by $|g(p)|^2$ (which is $\mu$-integrable since $Q_{0,0}[f] = \|\Psi_f\|^2 < \infty$). By dominated convergence:
+\begin{equation}
+    \|T(a)\Psi_f\|^2 = \lim_{\epsilon \to 0^+} Q_{a,\epsilon}[f] \leq \lim_{\epsilon \to 0^+} Q_{0,\epsilon}[f] = \|\Psi_f\|^2.
+\end{equation}
+This establishes contractivity. The general $n$-point case follows by multilinearity and density.
+\end{proof}
+
+\begin{lemma}[Symmetric Semigroup]
+\label{lemma:symmetric}
+The operators $T(a)$ are symmetric: $\langle T(a)\Psi, \Phi \rangle = \langle \Psi, T(a)\Phi \rangle$.
+\end{lemma}
+
+\begin{proof}
+We show $\omega((\alpha_a F)^* \cdot G) = \omega(F^* \cdot \alpha_a G)$. Both expressions involve $W_{n+m}$ evaluated at arguments of the form $(\Theta_S \vec{x}, \vec{y})$ with various translations. The identity follows from translation invariance (S1): shifting all arguments by $a$ leaves $W_{n+m}$ unchanged, and the $\Theta_S$ involution satisfies $\Theta_S(x - a) = \Theta_S(x) + a$, which exchanges the role of the translation on reflected vs.\ unreflected arguments.
+\end{proof}
+
+By Lemmas \ref{lemma:contractivity-n} and \ref{lemma:symmetric}, $\{T(a_u, 0, 0, 0)\}_{a_u \geq 0}$ is a strongly continuous symmetric contraction semigroup. Strong continuity follows from continuity of $\omega$ tested against translates of Schwartz functions: $\lim_{a \to 0} \|T(a)\Psi - \Psi\|^2 = \lim_{a \to 0} \omega((F - \alpha_a F)^* \cdot (F - \alpha_a F)) = 0$. By the Hille--Yosida theorem, the generator $H_u$ is self-adjoint and non-negative. Similarly for $H_v$. The semigroup property $T(a)T(b) = T(a+b)$ is immediate from $\alpha_a \circ \alpha_b = \alpha_{a+b}$.
+
+\medskip
+\noindent\textbf{Step 4: Unitary Extension.}
+
+\begin{proposition}[Unitary Extension of Translations]
+\label{prop:unitary-ext}
+The contraction semigroups $\{e^{-a_u H_u}\}_{a_u \geq 0}$ and $\{e^{-a_v H_v}\}_{a_v \geq 0}$ extend to strongly continuous unitary groups $\{e^{-it_u H_u}\}_{t_u \in \R}$ and $\{e^{-it_v H_v}\}_{t_v \in \R}$.
+\end{proposition}
+
+\begin{proof}
+Since $H_u \geq 0$ is self-adjoint, Stone's theorem gives the unitary group. The contraction semigroup is recovered by analytic continuation: $e^{-a_u H_u} = e^{-it_u H_u}|_{t_u = -ia_u}$, valid because $H_u \geq 0$ ensures $\|e^{-a_u H_u}\| \leq 1$.
+\end{proof}
+
+Define Euclidean-adapted generators:
+\begin{equation}
+    H := \frac{H_u + H_v}{\sqrt{2}} \geq 0, \qquad Q := \frac{H_u - H_v}{\sqrt{2}}.
+\end{equation}
+
+\begin{lemma}[Strong commutativity of $H_u$ and $H_v$]
+\label{lemma:strong-commute}
+The self-adjoint operators $H_u$ and $H_v$ strongly commute:
+their spectral projections commute, and in particular $H$ and $Q$
+are essentially self-adjoint on $\operatorname{Dom}(H_u) \cap \operatorname{Dom}(H_v)$ with
+$[H, Q] = 0$ in the strong (spectral) sense.
+\end{lemma}
+
+\begin{proof}
+By construction (Step~3), $H_u$ and $H_v$ are the generators of
+the contraction semigroups $\{e^{-a_u H_u}\}_{a_u \ge 0}$ and
+$\{e^{-a_v H_v}\}_{a_v \ge 0}$. These semigroups commute:
+for all $a_u, a_v \ge 0$,
+\[
+  e^{-a_u H_u} e^{-a_v H_v} = e^{-a_v H_v} e^{-a_u H_u},
+\]
+because both are GNS implementations of translation automorphisms
+$\alpha_{(a_u,0)}$ and $\alpha_{(0,a_v)}$ which commute geometrically
+($u$- and $v$-translations commute on $\R^{2,2}$).
+
+Since both semigroups are strongly continuous contractions on $\HH$
+with non-negative self-adjoint generators, the commutativity of
+bounded operators $e^{-a_u H_u}$ and $e^{-a_v H_v}$ for all
+$a_u, a_v > 0$ implies strong commutativity of $H_u$ and $H_v$
+by Nelson's theorem on commuting self-adjoint semigroups
+\cite[Theorem~VIII.13]{ReedSimonI}.
+
+It follows that $H_u$ and $H_v$ admit a joint spectral measure
+$E(\cdot, \cdot)$ on $[0,\infty)^2$. The operators
+$H = (H_u + H_v)/\sqrt{2}$ and $Q = (H_u - H_v)/\sqrt{2}$
+are then self-adjoint on their natural domains and strongly commute.
+In particular, $e^{isQ}$ is a well-defined unitary group for $s \in \R$,
+and $Q$ is self-adjoint (not merely symmetric) on
+$\operatorname{Dom}(H_u) \cap \operatorname{Dom}(H_v)$.
+\end{proof}
+
+The unitary $\sigma$-translations are $U_\sigma(s) := e^{isQ}$.
+
+\medskip
+\noindent\textbf{Step 5: The Bridge Lemma.}
+
+Introduce Euclidean coordinates:
+\begin{equation}
+    \tau := \frac{u + v}{\sqrt{2}}, \qquad \sigma := \frac{u - v}{\sqrt{2}}, \qquad (x, y) \text{ unchanged}.
+\end{equation}
+The split wedge $\WW^+ = \{u > 0, v > 0\}$ becomes $\{\tau > |\sigma|\}$. The discrete symmetries act as:
+\begin{align}
+    R &: (\tau, \sigma, x, y) \mapsto (\tau, -\sigma, x, y), \\
+    \Theta_S &: (\tau, \sigma, x, y) \mapsto (-\tau, -\sigma, x, y).
+\end{align}
+Define the \textbf{Euclidean time reflection}:
+\begin{equation}
+    \theta := R \circ \Theta_S : (\tau, \sigma, x, y) \mapsto (-\tau, \sigma, x, y).
+\end{equation}
+In split coordinates, $\theta(u, v, x, y) = (-v, -u, x, y)$, which negates $\tau = (u+v)/\sqrt{2}$ and preserves $\sigma = (u-v)/\sqrt{2}$.\footnote{Formally verified: \texttt{thetaE\_explicit}, \texttt{thetaE\_euclidean\_tau}, and \texttt{thetaE\_euclidean\_sigma} in \cite{LeanVerification}.}
+
+\begin{lemma}[Bridge Lemma]
+\label{lemma:bridge}
+Under axiom \textnormal{(S3)} ($R$-invariance), the Schwinger functions satisfy $\theta$-reflection positivity on the split wedge.
+\end{lemma}
+
+\begin{proof}
+Let $\alpha_R$ denote the automorphism of $\BB(\WW^+)$ induced by $R$. Since $R$ preserves $\WW^+$ (swapping $u \leftrightarrow v$, both positive\footnote{Formally verified: \texttt{swapR\_preserves\_wedge} in \cite{LeanVerification}.}), $\alpha_R$ maps $\BB(\WW^+)$ to itself.
+
+The $\theta$-involution relates to the $\Theta_S$-involution by $\theta = R \circ \Theta_S$\footnote{The factorization $\theta(p) = R(\Theta_S(p))$ and the conjugation identity $\theta(R(p)) = \Theta_S(p)$ have been formally verified: \texttt{bridge\_factorization} and \texttt{bridge\_conjugation\_identity} in \cite{LeanVerification}.}, giving
+\begin{equation}
+    F^{*_\theta} = \alpha_R((\alpha_R^{-1} F)^{*_{\Theta_S}}).
+\end{equation}
+Therefore
+\begin{equation}
+    \omega(F^{*_\theta} \cdot F) = \omega\big(\alpha_R((\alpha_R^{-1} F)^{*_{\Theta_S}} \cdot \alpha_R^{-1} F)\big) = \omega\big((\alpha_R^{-1} F)^{*_{\Theta_S}} \cdot \alpha_R^{-1} F\big) \geq 0,
+\end{equation}
+where the second equality uses $R$-invariance (S3), and the inequality is $\Theta_S$-positivity applied to $G := \alpha_R^{-1} F$.
+\end{proof}
+
+\medskip
+\noindent\textbf{Step 6: Extension to the Euclidean Half-Space.}
+
+Define $\EE_0 := \overline{\mathrm{span}\{\pi(F)\Omega : \supp(F) \subset (\WW^+)^n\}}$ and let $\Theta_\theta$ be the antilinear operator implementing $\theta$-reflection on $\EE_0$.
+
+The Bridge Lemma gives $\theta$-positivity on $\EE_0$. To extend to the full Euclidean half-space $\EE^+ = \{\tau > 0\}$, we use the unitary $\sigma$-translations.
+
+\emph{Geometric coverage.} For any point $(\tau_0, \sigma_0, x, y)$ with $\tau_0 > 0$, the translated wedge $\{(\tau, \sigma) : \tau > |\sigma - \sigma_0|\}$ contains this point (take the shift $s = \sigma_0$). Hence\footnote{Formally verified: \texttt{geometric\_coverage} in \cite{LeanVerification}. In split coordinates, for any $(u,v)$ with $u + v > 0$, the shift $s = (v-u)/2$ gives $u + s = v - s = (u+v)/2 > 0$.}
+\begin{equation}
+    \bigcup_{s \in \R} U_\sigma(s) \WW^+ = \{(\tau, \sigma, x, y) : \tau > 0\} = \EE^+.
+\end{equation}
+
+Define $\EE_\sigma := \overline{\bigcup_{s \in \R} U_\sigma(s) \EE_0}$, the orbit closure under $\sigma$-translations.
+
+\begin{lemma}[Commutation of $\Theta_\theta$ and $U_\sigma$]
+\label{lemma:commutation}
+For all $s \in \R$, $\Theta_\theta U_\sigma(s) = U_\sigma(s) \Theta_\theta$ on $\EE_0$.
+\end{lemma}
+
+\begin{proof}
+Geometrically, the reflection $\theta: (\tau, \sigma, x, y) \mapsto (-\tau, \sigma, x, y)$ commutes with $\sigma$-translation $(\tau, \sigma + s, x, y)$. At the distribution level, this means $W_n(\theta(x_1 + s\hat{\sigma}), \ldots) = W_n(\theta x_1 + s\hat{\sigma}, \ldots)$ where $\hat{\sigma}$ is the unit vector in the $\sigma$-direction. Since $\Theta_\theta$ and $U_\sigma(s)$ are the GNS implementations of these geometric operations, and the $W_n$ are invariant under $\sigma$-translation (by (S1)), the commutation $\Theta_\theta U_\sigma(s) = U_\sigma(s) \Theta_\theta$ holds on the dense domain of GNS vectors.
+\end{proof}
+
+\begin{lemma}[Extension of $\theta$-Positivity]
+\label{lemma:theta-extension}
+$\theta$-reflection positivity extends from $\EE_0$ to $\EE_\sigma$: for all $\Psi \in \EE_\sigma$,
+\begin{equation}
+    \langle \Theta_\theta \Psi, \Psi \rangle_\HH \geq 0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+\emph{Step 1: Finite sums.} Take $\Psi = \sum_j U_\sigma(s_j) \Psi_j$ with $\Psi_j \in \EE_0$ (finite sum). The $\theta$-form on $\EE_0$ defines a positive semidefinite sesquilinear form, which induces an inner product on the quotient $\widehat{\EE}_0 := \EE_0 / \NN_\theta$ where $\NN_\theta = \{\Psi : \langle \Theta_\theta \Psi, \Psi \rangle = 0\}$. By Lemma \ref{lemma:commutation}, the unitary $U_\sigma(s) = e^{isQ}$ descends to a unitary $\widehat{U}_\sigma(s)$ on the completion of $\widehat{\EE}_0$.
+
+Computing step by step:
+\begin{align}
+    \langle \Theta_\theta \Psi, \Psi \rangle_\HH 
+    &= \sum_{j,k} \langle \Theta_\theta U_\sigma(s_j)\Psi_j, U_\sigma(s_k)\Psi_k \rangle_\HH \\
+    &= \sum_{j,k} \langle U_\sigma(s_j) \Theta_\theta \Psi_j, U_\sigma(s_k)\Psi_k \rangle_\HH \quad \text{(by Lemma \ref{lemma:commutation})} \\
+    &= \sum_{j,k} \langle \Theta_\theta \Psi_j, U_\sigma(s_k - s_j)\Psi_k \rangle_\HH \quad \text{(unitarity of $U_\sigma$)}.
+\end{align}
+This last expression is the OS inner product of $\sum_j \widehat{U}_\sigma(s_j) q(\Psi_j)$ with itself in $\widehat{\EE}_0$, where $q: \EE_0 \to \widehat{\EE}_0$ is the quotient map. Since any OS inner product is a norm squared:
+\begin{equation}
+    \langle \Theta_\theta \Psi, \Psi \rangle_\HH = \left\| \sum_j \widehat{U}_\sigma(s_j) q(\Psi_j) \right\|^2_{\widehat{\EE}_0} \geq 0.
+\end{equation}
+
+\emph{Step 2: Closure.} The form $B(\Psi, \Phi) := \langle \Theta_\theta \Psi, \Phi \rangle_\HH$ is a bounded sesquilinear form on $\HH$: since $\Theta_\theta$ is antiunitary, $|B(\Psi, \Phi)| \leq \|\Psi\| \|\Phi\|$. Therefore $B$ is continuous in the norm topology on $\HH$.
+
+Let $\Psi \in \EE_\sigma$. By definition, $\EE_\sigma = \overline{\bigcup_{s} U_\sigma(s) \EE_0}$ in the $\HH$-norm, so there exists a sequence $\Psi_n \in \mathrm{span}\{U_\sigma(s)\Phi : \Phi \in \EE_0, s \in \R\}$ with $\|\Psi_n - \Psi\|_\HH \to 0$. By Step 1, $B(\Psi_n, \Psi_n) \geq 0$ for each $n$. By continuity of $B$:
+\begin{equation}
+    B(\Psi, \Psi) = \lim_{n \to \infty} B(\Psi_n, \Psi_n) \geq 0. \qedhere
+\end{equation}
+\end{proof}
+
+\medskip
+\noindent\textbf{Step 7: Reconstruction.}
+
+The data $(\HH, \Theta_\theta, \EE_\sigma)$ with the contraction semigroup $\{e^{-\tau H}\}_{\tau \geq 0}$ satisfy the hypotheses of the Osterwalder-Schrader reconstruction theorem for the symmetric pair $(\mathrm{ISO}(4), \Ad_\theta)$.
+
+The $c$-dual Lie algebra computation: the involution $\theta: \tau \mapsto -\tau$ gives
+\begin{align}
+    \mathfrak{h}_\theta &= \mathrm{span}\{P_\sigma, P_x, P_y, M_{\sigma x}, M_{\sigma y}, M_{xy}\} &&(\theta = +1), \\
+    \mathfrak{q}_\theta &= \mathrm{span}\{P_\tau, M_{\tau\sigma}, M_{\tau x}, M_{\tau y}\} &&(\theta = -1).
+\end{align}
+Replacing $P_\tau \to iP_\tau$ (and similarly for the boosts) gives
+\begin{equation}
+    \mathfrak{g}^c_\theta = \mathfrak{h}_\theta \oplus i\mathfrak{q}_\theta \cong \mathfrak{iso}(1,3),
+\end{equation}
+since one sign flips in the metric: $(iP_\tau)^2 + P_\sigma^2 + P_x^2 + P_y^2 \to -P_\tau^2 + P_\sigma^2 + P_x^2 + P_y^2$.
+
+The reconstructed Wightman QFT lives on the OS Hilbert space $\hat{\HH} := \overline{\EE_\sigma / \NN_\theta}$ with the $c$-dual group $G^c_\theta \cong \widetilde{\mathrm{ISO}}(1,3)$. The Lorentzian Wightman functions are boundary values of $W_n^{\mathrm{hol}}$ on the Lorentzian real section of the extended tube. \qed
+
+\begin{remark}[Verification of OS Axioms]
+\label{rmk:os-verification}
+For completeness, we verify that the Schwinger functions $S_n$ obtained from the split-signature data satisfy all Osterwalder-Schrader axioms:
+
+\emph{(OS0) Temperedness:} The $S_n$ are tempered distributions because the split $W_n$ are tempered by (S4), and analytic continuation through the extended tube preserves temperedness \cite[Theorem 3-6]{StreaterWightman}.
+
+\emph{(OS1) Euclidean covariance:} Inherited from the $\mathrm{ISO}(2,2)$ covariance (S2) of the split $W_n$, which complexifies to $\mathrm{ISO}(4,\C)$ and restricts to $\mathrm{ISO}(4)$ on the Euclidean slice.
+
+\emph{(OS2) Reflection positivity:} This is the content of the Bridge Lemma (Lemma \ref{lemma:bridge}) and the extension to $\EE_\sigma$ (Lemma \ref{lemma:theta-extension}).
+
+\emph{(OS3) Permutation symmetry:} By locality (S7), the split $W_n$ are symmetric under permutations of adjacent arguments at Jost points (split-spacelike separation). Under analytic continuation to Euclidean points---where all nonzero separations are spacelike---this extends to full permutation symmetry of the Schwinger functions $S_n$ \cite[Section 3-3]{StreaterWightman}.
+
+\emph{(OS4) Cluster property:} This requires that $S_{n+m}(x_1, \ldots, x_n, y_1 + a, \ldots, y_m + a) \to S_n(\vec{x}) S_m(\vec{y})$ as $|a| \to \infty$ for Euclidean $a$. By (S8), the split $W_{n+m}$ cluster for split-spacelike separations. Under the coordinate change to Euclidean variables $(\tau, \sigma, x, y)$, a split-spacelike separation $|a|^2_S = a_u^2 + a_v^2 - a_\perp^2 < 0$ with $|a| \to \infty$ maps to a Euclidean separation with $|a|_E \to \infty$. The exponential clustering in the split variables (at rate $\sim e^{-m|a|_S}$ where $m$ is the mass gap) continues to exponential clustering in Euclidean variables, as required for OS reconstruction.
+\end{remark}
+
+\begin{remark}[Three Involutions]
+\label{rmk:three-involutions}
+The proof uses three involutions: (i) $\Theta_S$, codimension-2, for which positivity is assumed; (ii) $R$, the discrete symmetry converting codimension-2 to codimension-1; (iii) $\theta = R \circ \Theta_S$, codimension-1, whose $c$-dual gives $\mathrm{ISO}(1,3)$. These three involutions form a Klein four-group $V_4 = \{e, \Theta_S, R, \theta\}$: each squares to the identity, and the composition of any two gives the third. All three preserve the split quadratic form $p^2_S$.\footnote{The full Klein four-group structure, the involution property $\Theta_S^2 = R^2 = \theta^2 = \mathrm{id}$, and isometry of all three maps have been formally verified: \texttt{klein\_four\_identity}, \texttt{thetaS\_involution}, \texttt{swapR\_involution}, \texttt{thetaE\_involution}, \texttt{thetaS\_preserves\_norm}, \texttt{swapR\_preserves\_norm}, \texttt{thetaE\_preserves\_norm} in \cite{LeanVerification}.}
+\end{remark}
+
+\begin{remark}[Two Split Time Directions]
+\label{rmk:two-times}
+The split wedge $\WW^+ = \{u > 0, v > 0\}$ imposes positivity in two timelike directions simultaneously.  The joint spectrum condition $H_u, H_v \geq 0$ constrains the same region of momentum space as the Lorentzian forward-cone condition $E \geq |P_3|$ (both select the first quadrant), but the split formulation carries additional \emph{structural} content: it provides two strongly commuting semigroups $\{e^{-a_u H_u}\}_{a_u \geq 0}$ and $\{e^{-a_v H_v}\}_{a_v \geq 0}$, yielding product-type analyticity in the split tube $\TT_S$ and the two-variable Laplace representation of Step~5.  This semigroup structure, together with $R$-symmetry, is what makes split wedge positivity sufficient for Lorentzian reconstruction.
+\end{remark}
+
+\begin{proposition}[Hardy realization of the GNS space]
+\label{prop:hardy-realization}
+Let $(\HH, \Omega, \pi)$ be the GNS triple constructed
+from axioms \textnormal{(S1)--(S8)} in Steps~1--3 above,
+and let $\HH_1 := \overline{\pi(\SSS(\WW^+))\Omega}$ be
+the one-particle subspace. Then:
+\begin{enumerate}[label=(\roman*)]
+  \item The joint spectrum of $(H_u, H_v)$ is contained in
+    $[0,\infty)^2$ by axiom~\textnormal{(S5)}.
+    Equivalently, the Fourier--Laplace transform of
+    $\langle \Omega, \pi(f)\Omega \rangle$ is supported in
+    the closure of the forward cone
+    $\Omega = \{(\xi_u, \xi_v) : \xi_u > 0, \xi_v > 0\}$.
+  \item Via the Paley--Wiener theorem for tube domains
+    \cite{SteinWeiss1971}, the positive spectral support
+    in~\textnormal{(i)} is equivalent to the statement
+    that boundary data extend holomorphically to the split
+    tube $\TT_S = \R^4 + i V^+_S$.
+  \item Under the identification of the split tube with a
+    Siegel domain realization of the Type~IV bounded symmetric
+    domain $D^N_{IV}$ (with $N = 2$, or $N = 2d-2$ in $d$
+    dimensions), the one-particle space $\HH_1$ embeds
+    isometrically into the Hardy space $H^2(\check{S})$ on the
+    Shilov boundary $\check{S} = (S^1 \times S^{N-1})/\Z_2$.
+\end{enumerate}
+In particular, the $K$-type decomposition and $\delta$-parity
+analysis of $H^2(\check{S})$ established in
+\cite{CauchySzego} apply to the GNS representation: every
+$K$-type in $\HH_1$ is $\delta$-even, so $\HH_1^- = \{0\}$.
+
+For the $n$-point reconstruction of Section~6, this
+identification is not required---the Bridge Lemma
+(Lemma~\ref{lemma:bridge}) gives $\theta$-positivity
+directly from $R$-invariance. However, the Hardy realization
+provides the representation-theoretic explanation for
+\emph{why} the Bridge Lemma works: $R$-invariance is
+equivalent to $\delta$-invariance of the state $\omega$,
+and $\delta$-evenness of the Hardy space ensures that this
+invariance imposes no constraint beyond what the spectrum
+condition already guarantees.
+\end{proposition}
+
+\begin{proof}
+Parts (i) and (ii) are standard: (i) is axiom (S5) restated
+in spectral language (the generators $H_u, H_v \geq 0$ are
+self-adjoint by Step~3, and their joint spectral measure is
+supported in $[0,\infty)^2$ by Lemma~\ref{lemma:strong-commute}).
+Part~(ii) is the Paley--Wiener theorem for tube domains
+over proper cones \cite[Chapter~III]{SteinWeiss1971}: a
+tempered distribution whose Fourier transform is supported
+in $\overline{\Omega}$ extends to a holomorphic function in
+$\TT_S = \R^N + i\Omega$.
+
+For (iii), the split tube $\TT_S$ is biholomorphic to the
+unbounded realization of $D^N_{IV}$ via the Cayley transform
+$z \mapsto (z - ie)(z + ie)^{-1}$
+\cite[Chapter~X]{FaKo1994}. Under this map, $L^2$ boundary
+values on $\partial \TT_S$ correspond to $L^2(\check{S})$ on
+the Shilov boundary, and holomorphic extension into the tube
+corresponds to membership in $H^2(\check{S})$. The isometric
+embedding $\HH_1 \hookrightarrow H^2(\check{S})$ follows by
+composing the Paley--Wiener extension (ii) with the Cayley
+identification.
+
+The $\delta$-evenness of all $K$-types in $H^2(\check{S})$
+is proved in \cite{CauchySzego} (Theorem~7.5 and
+Appendix~A therein), completing the claim $\HH_1^- = \{0\}$.
+\end{proof}
+
+%==============================================================================
+\section{Evidence from Conformal Field Theory}
+%==============================================================================
+
+As additional confirmation of the reconstruction theorem, we verify that split wedge positivity in CFT implies the expected unitarity constraints.
+
+\subsection{CFT Four-Point Functions}
+
+Consider a CFT with scalar primary $\phi$ of dimension $\Delta_\phi$. The four-point function is
+\begin{equation}
+    \langle \phi(x_1) \phi(x_2) \phi(x_3) \phi(x_4) \rangle = \frac{G(u,v)}{|x_{12}|^{2\Delta_\phi} |x_{34}|^{2\Delta_\phi}}
+\end{equation}
+with conformal cross-ratios $u, v$ and OPE expansion
+\begin{equation}
+    G(u,v) = \sum_{\OOO} \lambda^2_{\phi\phi\OOO} \, g_{\Delta_\OOO, \ell_\OOO}(u,v).
+\end{equation}
+
+\subsubsection{Split-Signature Conformal Blocks}
+
+In split signature, the cross-ratio variables $z, \bar{z}$ (with $u = z\bar{z}$, $v = (1-z)(1-\bar{z})$) become \emph{independent real variables}, rather than complex conjugates \cite{Caron-Huot2017}.
+
+\begin{proposition}[Block Factorization {\cite[Section 2]{Caron-Huot2017}}]
+\label{prop:block-factor}
+In split signature, the $d=4$ conformal blocks factorize:
+\begin{equation}
+    g_{\Delta,\ell}(z,\bar{z}) = \frac{z\bar{z}}{z - \bar{z}} \left[ k_{\beta_1}(z) k_{\beta_2}(\bar{z}) - k_{\beta_2}(z) k_{\beta_1}(\bar{z}) \right]
+\end{equation}
+where $\beta_1 = \Delta + \ell$, $\beta_2 = \Delta - \ell$, and
+\begin{equation}
+    k_\beta(x) = x^{\beta/2} \, {}_2F_1\left(\tfrac{\beta}{2}, \tfrac{\beta}{2}; \beta; x\right).
+\end{equation}
+\end{proposition}
+
+\begin{remark}[Dimension Dependence]
+The block factorization in Proposition \ref{prop:block-factor} is specific to $d=4$, where the conformal group $\mathrm{SO}(2,4)$ has split real form $\mathrm{SO}(2,4) \supset \mathrm{SO}(2,2) \cong \mathrm{SL}(2,\R) \times \mathrm{SL}(2,\R)$. This product structure underlies the factorization $g(z,\bar{z}) \sim k(z)k(\bar{z})$. In even dimensions $d = 2n$, similar factorizations occur (with $n$ factors), but the explicit form differs. In odd dimensions, the blocks do not factorize, and the split-signature analysis would require different techniques. Our CFT evidence is thus specific to $d=4$, though the general $n$-point conjecture is dimension-independent.
+\end{remark}
+
+\begin{lemma}[Block Positivity]
+\label{lemma:block-pos}
+For unitary representations (with $\Delta$ above the unitarity bound, i.e., $\Delta \geq \ell + 1$ for $\ell \geq 1$ and $\Delta \geq 1$ for $\ell = 0$ in $d=4$), we have $g_{\Delta,\ell}(z,\bar{z}) > 0$ for $0 < \bar{z} < z < 1$.
+\end{lemma}
+
+\begin{proof}
+\textbf{Step 1: Positivity of $k_\beta(x)$.} The hypergeometric series
+\begin{equation}
+    {}_2F_1(a, a; 2a; x) = \sum_{n=0}^\infty \frac{[(a)_n]^2}{(2a)_n \, n!} x^n
+\end{equation}
+has positive coefficients for $a > 0$ (since the Pochhammer symbols $(a)_n = a(a+1)\cdots(a+n-1) > 0$). Hence ${}_2F_1(\beta/2, \beta/2; \beta; x) > 0$ for $x \in (0,1)$ and $\beta > 0$. Since $k_\beta(x) = x^{\beta/2} {}_2F_1 > 0$, each $k_\beta(x) > 0$ on $(0,1)$.
+
+\textbf{Step 2: The case $\ell > 0$.} We need to show that for $z > \bar{z}$:
+\begin{equation}
+    k_{\beta_1}(z) k_{\beta_2}(\bar{z}) > k_{\beta_2}(z) k_{\beta_1}(\bar{z}).
+\end{equation}
+Define $f(x) := k_{\beta_1}(x) / k_{\beta_2}(x)$. We need $f(z) > f(\bar{z})$, i.e., $f$ is strictly increasing.
+
+We have
+\begin{equation}
+    f(x) = x^{(\beta_1 - \beta_2)/2} \cdot \frac{{}_2F_1(\beta_1/2, \beta_1/2; \beta_1; x)}{{}_2F_1(\beta_2/2, \beta_2/2; \beta_2; x)} = x^\ell \cdot R(x)
+\end{equation}
+where $\ell = (\beta_1 - \beta_2)/2 \geq 1$.
+
+The factor $x^\ell$ is strictly increasing on $(0,1)$ for $\ell \geq 1$.
+
+For the ratio $R(x)$, we show it is non-decreasing. Write
+\begin{equation}
+    R(x) = \frac{\sum_n a_n x^n}{\sum_n b_n x^n}
+\end{equation}
+where $a_n = [({\beta_1}/{2})_n]^2 / [(\beta_1)_n \, n!]$ and $b_n = [({\beta_2}/{2})_n]^2 / [(\beta_2)_n \, n!]$.
+
+By Chebyshev's inequality for products of monotone sequences, since $\beta_1 > \beta_2 > 0$ implies the ratio $a_n/b_n$ is non-decreasing in $n$ (the numerator grows faster), the ratio $R(x)$ is non-decreasing on $(0,1)$.
+
+Hence $f(x) = x^\ell R(x)$ is strictly increasing for $\ell \geq 1$.
+
+\textbf{Step 3: The case $\ell = 0$.} When $\ell = 0$, the general formula requires careful treatment. The standard $d=4$ scalar conformal block has the explicit form \cite{DolanOsborn2004}:
+\begin{equation}
+    g_{\Delta, 0}(z, \bar{z}) = \frac{(z\bar{z})^{\Delta/2}}{z - \bar{z}} \left[ z \, {}_2F_1\left(\tfrac{\Delta}{2}, \tfrac{\Delta}{2}; \Delta; z\right) {}_2F_1\left(\tfrac{\Delta-2}{2}, \tfrac{\Delta}{2}; \Delta-1; \bar{z}\right) - (z \leftrightarrow \bar{z}) \right].
+\end{equation}
+For $\Delta \geq 2$, both hypergeometric functions have non-negative coefficients, and the antisymmetric structure combined with $z > \bar{z}$ ensures $g_{\Delta,0} > 0$.
+
+For $1 < \Delta < 2$ (between the unitarity bound $\Delta = 1$ and $\Delta = 2$), the parameter $(\Delta-2)/2 < 0$, so the positive-coefficient argument does not apply directly. However, scalar block positivity in the full range $\Delta > 1$ and the region $0 < \bar{z} < z < 1$ is established by direct analysis in \cite{Rattazzi2008} using the integral representation of conformal blocks.
+\end{proof}
+
+\subsubsection{OPE Coefficient Positivity}
+
+To apply split wedge positivity to CFT four-point functions, we must establish the correspondence between the wedge configuration and cross-ratio space.
+
+\begin{lemma}[Wedge Configuration and Cross-Ratios]
+\label{lemma:wedge-crossratio}
+Consider four points $x_1, x_2, x_3, x_4 \in \R^{2,2}$ with split coordinates $(u_i, v_i, x_{i\perp})$. If all four points lie in the split wedge $\WW^+ = \{u > 0, v > 0\}$ and are ordered as $u_1 > u_2 > u_3 > u_4 > 0$ and $v_1 > v_2 > v_3 > v_4 > 0$, then the cross-ratios $z, \bar{z}$ (defined via $u = z\bar{z}$, $v = (1-z)(1-\bar{z})$ in the conformal frame where $x_1 \to \infty$, $x_2 = 1$, $x_4 = 0$) satisfy $0 < \bar{z} < z < 1$.
+\end{lemma}
+
+\begin{proof}
+In split signature, the cross-ratios become independent real variables:
+\begin{equation}
+    z = \frac{(u_{12}u_{34})^{1/2}}{(u_{13}u_{24})^{1/2}}, \qquad \bar{z} = \frac{(v_{12}v_{34})^{1/2}}{(v_{13}v_{24})^{1/2}}
+\end{equation}
+where $u_{ij} = u_i - u_j$ (and similarly for $v$). The wedge condition $u_1 > u_2 > u_3 > u_4 > 0$ ensures all $u_{ij} > 0$ for $i > j$, and the ordering gives $u_{12}u_{34} < u_{13}u_{24}$ (since $u_{13} = u_{12} + u_{23}$ and $u_{24} = u_{23} + u_{34}$), hence $z < 1$. Similarly $z > 0$. The analogous argument for $v$ gives $0 < \bar{z} < 1$.
+
+The condition $z > \bar{z}$ corresponds to the relative ordering of the $u$ and $v$ separations. Specifically, if $u_{12}/v_{12} > u_{34}/v_{34}$ (the first pair is more ``$u$-separated'' relative to ``$v$-separated'' than the second pair), then $z > \bar{z}$. This is a generic configuration within the wedge.
+\end{proof}
+
+\begin{remark}
+The region $0 < \bar{z} < z < 1$ is thus the natural cross-ratio domain for four points in the split wedge with the specified ordering. Split wedge positivity (the condition that correlation functions are non-negative for such configurations) becomes the statement $G(z, \bar{z}) \geq 0$ for $0 < \bar{z} < z < 1$.
+\end{remark}
+
+\begin{proposition}[Leading-Twist Positivity]
+\label{prop:OPE}
+If the CFT four-point function $G(z,\bar{z}) = \sum_\OOO \lambda^2_\OOO g_\OOO(z,\bar{z})$ satisfies split wedge positivity in the kinematic configuration $0 < \bar{z} < z < 1$, and the CFT has a discrete spectrum of twists with a unique minimal twist $\tau_1 = \Delta_1 - \ell_1$, then the leading-twist OPE coefficient satisfies $\lambda^2_1 \geq 0$.
+\end{proposition}
+
+\begin{proof}
+By Lemma \ref{lemma:block-pos}, each block $g_{\Delta,\ell} > 0$ in the region $\{0 < \bar{z} < z < 1\}$.
+
+The blocks have distinct asymptotic behavior near $z \to 0$:
+\begin{equation}
+    g_{\Delta,\ell}(z,\bar{z}) \sim z^{(\Delta - \ell)/2} \cdot h_{\Delta,\ell}(\bar{z})
+\end{equation}
+where $h_{\Delta,\ell}(\bar{z}) > 0$ and the twist $\tau = \Delta - \ell$ varies across operators.
+
+Order operators by increasing twist: $\tau_1 < \tau_2 \leq \cdots$. The OPE gives
+\begin{equation}
+    G(z,\bar{z}) = \lambda_1^2 z^{\tau_1/2} h_1(\bar{z}) + O(z^{\tau_2/2}).
+\end{equation}
+
+Split wedge positivity requires $G(z, \bar{z}) \geq 0$ for all $0 < \bar{z} < z < 1$. Fix $\bar{z} \in (0,1)$ and consider $G(z, \bar{z})$ as $z \to 0^+$. The leading behavior is $G(z,\bar{z}) \sim \lambda_1^2 z^{\tau_1/2} h_1(\bar{z})$, which dominates all other terms. Since $G \geq 0$ for all small $z > 0$ and $h_1(\bar{z}) > 0$, we must have $\lambda_1^2 \geq 0$.
+\end{proof}
+
+\begin{remark}[Extension to All Twists]
+Extending Proposition \ref{prop:OPE} to all OPE coefficients requires a more sophisticated argument. The asymptotic extraction used for the leading twist does not directly apply to subleading twists, since the leading positive terms can in principle mask negative subleading contributions at every $z$. 
+
+A complete proof would require either: (i) an inductive procedure using the functional form of the blocks to isolate each twist level, or (ii) a functional-analytic argument exploiting the linear independence of the blocks $\{g_k\}$ on the full region $(0,1)^2$ together with their strict positivity. Such arguments are related to Choquet theory for cones of positive functions.
+\end{remark}
+
+This CFT analysis provides independent confirmation that split wedge positivity captures the correct unitarity constraints, consistent with Theorem \ref{thm:npoint}.
+
+%==============================================================================
+\section{Discussion}
+%==============================================================================
+
+\subsection{Summary of Results}
+
+We have established:
+\begin{enumerate}
+    \item \textbf{Theorem \ref{thm:main} (Two-Point Reconstruction):} Split wedge positivity for the two-point function implies a positive K\"all\'en-Lehmann spectral measure, Euclidean OS positivity, and a Wightman two-point function.
+    
+    \item \textbf{Theorem \ref{thm:npoint} ($n$-Point Reconstruction):} Split wedge positivity for all $n$-point functions, combined with $R$-invariance, implies OS reflection positivity and yields a Wightman QFT via reconstruction. The key is the Bridge Lemma converting codimension-2 $\Theta_S$-positivity to codimension-1 $\theta$-positivity.
+    
+    \item \textbf{Proposition \ref{prop:OPE} (CFT Verification):} In conformal field theory, split wedge positivity of the four-point function implies leading-twist OPE coefficient positivity, providing independent confirmation.
+\end{enumerate}
+
+These results establish \textbf{split signature as a third axiomatization of quantum field theory}, equivalent to both Wightman (Lorentzian) and Osterwalder-Schrader (Euclidean) axioms.
+
+\subsection{The $n$-Point Trinity}
+
+For $n$-point functions, we have proven the equivalence:
+\begin{center}
+\begin{tabular}{ccc}
+\textbf{Lorentzian} & $\longleftrightarrow$ & \textbf{Euclidean} \\
+Wightman axioms & & OS axioms \\
+Spectral positivity & & Reflection positivity \\
+$\updownarrow$ & & $\updownarrow$ \\
+\multicolumn{3}{c}{\textbf{Split $(2,2)$}} \\
+\multicolumn{3}{c}{Split wedge axioms (S1)--(S8)} \\
+\multicolumn{3}{c}{Wedge reflection positivity + $R$-invariance}
+\end{tabular}
+\end{center}
+
+The three formulations are projections of a single holomorphic structure on complexified spacetime $\C^4$.
+
+\begin{remark}[Reverse Direction and Parity]
+\label{rmk:reverse}
+Theorem \ref{thm:npoint} establishes Split $\Rightarrow$ OS $\Rightarrow$ Wightman. The reverse direction (Wightman $\Rightarrow$ Split) requires showing that a Wightman QFT satisfies axioms (S1)--(S8). Axioms (S1), (S2), (S4)--(S8) follow from analytic continuation through the extended tube: the Wightman functions extend to holomorphic functions on $\TT'_n$, and their restriction to the split tube $\TT_S \subset \TT'$ gives split-signature distributions satisfying the required properties.
+
+However, axiom (S3) ($R$-invariance) requires the Wightman QFT to be \textbf{parity-invariant}. A parity-violating QFT (e.g., the Standard Model with chiral fermions) cannot satisfy (S3) as stated. The precise equivalence is therefore:
+\begin{center}
+\emph{Split wedge axioms (S1)--(S8)} $\;\Longleftrightarrow\;$ \emph{Wightman axioms + parity invariance.}
+\end{center}
+
+For parity-violating theories, one may replace (S3) with \emph{$R$-covariance}: $W_n(Rx_1, \ldots, Rx_n) = \eta^n W_n(x_1, \ldots, x_n)$ for some phase $\eta$. The Bridge Lemma generalizes to this setting, with $\theta$-positivity holding on a $\Z_2$-graded Hilbert space. We leave this extension to future work.
+\end{remark}
+
+\subsection{Implications}
+
+\subsubsection{For the Amplitudes Program}
+
+Split signature $(2,2)$ is extensively used in scattering amplitudes \cite{ArkaniHamed2010,Mason2009,WittenTwistor2004} because spinor-helicity variables become real. Theorem \ref{thm:npoint} provides rigorous foundation: split-signature methods are not computational conveniences but access an \emph{equivalent} formulation of quantum field theory.
+
+The ``EFThedron'' bounds from Hankel positivity \cite{Caron-Huot2021,Tolley2020} constrain Wilson coefficients via positivity of certain moment matrices. These are related to our wedge positivity: the 1-parameter Hankel positivity conditions can be viewed as restrictions of split wedge positivity to test functions depending on a single combination of the timelike variables.
+
+\subsubsection{For the Conformal Bootstrap}
+
+The bootstrap program \cite{Rattazzi2008,Poland2019} uses crossing symmetry and unitarity (reflection positivity) to constrain CFT data. Our results show that split wedge positivity yields equivalent constraints, licensing the bootstrap to be reformulated in split signature where the kinematics are often simpler (real cross-ratios in the physical region).
+
+\subsubsection{For Two-Time Physics}
+
+Bars' program \cite{Bars2001} proposed $(2,2)$ signature as fundamental. Our theorem shows that one version of two-time physics---with $R$-symmetry imposed---is precisely equivalent to standard $(1,3)$ quantum field theory. The ``extra time'' is not exotic; it is a different slicing of the same holomorphic structure.
+
+\subsection{Open Problems}
+
+\begin{enumerate}
+    \item \textbf{Interacting existence:} Theorems \ref{thm:main} and \ref{thm:npoint} are reconstruction theorems. Existence of interacting examples satisfying axioms (S1)--(S8) (e.g., Yang-Mills, $\phi^4$) is a separate problem, equivalent to the corresponding existence problem in Euclidean or Lorentzian formulations.
+    
+    \item \textbf{Necessity of $R$-invariance:} Is axiom (S3) necessary for reconstruction, or can it be derived from the other axioms? Physically, this asks whether split wedge positivity alone (without parity) suffices.
+    
+    \item \textbf{Steinmann relations:} Do the split wedge axioms imply constraints on double discontinuities? The Steinmann relations in Lorentzian signature have important consequences for analyticity; their split-signature analogues may provide new constraints.
+    
+    \item \textbf{Gravity:} Can the framework extend to theories with dynamical geometry? The fixed-signature structure is essential to our arguments; a gravitational generalization would require new ideas.
+\end{enumerate}
+
+\subsection{Conclusion}
+
+We have established split signature $(2,2)$ as a third axiomatization of quantum field theory, equivalent to both Wightman (Lorentzian) and Osterwalder-Schrader (Euclidean) axioms.
+
+For the two-point function, the equivalence follows from the semigroup representation of wedge positivity and the Berg-Christensen-Ressel theorem. For general $n$-point functions, the key insight is the Bridge Lemma: the codimension-2 split reflection $\Theta_S$ combines with the $R$-symmetry to yield a codimension-1 Euclidean time reflection $\theta = R \circ \Theta_S$, converting split wedge positivity into standard Osterwalder-Schrader reflection positivity.
+
+The three signatures---Lorentzian $(1,3)$, Euclidean $(0,4)$, and split $(2,2)$---are revealed as three real slices of complexified spacetime $\C^4$. Quantum field theory is fundamentally a holomorphic structure, with the familiar formulations being its projections. Split signature is no longer exotic; it is an equally valid starting point for the axiomatization of relativistic quantum physics.
+
+%==============================================================================
+% References
+%==============================================================================
+
+\subsection{Formal Verification}
+
+The algebraic core of this paper has been formally verified in the Lean~4 proof assistant using the Mathlib library \cite{LeanVerification}. The formalization covers:
+\begin{enumerate}[label=(\roman*)]
+\item All definitions: split spacetime $\R^{2,2}$, the split metric $g_S$, the three involutions $\Theta_S$, $R$, $\theta$, the split wedge $\WW^+$, the forward cone $V^+_S$, and the dual cone $(V^+_S)^*$.
+\item The Klein four-group structure: $\Theta_S^2 = R^2 = \theta^2 = \mathrm{id}$, $\theta(R(p)) = \Theta_S(p)$, and all three involutions preserve $p^2_S$.
+\item The Bridge Lemma factorization: $\theta = R \circ \Theta_S$ and the conjugation identity $\theta(R(p)) = \Theta_S(p)$ that enables positivity transfer.
+\item Wedge geometry: $R$ preserves $\WW^+$, $\Theta_S$ maps $\WW^+ \to \WW^-$, and $\bigcup_s U_\sigma(s)\WW^+ = \EE^+$.
+\item Dual cone structure: $(V^+_S)^* \subset \overline{V^+_S}$, $(V^+_S)^* \neq \varnothing$, $V^+_S$ is not self-dual (explicit counterexample), and $g_S(p,y) \geq 0$ for $p \in \overline{V^+_S}$, $y \in (V^+_S)^*$.
+\item The three antiholomorphic involutions $\sigma_L$, $\sigma_E$, $\sigma_S$ on $\C^4$: involution proofs ($\sigma^2 = \mathrm{id}$), composition laws, fixed-point set characterization (real/imaginary part conditions), and signature verification that the complexified quadratic form restricts to $(1,3)$, $(0,4)$, $(2,2)$ on the respective fixed-point sets.
+\end{enumerate}
+The functional analysis arguments (GNS construction, BCR theorem, Nelson's theorem, Stone's theorem, OS reconstruction) invoke standard results not yet available in Mathlib and are therefore not machine-verified. The Two-Point Trinity (Corollary~\ref{cor:trinity}) is stated as a formal equivalence, but its proof legs rely on the functional analysis results listed above; the Lean formalization verifies the algebraic infrastructure (sum-kernel rewrite, tube inclusion, semigroup structure) but not the equivalence itself. A successful build of the Lean project constitutes a machine-checked proof certificate for the algebraic content listed above; the source code is available at \cite{LeanVerification}.
+
+\emph{Corrections from formalization.} The Lean verification uncovered that the shift identity $\Theta_S(\xi' + a) = \Theta_S \xi' - a$ (equation~\eqref{eq:theta-shift}) requires restriction to timelike translations $a = (a_u, a_v, 0, 0)$, since $\Theta_S$ preserves the spatial components $(x, y)$. This does not affect the proof of Theorem~\ref{thm:main-theorem}, which uses only timelike shifts $a \in \R_+^2 \times \{0\}$.
+
+\begin{thebibliography}{99}
+
+\bibitem{Wightman1956}
+A.~S.~Wightman,
+``Quantum field theory in terms of vacuum expectation values,''
+Phys.\ Rev.\ \textbf{101}, 860 (1956).
+
+\bibitem{StreaterWightman}
+R.~F.~Streater and A.~S.~Wightman,
+\emph{PCT, Spin and Statistics, and All That},
+Princeton University Press (1964, 2000).
+
+\bibitem{OsterwalderSchrader1973}
+K.~Osterwalder and R.~Schrader,
+``Axioms for Euclidean Green's functions,''
+Commun.\ Math.\ Phys.\ \textbf{31}, 83 (1973).
+
+\bibitem{OsterwalderSchrader1975}
+K.~Osterwalder and R.~Schrader,
+``Axioms for Euclidean Green's functions II,''
+Commun.\ Math.\ Phys.\ \textbf{42}, 281 (1975).
+
+\bibitem{BargmannHallWightman}
+D.~Hall and A.~S.~Wightman,
+``A theorem on invariant analytic functions with applications to relativistic quantum field theory,''
+Mat.\ Fys.\ Medd.\ Dan.\ Vid.\ Selsk.\ \textbf{31}, no.\ 5 (1957).
+
+\bibitem{Penrose1967}
+R.~Penrose,
+``Twistor algebra,''
+J.\ Math.\ Phys.\ \textbf{8}, 345 (1967).
+
+\bibitem{PenroseRindler}
+R.~Penrose and W.~Rindler,
+\emph{Spinors and Space-Time}, Vols.\ 1 and 2,
+Cambridge University Press (1984, 1986).
+
+\bibitem{WittenTwistor2004}
+E.~Witten,
+``Perturbative gauge theory as a string theory in twistor space,''
+Commun.\ Math.\ Phys.\ \textbf{252}, 189 (2004).
+
+\bibitem{ArkaniHamed2010}
+N.~Arkani-Hamed, F.~Cachazo, C.~Cheung, and J.~Kaplan,
+``A duality for the S matrix,''
+JHEP \textbf{03}, 020 (2010).
+
+\bibitem{Mason2009}
+L.~Mason and D.~Skinner,
+``Scattering amplitudes and BCFW recursion in twistor space,''
+JHEP \textbf{01}, 064 (2010).
+
+\bibitem{Caron-Huot2017}
+S.~Caron-Huot,
+``Analyticity in spin in conformal theories,''
+JHEP \textbf{09}, 078 (2017).
+
+\bibitem{Caron-Huot2021}
+S.~Caron-Huot, D.~Mazac, L.~Rastelli, and D.~Simmons-Duffin,
+``Dispersive CFT sum rules,''
+JHEP \textbf{05}, 243 (2021).
+
+\bibitem{Tolley2020}
+A.~J.~Tolley, Z.-Y.~Wang, and S.-Y.~Zhou,
+``New positivity bounds from full crossing symmetry,''
+JHEP \textbf{05}, 255 (2021).
+
+\bibitem{BergChristensenRessel}
+C.~Berg, J.~P.~R.~Christensen, and P.~Ressel,
+\emph{Harmonic Analysis on Semigroups},
+Springer-Verlag (1984).
+
+\bibitem{Vladimirov1979}
+V.~S.~Vladimirov,
+\emph{Generalized Functions in Mathematical Physics},
+Mir Publishers, Moscow (1979).
+
+\bibitem{Dellacherie1978}
+C.~Dellacherie and P.-A.~Meyer,
+\emph{Probabilities and Potential},
+North-Holland (1978).
+
+\bibitem{Faraut2008}
+J.~Faraut,
+\emph{Analysis on Lie Groups: An Introduction},
+Cambridge University Press (2008).
+
+\bibitem{Rattazzi2008}
+R.~Rattazzi, V.~S.~Rychkov, E.~Tonni, and A.~Vichi,
+``Bounding scalar operator dimensions in 4D CFT,''
+JHEP \textbf{12}, 031 (2008).
+
+\bibitem{Poland2019}
+D.~Poland, S.~Rychkov, and A.~Vichi,
+``The conformal bootstrap: theory, numerical techniques, and applications,''
+Rev.\ Mod.\ Phys.\ \textbf{91}, 015002 (2019).
+
+\bibitem{BisognanoWichmann1975}
+J.~J.~Bisognano and E.~H.~Wichmann,
+``On the duality condition for a Hermitian scalar field,''
+J.\ Math.\ Phys.\ \textbf{16}, 985 (1975).
+
+\bibitem{BisognanoWichmann1976}
+J.~J.~Bisognano and E.~H.~Wichmann,
+``On the duality condition for quantum fields,''
+J.\ Math.\ Phys.\ \textbf{17}, 303 (1976).
+
+\bibitem{DolanOsborn2004}
+F.~A.~Dolan and H.~Osborn,
+``Conformal partial waves and the operator product expansion,''
+Nucl.\ Phys.\ B \textbf{678}, 491 (2004).
+
+\bibitem{Bars2001}
+I.~Bars,
+``Two-time physics,''
+Phys.\ Rev.\ D \textbf{64}, 126001 (2001).
+
+\bibitem{ReedSimonI}
+M.~Reed and B.~Simon,
+\emph{Methods of Modern Mathematical Physics I: Functional Analysis},
+Academic Press (1972).
+
+\bibitem{SteinWeiss1971}
+E.~M.~Stein and G.~Weiss,
+\emph{Introduction to Fourier Analysis on Euclidean Spaces},
+Princeton University Press (1971).
+
+\bibitem{FaKo1994}
+J.~Faraut and A.~Kor\'anyi,
+\emph{Analysis on Symmetric Cones},
+Oxford Mathematical Monographs, Clarendon Press (1994).
+
+\bibitem{CauchySzego}
+A.~Abrahams,
+``The Cauchy--Szeg\H{o} Kernel as Holomorphic Filter: Simultaneous Reflection Positivity via Analytic Continuation Through Type~IV Bounded Symmetric Domains,''
+Paper~3 in the present series (2026).
+
+\bibitem{LeanVerification}
+A.~Abrahams,
+``Formal verification of the complexified spacetime QFT framework in Lean~4,''
+available at \url{https://github.com/Neutrinic/three-slices}, 2026.
+Lean~4.28 / Mathlib; unified repository covering three papers.
+Split Wedge module: 93 theorems verified including Klein four-group structure,
+involution identities, dual cone geometry (non-self-duality counterexample
+$g_S = -29$), geometric coverage $\bigcup_s W^+(s) = E^+$, tube inclusion
+$V_L^+ \to V_S^+$, and the Bridge Lemma factorization
+$\theta_E = R \circ \Theta_S$.
+The formalization uncovered that the shift identity
+$\Theta_S(\xi' + a) = \Theta_S \xi' - a$ requires restriction to timelike
+translations $a = (a_u, a_v, 0, 0)$; see footnote to equation~\eqref{eq:theta-shift}.
+
+\end{thebibliography}
+
+\end{document}

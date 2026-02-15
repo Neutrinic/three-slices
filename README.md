@@ -17,13 +17,13 @@ complexified-qft-lean4/
 │   │   └── ComplexInvolutions.lean   # ℂ⁴, σ_L/σ_E/σ_S, fixed-point sets, signatures
 │   ├── SplitWedge/                   # Paper 1 + Bridge
 │   │   ├── TubeInclusion.lean        # SO(4,ℂ) rotation, V_L⁺ → V_S⁺, T_S ⊂ T'
-│   │   ├── Axioms.lean              # (S1)-(S8) as a Lean structure
+│   │   ├── Axioms.lean              # (S1)-(S8) structure (see Known Limitations)
 │   │   ├── Bridge.lean              # θ_E = R∘Θ_S, shift identities
 │   │   ├── DualCone.lean            # (V_S⁺)* ⊊ V_S⁺, non-self-duality
 │   │   ├── SumKernel.lean           # Θ_S converts difference → sum kernel
 │   │   ├── Contractivity.lean       # Damping, contractivity bound
 │   │   ├── EuclideanMetric.lean     # Euclidean coordinates, c-dual
-│   │   └── Trinity.lean             # Two-Point Trinity equivalence cycle
+│   │   └── Trinity.lean             # Two-Point Trinity equivalence cycle (see Known Limitations)
 │   └── CauchySzego/                  # Paper 3
 │       ├── Jordan.lean              # Spin factor V_N, Δ(u), Lorentz cone
 │       ├── TypeIV.lean              # Lie ball D^N_IV, Shilov boundary, Wallach set
@@ -50,14 +50,19 @@ complexified-qft-lean4/
 - SO(4,ℂ) rotation preserves Lorentz metric (Λ^T η Λ = η) and has det = 1
 - Forward cone inclusion: V_L⁺ → V_S⁺ (both timelike components positive)
 - Sum-kernel rewrite: Θ_S(ξ)-y = (-(u_ξ+u_y), -(v_ξ+v_y), x_ξ-x_y, y_ξ-y_y)
-- Shift identity: Θ_S(ξ+a) = Θ_S(ξ) - a
-- Translated kernel: Θ_S(ξ'+a)-(η'+a) = Θ_S(ξ')-η' - 2a
+- Shift identity: Θ_S(ξ+a) = Θ_S(ξ) - a for **timelike** a = (a_u, a_v, 0, 0)
+- Translated kernel: Θ_S(ξ'+a)-(η'+a) = Θ_S(ξ')-η' - 2a for **timelike** a
 - Contractivity bound: |c·w| ≤ w for |c| ≤ 1
 - Non-self-duality: ∃ p,y ∈ V_S⁺ with g_S(p,y) = -29 < 0
 - Dual cone is strictly smaller than forward cone
 
+**Note:** The shift identity and translated kernel were originally stated for
+general translations. The Lean formalization caught that they only hold for
+timelike a (spatial components break the identity because Θ_S preserves x,y).
+This does not affect the main theorems, which use only timelike shifts.
+
 ### Cauchy-Szegő (★ Main Results)
-- **δ-evenness (Theorem 7.2)**: k + |λ| = 2m₁ for ALL K-types — `omega`
+- **δ-evenness (Theorem 7.2)**: k + |λ| = 2m₁ for ALL K-types — `ring`
 - **k + |λ| is always even** — no δ-odd K-types exist on the Lie sphere
 - **(-1)^{k+|λ|} = +1** for every K-type (scalar δ-eigenvalue)
 - Half-integer m₁ is impossible (δ-odd types require it)
@@ -69,7 +74,7 @@ complexified-qft-lean4/
 
 ## What's Axiomatized (`sorry` or `trivial`)
 
-Functional analysis results that would require extensive Mathlib extensions:
+Functional analysis results not yet available in Mathlib:
 
 | Result | Used In | Status |
 |--------|---------|--------|
@@ -85,6 +90,30 @@ Functional analysis results that would require extensive Mathlib extensions:
 
 The `sorry` count is exactly 2 (both in Trinity.lean).
 **The central δ-evenness theorem has zero sorrys.**
+
+## Known Limitations
+
+**Axioms.lean:** Axioms S1 (translation invariance) and S3 (R-invariance) are
+implemented with mathematical content. Axioms S5–S8 (spectrum condition, wedge
+positivity, locality, cluster decomposition) are axiomatized as bare `Prop` fields
+with no mathematical content. This is because tempered distributions, spectral
+measures, and spacelike commutation are not available in Mathlib. These
+axioms will gain mathematical content as Mathlib's functional analysis
+library develops.
+
+**Trinity.lean:** The three positivity conditions (Lorentzian spectral, Euclidean
+OS, split wedge) are defined as `True`. The Two-Point Trinity theorem therefore
+proves `True ↔ True ↔ True`. The algebraic legs connecting the proven components
+(sum-kernel, tube inclusion, bridge factorization) are in place, but the theorem
+itself is structural scaffolding, not a verified equivalence. The `trivial` proofs
+are no more substantive than the `sorry` proofs.
+
+**Where the substance lives:** The substantive formalization is in
+Foundations/ComplexInvolutions (signature verification), SplitWedge/DualCone
+(non-self-duality with explicit counterexample), SplitWedge/TubeInclusion
+(cone rotation), CauchySzego/DeltaEvenness (the critical path, zero sorrys),
+and CauchySzego/VectorValued (full δ-eigenvalue). These modules contain real
+mathematical content verified by Lean, not structural placeholders.
 
 ## Building
 
@@ -106,6 +135,18 @@ If `lake update` reports a toolchain mismatch, re-run step 1. The included
 `lean-toolchain` may become stale as Mathlib advances; the `curl` command
 always gives you the correct version.
 
+## Corrections Found by Formalization
+
+The Lean build process caught two mathematical errors in the papers:
+
+1. **Shift identity (Split Wedge paper):** Θ_S(ξ+a) = Θ_S(ξ) - a was stated
+   for general translations. The identity only holds for timelike a = (a_u, a_v, 0, 0)
+   because Θ_S preserves spatial components. Corrected to restrict to timelike shifts.
+
+2. **Quadratic form (TubeInclusion.lean):** An identity claimed y₀² - y₁² on the
+   RHS; the correct expansion gives y₀² + y₁². The tube inclusion theorem is
+   unaffected (it uses positivity, not the sign).
+
 ## Paper Section Mapping
 
 | Paper Section | Lean Module | Content |
@@ -122,15 +163,15 @@ always gives you the correct version.
 | Cauchy-Szegő §2.1 | CauchySzego/TypeIV | D^N_IV, Wallach set |
 | Cauchy-Szegő §2.3 | CauchySzego/Involutions | α, θ, δ, V₄ dictionary |
 | Cauchy-Szegő §6 | CauchySzego/KTypes | (m₁,m₂) lattice, Hardy |
-| **Cauchy-Szegő Thm 7.2** | **CauchySzego/DeltaEvenness** | **k+|λ| = 2m₁** |
+| **Cauchy-Szegő Thm 7.2** | **CauchySzego/DeltaEvenness** | **k+\|λ\| = 2m₁** |
 | Cauchy-Szegő §4-5 | CauchySzego/VectorValued | J_τ, Theorem 7.1 |
 
 ## Design Decisions
 
 1. **Single repository**: Papers share definitions (SplitPoint, involutions, cones). No duplication.
 2. **Foundations feed both**: SplitWedge/ and CauchySzego/ both import from Foundations/.
-3. **Axioms as structures**: SplitQFT, LorentzianQFT, EuclideanQFT encode the logical architecture.
-4. **Trinity skeleton**: The equivalence cycle is stated as `Iff` with algebraic legs proven and analytic legs marked.
+3. **Axioms as structures**: SplitQFT, LorentzianQFT, EuclideanQFT encode the logical architecture. S5-S8 are `Prop` placeholders awaiting Mathlib distribution theory.
+4. **Trinity skeleton**: The equivalence cycle is stated as `Iff`. The positivity conditions are `True`; the theorem is structural, not substantive. See Known Limitations.
 5. **SpinFactorElt with ‖u'‖²**: Avoids ℝ^{N-1} vectors; stores the squared norm directly.
 6. **KType as (m₁,m₂) with dominance**: Natural parametrization; coordinate change is definitional.
 7. **DeltaStructure as inductive**: Clean pattern matching on positive/negative.

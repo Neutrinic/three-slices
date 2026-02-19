@@ -1,15 +1,24 @@
 /-
   ComplexifiedQFT/CauchySzego/DeltaEvenness.lean
 
-  THE central theorem of the Cauchy-Szegő paper:
+  THE central arithmetic theorem of the Cauchy-Szegő paper:
 
     For all K-types (m₁, m₂) ∈ ℤ² on the Lie sphere:
       k + |λ| = (m₁ + m₂) + (m₁ - m₂) = 2m₁
 
     Therefore (-1)^{k + |λ|} = (-1)^{2m₁} = +1 for every K-type.
 
-  This is a one-line arithmetic proof. It implies that no δ-odd
-  K-types exist in L²(Š), a fortiori none in H²(Š).
+  This is a one-line arithmetic proof. It proves that δ preserves
+  all K-type *labels* in L²(Š), a fortiori in H²(Š).
+
+  NOTE: This is a statement about the action of δ on the set K̂ of
+  K-type labels, NOT about the operator implementing time reflection
+  within each K-type. In positive-energy theories, time reflection
+  is antiunitary (Neeb-Ólafsson, arXiv:1704.01336), and the
+  operator-level analysis requires the standard subspace formalism
+  and BGL construction on covering groups (Morinelli-Neeb,
+  arXiv:2010.07128). The K-type label preservation proved here is
+  a necessary algebraic condition for that construction.
 
   Reference: Cauchy-Szegő paper, Theorem 7.2 and Appendix A.3
 -/
@@ -108,16 +117,17 @@ example : let τ : KType := ⟨2, -1, by omega⟩
 
 /-! ## The Punchline -/
 
-/-- **The δ-odd obstruction from the Bridge paper does not arise
-    from the scalar K-type lattice.**
+/-- **δ preserves all scalar K-type labels on the Lie sphere.**
 
     For ANY K-type (m₁, m₂) ∈ ℤ² with m₁ ≥ m₂:
     - k + |λ| = 2m₁ (even)
     - (-1)^{k+|λ|} = +1
-    - The scalar δ-eigenvalue is always +1
+    - δ acts as the identity on K-type labels
 
-    The obstruction lives entirely in the fiber representation
-    (the intertwiner J_τ), resolved for bosonic fields by J_τ = +id. -/
+    This is a necessary algebraic condition for the BGL net
+    construction. The operator-level implementation of time
+    reflection requires the antiunitary/standard subspace
+    framework (see paper §5.5 and Remark 8.X). -/
 theorem scalar_lattice_uniformly_delta_even :
     ∀ (m₁ m₂ : ℤ), m₂ ≤ m₁ →
       Even ((m₁ + m₂) + (m₁ - m₂)) := by

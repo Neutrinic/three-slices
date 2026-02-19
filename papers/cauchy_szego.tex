@@ -79,10 +79,10 @@ setting the remaining sign is entirely fiber-theoretic, controlled
 by the $\delta$-intertwiner $J_\tau$; for 
 $J_\tau = +\mathrm{id}$ (all bosonic/tensor fields and Dirac 
 fermions in even dimensions) the Szeg\H{o} transfer preserves 
-reflection positivity across all real forms. This establishes 
-that reflection-positive bosonic QFTs on any one real form of 
-$\C^d$ determine, via an explicit integral transform, 
-reflection-positive theories on every other real form.
+reflection positivity across all real forms. This establishes the $K$-type label compatibility required for simultaneous reflection positivity. The operator-level
+reconstruction additionally requires the antiunitary/standard
+subspace framework of Neeb--\'Olafsson, with the covering group
+on which the BGL net is local determined by $d \bmod 4$.
 \end{abstract}
 
 \tableofcontents
@@ -1093,6 +1093,10 @@ and~\ref{sec:filter}. The strategy is:
 \end{enumerate}
 The arithmetic core of this theorem---the identity $k + |\lambda| = 2m_1$, the eigenvalue $(-1)^{k+|\lambda|} = +1$, and the absence of $\delta$-odd $K$-types---has been formally verified in Lean~4 with zero \texttt{sorry} axioms \cite{LeanVerification}.
 
+\begin{remark}[What $\delta$-evenness controls]\label{rem:label-vs-operator}
+The identity $k + |\lambda| = 2m_1$ proves that $\delta$ \emph{preserves all $K$-type labels}: no $K$-type is sent to a different $K$-type under $\delta$. This is a statement about the action of $\delta$ on the set $\hat{K}$ of $K$-type labels, not about the operator implementing $\delta$ within each $K$-type. In particular, this does not by itself determine the sign of the operator implementing time reflection on each $K$-type. As explained in \cite[\S5.5]{Bridge}, time reflection in positive-energy theories must be implemented by an \emph{antiunitary} operator $J$ (not a unitary involution $U$ with $U^2 = 1$), and the operator-level analysis requires the standard subspace formalism of \cite{NO17,MN21} rather than eigenspace decompositions. The $K$-type label preservation proved here is a necessary algebraic condition for the BGL net construction, complementary to the modular-theoretic machinery.
+\end{remark}
+
 
 %=============================================================================
 \section{The $d = 4$ Verification}
@@ -1863,14 +1867,19 @@ by the isometry group of the target real form.
 
 \subsection{What the Theorem Says}
 
-We have established that bosonic quantum field theories on different 
-real forms of complexified spacetime are not merely analogous or 
-related by formal manipulation---they are \emph{projections} of a 
-single holomorphic object, and the projection operator (the 
-Cauchy--Szeg\H{o} kernel) is an explicit integral transform. The 
-three formulations (Euclidean, Lorentzian, split) are three ``views'' 
-of the same entity, connected by continuation through the interior 
-of the Type~IV domain.
+We have established that all scalar $K$-type labels on the Lie
+sphere are $\delta$-even ($k + |\lambda| = 2m_1$, always even),
+and that the Cauchy--Szeg\H{o} kernel provides a holomorphic
+filter selecting precisely the Hardy-space $K$-types that extend
+into the tube domain. The three formulations (Euclidean,
+Lorentzian, split) are connected by continuation through the
+interior of the Type~IV domain, with the Szeg\H{o} projection
+providing the explicit integral transform. The $K$-type label
+compatibility proved here is a necessary algebraic ingredient
+for simultaneous reflection positivity; the operator-level
+reconstruction additionally requires the antiunitary/standard
+subspace framework of \cite{NO17,MN21} and the covering group
+classification of \cite{NeebPIM} (see \S\ref{subsec:covering-groups}).
 
 \subsection{Why Analysis Succeeds Where Algebra Fails}
 
@@ -1891,21 +1900,29 @@ the Paley--Wiener theorem for tube domains
 spectrum condition (Fourier support outside the closed forward 
 cone $\overline{\Omega}$).
 
-A key lesson of the present analysis is that the $\delta$-odd 
-obstruction identified in \cite{Bridge} was an artifact of the 
-algebraic method's failure to impose the holomorphic extension 
-condition, not an intrinsic feature of the physics. In the scalar 
-sector, $\delta$-odd scalar $K$-types do not exist in the 
-$K$-type lattice at all---not merely in $H^2(\check{S})$, but 
-in $L^2(\check{S})$ as well, since $k + |\lambda| = 2m_1$ is 
-even for all integer $m_1$ (Theorem~\ref{thm:disjointness}, 
-Appendix~\ref{app:parity}). In the vector-valued sector, 
-the $\delta$-eigenvalue is controlled entirely by the fiber 
-intertwiner $J_\tau$ (Lemma~\ref{lem:vv-delta-eigenvalue}), and 
-for physical bosonic fields ($J_\tau = +\mathrm{id}$) the Hardy 
-space is uniformly $\delta$-even. (See Remark~\ref{rem:distributional} 
-for the respective roles of the Cauchy--Szeg\H{o} kernel and 
-the Bargmann--Hall--Wightman theorem in this result.)
+A key lesson of the present analysis is that all scalar $K$-type
+labels are $\delta$-even: the identity $k + |\lambda| = 2m_1$
+holds in the full $K$-type lattice, not merely in $H^2(\check{S})$
+but in $L^2(\check{S})$ as well (Theorem~\ref{thm:disjointness},
+Appendix~\ref{app:parity}). In the vector-valued sector,
+the $\delta$-eigenvalue on labels is controlled entirely by the fiber
+intertwiner $J_\tau$ (Lemma~\ref{lem:vv-delta-eigenvalue}), and
+for physical bosonic fields ($J_\tau = +\mathrm{id}$) the Hardy
+space is uniformly $\delta$-even at the label level. (See
+Remark~\ref{rem:distributional} for the respective roles of the
+Cauchy--Szeg\H{o} kernel and the Bargmann--Hall--Wightman theorem
+in this result.)
+
+As noted in Remark~\ref{rem:label-vs-operator}, the $K$-type label
+preservation proved here is necessary but not sufficient for the
+full operator-level reconstruction. In positive-energy theories,
+time reflection is antiunitary \cite{NO17}, and the operator
+framework involves standard subspaces and the BGL construction on
+covering groups \cite{MN21}, with the relevant covering depending
+on the spacetime dimension mod~4 \cite[\S5.5]{Bridge}.
+The label preservation proved here ensures compatibility of the
+$\delta$-action with the $K$-type decomposition, while the
+modular-theoretic machinery provides the operator-level positivity.
 
 \begin{remark}[Relation to the Bisognano--Wichmann property]
 \label{rem:hardy-vs-bw}
@@ -1978,10 +1995,22 @@ and Dirac fermions in even spacetime dimensions
     physics (chiral theories are not reflection-positive).
 \end{itemize}
 
-These limitations are \emph{technical}, not fundamental: the 
-Cauchy--Szeg\H{o} kernel and the Type~IV domain geometry are 
-universal. Only the inner product formulation varies with the 
-field content.
+A third limitation is \emph{structural}: the $K$-type label
+preservation proved here ($k + |\lambda| = 2m_1$) does not by
+itself determine the operator implementing time reflection within
+each $K$-type (Remark~\ref{rem:label-vs-operator}). In
+positive-energy theories, time reflection is antiunitary
+\cite{NO17}, and the operator-level analysis requires the standard
+subspace formalism and the BGL construction on covering groups
+\cite{MN21}, with the covering determined by $d \bmod 4$
+(\S\ref{subsec:covering-groups}). The $K$-type label compatibility
+proved here is necessary for this construction but not sufficient.
+
+These limitations are \emph{technical}, not fundamental: the
+Cauchy--Szeg\H{o} kernel and the Type~IV domain geometry are
+universal. Only the inner product formulation and the covering
+group structure vary with the field content and spacetime
+dimension.
 
 \begin{remark}[Unconditional boundary regularity]
 \label{rem:regularity-upgrade}
@@ -1999,9 +2028,40 @@ of this paper) to an unconditional one for all Wightman theories
 with positive $\delta$-structure.
 \end{remark}
 
+\subsection{Covering Groups and Dimension Mod~4}
+\label{subsec:covering-groups}
+
+The L\"uscher--Mack theorem produces representations of the
+\emph{simply connected} $c$-dual group $G^c$---the universal
+covering $\widetilde{\SO}_0(2,N)$, which has infinite centre
+$Z \cong \Z$ for $N \geq 3$ \cite[Theorem~6.8]{NO18}. Whether the
+resulting BGL net \cite{BGL02,MN21} is local, twisted-local, or
+lives on a finite covering depends on the kernel of the
+representation. For the scalar Wallach point at
+$\nu = d/2 - 1$ of $\SO_0(2,d)$, the classification by
+\cite[Theorem~5.35]{NeebPIM} is:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Dimension} & \textbf{Covering} \\
+\midrule
+$d - 2 \in 4\Z$ & Adjoint group (minimal covering) \\
+$d \in 4\Z$ & $\SO_0(2,d)$ with $U(-1) = -1$ (twisted-local) \\
+$d$ odd & $2$-fold covering \\
+\bottomrule
+\end{tabular}
+\end{center}
+The $K$-type label preservation proved in Theorem~\ref{thm:disjointness}
+($k + |\lambda| = 2m_1$ for all $K$-types) is a universal
+arithmetic fact, independent of $d \bmod 4$. It establishes that
+the $\delta$-action is well-defined on the $K$-type lattice for
+\emph{all} dimensions. The covering group classification then
+determines the operator-level behaviour, with the general
+vector-valued case to be addressed in \cite{MN25}.
+
 \subsection{Relation to Previous Wick Rotation Results}
 
-The analytic continuation of correlation functions between 
+The analytic continuation of correlation functions between
 Euclidean and Lorentzian signatures has a long history, beginning 
 with the Osterwalder--Schrader reconstruction theorem 
 \cite{OS1973, OS1975}. The L\"uscher--Mack theorem establishes 
@@ -2025,25 +2085,35 @@ uniform transfer of the full $n$-point structure.
 The three papers form a logical progression:
 
 \begin{enumerate}
-  \item \textbf{Algebraic structure} (\cite{SplitWedge}): The 
-    $V_4$ group and the real-form correspondence exist and are 
+  \item \textbf{Algebraic structure} (\cite{SplitWedge}): The
+    $V_4$ group and the real-form correspondence exist and are
     well-defined. For $d = 4$, the correspondence is perfect.
-  \item \textbf{Algebraic obstruction} (\cite{Bridge}): For $d > 4$, 
-    the algebraic transfer encounters sign reversals. The obstruction 
-    is \emph{precisely characterised} and is the \emph{only} obstacle 
-    to a purely algebraic proof.
-  \item \textbf{Analytic resolution} (present paper): The 
-    Cauchy--Szeg\H{o} kernel provides an analytic transfer that 
-    bypasses the obstruction. The ``$\delta$-odd modes'' of the 
-    algebraic approach are revealed to be an artifact: in the scalar 
-    sector they do not exist; in the vector sector they are controlled 
-    by the fiber intertwiner $J_\tau$.
+  \item \textbf{Algebraic obstruction and antiunitary correction}
+    (\cite{Bridge}): For $d > 4$, the algebraic transfer encounters
+    sign reversals. The obstruction is precisely characterised. The
+    paper also identifies the correct resolution framework: time
+    reflection must be antiunitary (not unitary) in positive-energy
+    theories, and the BGL net construction on covering groups---with
+    the covering determined by $d \bmod 4$---replaces the eigenspace
+    decomposition with the standard subspace formalism
+    \cite{NO17,MN21}.
+  \item \textbf{$K$-type label compatibility} (present paper): The
+    Cauchy--Szeg\H{o} kernel provides a holomorphic filter that
+    selects Hardy-space $K$-types, and the identity
+    $k + |\lambda| = 2m_1$ proves that $\delta$ preserves all
+    $K$-type labels. This is a necessary algebraic condition for the
+    BGL net construction, complementary to the modular-theoretic
+    operator framework.
 \end{enumerate}
 
-Together, these establish (for bosonic fields and Dirac fermions 
-in even dimensions) that reflection-positive quantum field theories 
-on any real form of $\C^d$ are in canonical bijection, mediated by 
-the Cauchy--Szeg\H{o} kernel of the Type~IV bounded symmetric domain.
+Together with the modular theory of \cite{NO17,MN21} and the
+covering group classification of \cite{NeebPIM,MN25}, these
+establish the algebraic and analytic infrastructure for simultaneous
+reflection positivity on all real forms of $\C^d$, mediated by
+the Cauchy--Szeg\H{o} kernel of the Type~IV bounded symmetric
+domain. The full operator-level reconstruction for general
+representations awaits the vector-valued covering group
+classification of \cite{MN25}.
 
 
 %=============================================================================
@@ -2323,6 +2393,38 @@ V.S.~Vladimirov,
 MIT Press, Cambridge, MA, 1966.
 (Distributional boundary values of holomorphic functions in tube
 domains: Chapter~IV, Theorem~25.1.)
+
+\bibitem{NO17}
+K.-H.~Neeb and G.~\'Olafsson,
+\emph{Antiunitary representations and modular theory},
+in: 50th Seminar ``Sophus Lie'', Banach Center Publ., vol.~113 (2017), 291--362.
+arXiv:1704.01336.
+
+\bibitem{MN21}
+V.~Morinelli and K.-H.~Neeb,
+\emph{Covariant homogeneous nets of standard subspaces},
+Comm.\ Math.\ Phys.\ \textbf{386} (2021), 305--358.
+arXiv:2010.07128.
+
+\bibitem{MN25}
+V.~Morinelli and K.-H.~Neeb,
+\emph{Nets on coverings of causal symmetric spaces},
+in preparation, 2025.
+
+\bibitem{NeebPIM}
+K.-H.~Neeb,
+\emph{Causal flag manifolds and standard subspaces},
+Lecture notes / preprint, Section~5.6, 2024.
+
+\bibitem{NO18}
+K.-H.~Neeb and G.~\'Olafsson,
+\emph{Reflection positivity: A representation theoretic perspective},
+Springer Briefs in Mathematical Physics, vol.~32, Springer, 2018.
+
+\bibitem{BGL02}
+R.~Brunetti, D.~Guido, and R.~Longo,
+\emph{Modular localization and Wigner particles},
+Rev.\ Math.\ Phys.\ \textbf{14} (2002), 759--785.
 
 \bibitem{LeanVerification}
 A.~Abrahams,

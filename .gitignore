@@ -26,6 +26,9 @@ papers/*.snm
 papers/*.vrb
 papers/*.pdf
 
+# Reference papers
+arXiv-*/
+
 # Claude
 .claude/
 CLAUDE.md

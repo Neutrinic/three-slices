@@ -3,8 +3,8 @@
 Formal verification of the algebraic core of the complexified spacetime QFT trilogy:
 
 1. **Split Wedge** — Split signature as a third axiomatization of QFT
-2. **Bridge** — n-point reconstruction across real forms of ℂ^d
-3. **Cauchy-Szegő** — Simultaneous reflection positivity via the Type IV domain
+2. **Bridge** — Obstruction analysis across real forms of ℂ^d, antiunitary correction
+3. **Cauchy-Szegő** — K-type label compatibility via the Type IV domain
 
 ## Project Structure
 
@@ -63,14 +63,20 @@ This does not affect the main theorems, which use only timelike shifts.
 
 ### Cauchy-Szegő (★ Main Results)
 - **δ-evenness (Theorem 7.2)**: k + |λ| = 2m₁ for ALL K-types — `ring`
-- **k + |λ| is always even** — no δ-odd K-types exist on the Lie sphere
-- **(-1)^{k+|λ|} = +1** for every K-type (scalar δ-eigenvalue)
-- Half-integer m₁ is impossible (δ-odd types require it)
+- **k + |λ| is always even** — δ preserves all K-type labels on the Lie sphere
+- **(-1)^{k+|λ|} = +1** for every K-type (scalar label parity)
+- Half-integer m₁ is impossible (δ-odd labels would require it)
 - Hardy condition is NOT needed for δ-evenness
-- Full δ-eigenvalue = J_τ (scalar factor drops out)
-- For J_τ = +id: every Hardy section is δ-even
+- Full label eigenvalue = J_τ (scalar factor drops out)
+- For J_τ = +id: all Hardy K-type labels are δ-even
 - N=6 (d=4) verification: all lowest K-types checked
 - N=10 (d=6) non-Hardy example: (2,-1) is δ-even but non-Hardy
+
+**Important caveat:** The δ-evenness theorem proves that δ preserves all
+K-type *labels*. It does not determine the operator implementing time
+reflection within each K-type. In positive-energy theories, time reflection
+is antiunitary (not unitary), and the operator-level analysis requires the
+standard subspace formalism of Neeb-Ólafsson. See the Bridge paper §5.5.
 
 ## What's Axiomatized (`sorry` or `trivial`)
 
@@ -175,3 +181,28 @@ The Lean build process caught two mathematical errors in the papers:
 5. **SpinFactorElt with ‖u'‖²**: Avoids ℝ^{N-1} vectors; stores the squared norm directly.
 6. **KType as (m₁,m₂) with dominance**: Natural parametrization; coordinate change is definitional.
 7. **DeltaStructure as inductive**: Clean pattern matching on positive/negative.
+
+## The Antiunitary Correction
+
+An earlier version of the Bridge paper used a unitary involution U with U²=1
+to implement δ, then argued that the δ-odd eigenspace H⁻ is empty via
+K-type arithmetic. K.-H. Neeb pointed out that:
+
+1. **Time reflection must be antiunitary** in positive-energy theories
+   (a unitary T with THT = -H contradicts H ≥ 0).
+2. **K-type label parity ≠ operator eigenvalue**: the arithmetic k+|λ| = 2m₁
+   controls labels, not the action of the implementing operator within each K-type.
+
+The papers have been revised to use the correct framework:
+- The Bridge paper (§5.5) now explains the antiunitary correction, standard
+  subspaces, covering groups, and the dimension mod 4 classification.
+- The Cauchy-Szegő paper now presents δ-evenness as "K-type label compatibility"
+  — a necessary algebraic condition for the BGL net construction, not a standalone
+  resolution of the obstruction.
+- The Lean comments have been updated accordingly. No theorem statements or
+  proofs changed (the arithmetic is correct; only the interpretation was wrong).
+
+The full operator-level reconstruction requires the framework of:
+- Neeb-Ólafsson, "Antiunitary representations and modular theory" (arXiv:1704.01336)
+- Morinelli-Neeb, "Covariant homogeneous nets of standard subspaces" (arXiv:2010.07128)
+- Morinelli-Neeb, "Nets on coverings of causal symmetric spaces" (in preparation)

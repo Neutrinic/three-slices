@@ -52,6 +52,9 @@
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\HH}{\mathbb{H}}
 \newcommand{\BB}{\mathcal{B}}
+\newcommand{\sV}{\mathsf{V}}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\Spec}{\operatorname{Spec}}
 
 \title{Bridge Triples and the Klein Four-Group \\ for Real Forms of $\SO(2n,\C)$}
 \author{A.~Abrahams}
@@ -61,7 +64,7 @@
 \maketitle
 
 \begin{abstract}
-For $G_\C = \SO(2n,\C)$ with $n \geq 2$, we identify a Klein four-group $V_4 \cong \Z_2 \times \Z_2$ of holomorphic automorphisms connecting three real forms: compact $\SO(2n)$, Lorentzian $\SO_0(1,2n{-}1)$, and the Hermitian bridge form $\SO_0(2,2n{-}2)$. We prove that the bridge form is the unique real form of $\SO_0(p,q)$-type admitting an invariant cone (for $n \geq 3$), and that the bridge automorphism preserves this cone by acting as a restricted Weyl group element. This provides the algebraic skeleton for simultaneous Osterwalder--Schrader (Euclidean) and Wightman (Lorentzian) reconstruction from a single positivity condition on the bridge form. We verify the full reconstruction explicitly for $n=2$ (recovering the equivalence of three formulations of axiomatic quantum field theory) and $n=3$ (where the bridge form is the conformal group $\SO_0(2,4)$ and the bridge automorphism corresponds to parity). For general $n$, we identify the precise obstruction to abstract transfer---the $\delta$-odd sector of the GNS Hilbert space---establish a contractivity bound $|K_\theta| \leq K_\alpha$ via holomorphic extension to the complex Olshanski semigroup, and formulate a conjecture identifying the Bisognano--Wichmann property for non-compactly causal symmetric spaces as the missing axiom. The analogous algebraic structure, including cone preservation, is established for the $A$-series ($\SL(2n,\C)$ with bridge $\SU(n,n)$).
+For $G_\C = \SO(2n,\C)$ with $n \geq 2$, we identify a Klein four-group $V_4 \cong \Z_2 \times \Z_2$ of holomorphic automorphisms connecting three real forms: compact $\SO(2n)$, Lorentzian $\SO_0(1,2n{-}1)$, and the Hermitian bridge form $\SO_0(2,2n{-}2)$. We prove that the bridge form is the unique real form of $\SO_0(p,q)$-type admitting an invariant cone (for $n \geq 3$), and that the bridge automorphism preserves this cone by acting as a restricted Weyl group element. This provides the algebraic skeleton for simultaneous Osterwalder--Schrader (Euclidean) and Wightman (Lorentzian) reconstruction from a single positivity condition on the bridge form. We verify the full reconstruction explicitly for $n=2$ (recovering the equivalence of three formulations of axiomatic quantum field theory) and $n=3$ (where the bridge form is the conformal group $\SO_0(2,4)$ and the bridge automorphism corresponds to parity). For general $n$, we identify the precise obstruction to abstract transfer---the $\delta$-odd sector of the GNS Hilbert space---establish a contractivity bound $|K_\theta| \leq K_\alpha$ via holomorphic extension to the complex Olshanski semigroup, and formulate a conjecture identifying the Bisognano--Wichmann property for non-compactly causal symmetric spaces as the missing axiom. We also explain why time reflection in positive-energy theories must be antiunitary rather than unitary, and how the correct resolution of the obstruction involves the BGL construction of nets of standard subspaces on covering groups, with the relevant covering determined by the spacetime dimension mod~4. The analogous algebraic structure, including cone preservation, is established for the $A$-series ($\SL(2n,\C)$ with bridge $\SU(n,n)$).
 \end{abstract}
 
 \tableofcontents
@@ -118,9 +121,9 @@ For the physics of quantum field theory in four dimensions, the theorem is compl
 
 \subsection{The obstruction to abstract transfer}\label{sec:obstruction_intro}
 
-A natural conjecture is that $\alpha$-reflection positivity on the bridge form, combined with $\delta$-invariance, \emph{automatically} implies $\theta$-reflection positivity (and hence the Lorentzian continuation). We explain in \S\ref{sec:obstruction} why this fails on any fixed domain: the $\theta$-RP kernel decomposes under $\delta$ into positive and negative parts, and $\delta$-odd states violate $\theta$-RP. The abstract transfer fails precisely on the $(-1)$-eigenspace of the implementing unitary $U$.
+A natural conjecture is that $\alpha$-reflection positivity on the bridge form, combined with $\delta$-invariance, \emph{automatically} implies $\theta$-reflection positivity (and hence the Lorentzian continuation). We explain in \S\ref{sec:obstruction} why this fails on any fixed domain: the $\theta$-RP kernel decomposes under $\delta$ into positive and negative parts, and $\delta$-odd states violate $\theta$-RP. The abstract transfer fails precisely on the $(-1)$-eigenspace of the implementing unitary $U$. (See Remark~\ref{rem:modeling-caveat} for the important caveat that in positive-energy theories, $\delta$ is implemented antiunitarily rather than unitarily; the algebraic analysis here identifies the obstruction correctly but the physical resolution comes from modular theory, not from the absence of $\delta$-odd eigenspaces.)
 
-For $n=2$ and $n=3$, this obstruction is overcome by \emph{analytic} methods specific to each case (tube domain properties for QFT, conformal structure for CFT), not by abstract algebra. Holomorphic extension to the complex Olshanski semigroup yields a contractivity bound $|K_\theta| \leq K_\alpha$ (\Cref{thm:contractivity}) that is strictly stronger than what the algebraic obstruction alone gives, but still falls short of positivity. The identification of this obstruction, together with the contractivity bound, sharpens the question of simultaneous reflection positivity from a vague open problem to a precise analytic condition (\Cref{conj:simultaneous_RP}).
+For $n=2$ and $n=3$, this obstruction is overcome by \emph{analytic} methods specific to each case (tube domain properties for QFT, conformal structure for CFT), not by abstract algebra. Holomorphic extension to the complex Olshanski semigroup yields a contractivity bound $|K_\theta| \leq K_\alpha$ (\Cref{thm:contractivity}) that is strictly stronger than what the algebraic obstruction alone gives, but still falls short of positivity. The correct framework for general $n$ is the BGL construction on covering groups (\S\ref{sec:antiunitary-correction}).
 
 \subsection{Epistemic status}
 
@@ -136,6 +139,8 @@ Compact continuation via L\"uscher--Mack & Proved & Standard + new setting \\
 Abstract $\alpha$-RP $\Rightarrow$ $\theta$-RP & \textbf{False} & \S\ref{sec:obstruction} \\
 Contractivity bound $|K_\theta| \leq K_\alpha$ & Proved & New \\
 Transfer on $\delta$-even sector & Proved & New \\
+Antiunitary correction (time reflection $=$ $J$, not $U$) & Established & \S\ref{sec:antiunitary-correction}, \cite{NO17} \\
+Dimension mod~4 covering classification & Cited & \cite[Thm.~5.35]{NeebPIM} \\
 Simultaneous RP ($n=2$, QFT) & Proved & Recovery of \cite{Author_SplitWedge} \\
 Simultaneous RP ($n=3$, CFT) & Proved & New application \\
 Simultaneous RP (general $n$) & Open & \Cref{conj:simultaneous_RP} \\
@@ -345,6 +350,10 @@ Standard application of L\"uscher--Mack to the Hermitian symmetric pair $(G_B, \
 
 One might hope that $\alpha$-RP combined with $\delta$-invariance \emph{automatically} implies $\theta$-RP, yielding the Lorentzian continuation by abstract algebra. We now show this fails: there is no purely algebraic implication $(\alpha\text{-RP on } S_\alpha) + (\delta\text{-invariance}) \Rightarrow (\theta\text{-RP on the same domain})$.
 
+\begin{remark}[Modeling caveat]\label{rem:modeling-caveat}
+The analysis in this section employs a \emph{unitary} involution $U$ with $U^2 = \id$ to implement $\delta$ on the GNS Hilbert space. This is the natural algebraic setting for the kernel decomposition and contractivity bound. However, in physical quantum field theories with positive energy, time reflection must be implemented by an \emph{antiunitary} operator $J$ (since a unitary time reversal $T$ satisfying $THT = -H$ would force the spectrum of $H$ to be symmetric about zero, contradicting $H \geq 0$). The correct framework, developed in \cite{NO17,MN21}, replaces the $(\pm 1)$-eigenspace decomposition $\mathcal{H} = \mathcal{H}^+ \oplus \mathcal{H}^-$ with the standard subspace $\sV = \Fix(J\Delta^{1/2})$ and its symplectic complement $\sV' = J\sV$, where $\Delta$ is the modular operator from Tomita--Takesaki theory. The obstruction analysis below remains valid as an identification of \emph{what the algebraic transfer encounters}, but the resolution in physical theories comes from modular theory rather than from the absence of $\delta$-odd eigenspaces. See \S\ref{sec:antiunitary-correction} for the precise relationship.
+\end{remark}
+
 Throughout this section, we take $s, t \in S_\alpha = K\exp(C)$ (equivalently, in a test-function algebra supported on $S_\alpha$), and ask whether the induced $\theta$-kernel on the \emph{same} positive domain $\mathcal{E}_+$ is positive semidefinite. The $n=2$ and $n=3$ cases overcome the resulting obstruction not by working on this domain, but by using analytic continuation to \emph{extend} from $S_\alpha$ to $S_\theta$ (or to the relevant tube domain), which changes the problem entirely.
 
 \subsection{The kernel decomposition}
@@ -471,6 +480,55 @@ For $n=2$: the split wedge construction \cite{Author_SplitWedge} uses tube domai
 For $n=3$: the conformal reconstruction uses the tube realization of Minkowski space as a Shilov boundary of the Hermitian symmetric domain $\SU(2,2)/S(U(2) \times U(2))$. The extension from Euclidean to Lorentzian is mediated by the tube, not by algebraic transfer on a fixed domain. See \cite{LM75,Poland19}.
 
 In both cases, the $V_4$ structure and cone preservation provide the \emph{algebraic skeleton} that organizes the reconstruction, while the \emph{analytic flesh} comes from case-specific methods.
+
+\subsection{The antiunitary correction}\label{sec:antiunitary-correction}
+
+As noted in Remark~\ref{rem:modeling-caveat}, the obstruction analysis above uses a unitary involution $U$ to implement $\delta$. In quantum field theories with positive energy, this must be replaced by an antiunitary operator. We now explain the correct framework, following \cite{NO17,MN21}.
+
+\subsubsection*{Why time reflection is antiunitary}
+
+Let $(\pi, \mathcal{H})$ be a unitary positive-energy representation of a Lie group $G$, with Hamiltonian $H = -i\,\partial\pi(h) \geq 0$ for some element $h$ in the Lie algebra. If a \emph{unitary} operator $T$ implements time reversal ($T\pi(g)T^{-1} = \pi(\tau(g))$ for an involution $\tau$ fixing $h$), then $THT^{-1} = -H$, which forces $\Spec(H)$ to be symmetric about zero---contradicting $H \geq 0$ unless $H = 0$. An \emph{antiunitary} operator $J$ satisfies $JiJ^{-1} = -i$, so $J(-i\,\partial\pi(h))J^{-1} = i\,\partial\pi(\tau(h)) = -(-i\,\partial\pi(h))$, which is compatible with $\Spec(H) \subseteq [0,\infty)$ because antilinearity reverses the sign of $i$ \cite[Lemma~2.19]{NO17}.
+
+\subsubsection*{Standard subspaces replace eigenspaces}
+
+For an antiunitary conjugation ($J^2 = +1$), the fixed-point set $\Fix(J)$ is a \emph{real} Hilbert subspace (not a complex subspace), and $\mathcal{H} = \Fix(J) \oplus i\,\Fix(J)$ as a real direct sum. For an anticonjugation ($J^2 = -1$), there are no eigenvectors at all. In neither case does the decomposition $\mathcal{H} = \mathcal{H}^+ \oplus \mathcal{H}^-$ into complex $(\pm 1)$-eigenspaces exist.
+
+The correct replacement is the \emph{standard subspace} $\sV := \Fix(J\Delta^{1/2})$, where $\Delta$ is the modular operator from the polar decomposition of the Tomita operator $S = J\Delta^{1/2}$. The standard subspace satisfies $\sV \cap i\sV = \{0\}$ and $\sV + i\sV$ is dense---a real, not complex, splitting. The symplectic complement $\sV' = J\sV$ replaces the $(-1)$-eigenspace. The modular relation $J\Delta J = \Delta^{-1}$ replaces the involution relation $U^2 = \id$ \cite[Prop.~3.2]{MN21}.
+
+\subsubsection*{Covering groups and the Lüscher--Mack construction}
+
+The L\"uscher--Mack theorem (\S\ref{sec:compact}) produces a representation of the \emph{simply connected} $c$-dual group $G^c$, not of the original group $G_B$ \cite[Theorem~6.8]{NO18}. For $G_B = \SO_0(2,2n{-}2)$, the simply connected $c$-dual is the universal covering $\widetilde{\SO}_{0}(2,2n{-}2)$, which has infinite centre $Z \cong \Z$ (for $n \geq 3$). Whether the resulting BGL net (Brunetti--Guido--Longo construction \cite{BGL02,MN21}) is local, twisted-local, or lives on a finite covering $M_k := \widetilde{G}/\langle g_h^{2k} \rangle$ depends on the kernel of the representation $U$:
+\begin{itemize}
+\item A net on $M_k$ exists if and only if $g_h^{2k} \in \ker U$, where $g_h \in Z(\widetilde{G})$ is the element satisfying $\tau_h(g_h) = g_h^{-1}$ \cite[Theorem~5.33]{NeebPIM}.
+\item The net on $M_k$ is \emph{local} (not merely twisted-local) if and only if $g_h^{4k} \in \ker U$ \cite[Theorem~5.34]{NeebPIM}.
+\end{itemize}
+
+\subsubsection*{The dimension mod~4 classification}
+
+For the scalar Wallach point (the massless spin-0 representation at $\nu = d/2 - 1$) of $\SO_0(2,d)$, the covering on which the BGL net is local depends on the spacetime dimension $d$ \cite[Theorem~5.35]{NeebPIM}:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Dimension} & \textbf{Covering} \\
+\midrule
+$d - 2 \in 4\Z$ \quad (i.e., $d \in \{6, 10, 14, \ldots\}$) & Adjoint group (minimal covering) \\
+$d \in 4\Z$ \quad\;\;\; (i.e., $d \in \{4, 8, 12, \ldots\}$) & $\SO_0(2,d)$ with $U(-1) = -1$ (twisted-local) \\
+$d$ odd \quad\;\;\;\;\; (i.e., $d \in \{3, 5, 7, \ldots\}$) & $2$-fold covering \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection*{Reinterpretation of the obstruction}
+
+The algebraic obstruction of Proposition~\ref{prop:failure} remains valid as a statement about the \emph{kernel decomposition}: if one insists on using a unitary involution $U$ with $U^2 = \id$, then $\theta$-RP fails on $\mathcal{H}^-$. In the antiunitary framework, this obstruction is replaced by a different mechanism:
+\begin{enumerate}
+\item The Bisognano--Wichmann property provides $J_W$ (antiunitary, from modular theory) and $\Delta_W$ (positive, implementing boosts) for each wedge $W$.
+\item The BGL construction assigns a standard subspace $\sV(W) := \Fix(J_W \Delta_W^{1/2})$ to each wedge.
+\item Locality/twisted-locality of the net is controlled by the covering group condition $g_h^{2k} \in \ker U$, not by the absence of $\delta$-odd $K$-types.
+\item The $\delta$-evenness arithmetic of \cite{Author_CauchySzego} (Theorem~7.2: $k + |\lambda| = 2m_1$) establishes that $\delta$ \emph{preserves all $K$-type labels}---a necessary condition for the transfer map to have definite sign on each $K$-type, and a consistency check on the covering group classification.
+\end{enumerate}
+
+The $K$-type arithmetic and the covering group criterion are complementary: the former controls labels, the latter controls the representation. A complete resolution of the simultaneous RP problem for general $n$ and general representations will require the vector-valued covering group classification, which is the subject of \cite{MN25}.
 
 %----------------------------------------------------------------------
 \section{The Case $n=2$: QFT Recovery}\label{sec:n2}
@@ -620,34 +678,35 @@ Let $n \geq 2$ and let $\omega$ be a state on $G_B = \SO_0(2,2n{-}2)$ that is:
 \item $\delta$-invariant;
 \item satisfies the \textbf{Bisognano--Wichmann property}: the modular conjugation $J_W$ of the von Neumann algebra $\mathcal{A}(W) = \pi(\BB(W))''$ (where $W \subset G_B/H_\theta$ is the wedge domain of the NCC symmetric space) implements the geometric reflection $\tau_\theta$, and the modular operator $\Delta_W$ generates the one-parameter group of boosts in $H_\theta$.
 \end{enumerate}
-Then $\omega$ is also $\theta$-reflection positive with respect to $S_\theta = H_\theta \exp(C_\theta)$, yielding simultaneous unitary representations of $\SO(2n)$ and $\SO_0(1,2n{-}1)$.
+Then $\omega$ is also $\theta$-reflection positive with respect to $S_\theta = H_\theta \exp(C_\theta)$, yielding simultaneous unitary representations of $\SO(2n)$ and $\SO_0(1,2n{-}1)$ on an appropriate covering of $G_B$ determined by the dimension mod~4 classification of \S\ref{sec:antiunitary-correction}.
 \end{conjecture}
 
-\begin{remark}[Status and relation to the $\delta$-evenness approach]\label{rem:conj_discussion}
-The conjecture is verified for $n=2$ \cite{Author_SplitWedge} and $n=3$ (classical CFT). Conditions (i)--(ii) alone are insufficient (\Cref{prop:failure}). The role of condition (iii) is to replace the indefinite unitary insertion $U$ (eigenvalues $\pm 1$) with the positive modular operator $\Delta^{1/2}$ (spectrum in $\R_{>0}$), thereby overcoming the sign obstruction on $\delta$-odd states.
+\begin{remark}[Status and relation to the antiunitary framework]\label{rem:conj_discussion}
+The conjecture is verified for $n=2$ \cite{Author_SplitWedge} and $n=3$ (classical CFT). Conditions (i)--(ii) alone are insufficient (\Cref{prop:failure}). The role of condition (iii) is to replace the indefinite unitary insertion $U$ (eigenvalues $\pm 1$) with the \emph{antiunitary} modular conjugation $J_W$ and the positive modular operator $\Delta_W^{1/2}$ (spectrum in $\R_{>0}$), thereby overcoming the sign obstruction via the standard subspace formalism.
 
-For theories satisfying the Wightman axioms, condition (iii) is 
-not an independent assumption but a \emph{theorem}: 
-for $n=2$, this is the Bisognano--Wichmann theorem 
-\cite{BW75,BW76} (derived from the spectrum condition, 
-Lorentz covariance, and locality); for $n=3$, it follows from 
-the Brunetti--Guido--Longo theory of modular localisation 
-\cite{BGL02}. For general $n$, the recent work of Neeb, 
-\'Olafsson, and collaborators on wedge domains and standard 
-subspaces in NCC symmetric spaces \cite{NO23wedge,MNO23} 
-provides the natural framework.
+As explained in \S\ref{sec:antiunitary-correction}, time reflection in positive-energy theories is necessarily antiunitary \cite{NO17}. For an antiunitary conjugation ($J^2 = +1$), the fixed-point set $\Fix(J)$ is a real subspace---not a complex eigenspace---so the $(\pm 1)$-eigenspace decomposition $\mathcal{H} = \mathcal{H}^+ \oplus \mathcal{H}^-$ of Proposition~\ref{prop:failure} does not apply. For an anticonjugation ($J^2 = -1$, quaternionic type), there are no eigenvectors at all.
 
-The modular-theoretic approach and the $\delta$-evenness approach 
-of \cite{Author_CauchySzego} resolve the obstruction by different 
-mechanisms. The $\delta$-evenness route shows the $R$-odd/\,$\delta$-odd 
-sector is \emph{empty} for scalar fields (and positive 
-$\delta$-structure fields generally), making the obstruction 
-vacuous. The modular-theoretic route replaces the indefinite 
-algebraic intertwiner with the positive modular operator, making 
-the obstruction irrelevant even when $\delta$-odd $K$-types are 
-present (as for $J_\tau = -\mathrm{id}$ fields). For Wightman 
-theories with $J_\tau = +\mathrm{id}$, both mechanisms apply and 
-give the same conclusion.
+For theories satisfying the Wightman axioms, condition (iii) is
+not an independent assumption but a \emph{theorem}:
+for $n=2$, this is the Bisognano--Wichmann theorem
+\cite{BW75,BW76}; for $n=3$, it follows from
+the Brunetti--Guido--Longo theory of modular localisation
+\cite{BGL02}. For general $n$, the work of Neeb,
+\'Olafsson, and collaborators on wedge domains and standard
+subspaces in NCC symmetric spaces \cite{NO23wedge,MNO23,MN21}
+provides the natural framework, with the covering group
+classification of \cite[Theorems~5.33--5.35]{NeebPIM} determining
+which quotient of the universal cover supports the local net.
+
+The modular-theoretic approach and the $\delta$-evenness approach
+of \cite{Author_CauchySzego} are complementary. The $\delta$-evenness
+theorem ($k + |\lambda| = 2m_1$, formally verified in Lean~4)
+establishes that $\delta$ preserves all $K$-type labels, which is
+a necessary condition for the BGL net to be well-defined on $K$-types.
+The modular-theoretic approach provides the
+actual operator framework: standard subspaces, antiunitary
+$J$, and the covering group criterion $g_h^{2k} \in \ker U$.
+The general vector-valued classification is the subject of \cite{MN25}.
 \end{remark}
 
 \subsection{Evidence from the Shilov boundary}\label{sec:shilov}
@@ -680,7 +739,7 @@ The nonemptiness of $\check{S}^{\,\alpha} \cap \check{S}^{\,\theta}$ means both 
 
 \subsection{The structural constant ``two''}
 
-The bridge form is $\SO_0(2,2n{-}2)$ for all $n \geq 2$: always exactly two timelike directions. This is forced by \Cref{prop:bridge_unique}. Among real forms $\SO_0(p,q)$, only $p=2$ is Hermitian for $n \geq 3$.
+The bridge form is $\SO_0(2,2n{-}2)$ for all $n \geq 2$: always exactly two timelike directions. This is forced by \Cref{prop:bridge_unique}. Among real forms $\SO_0(p,q)$ of $\SO(2n,\C)$ with $p + q = 2n$, the condition $p = 2$ uniquely selects the Hermitian form for $n \geq 3$. (More generally, $\SO_0(2,d)$ is Hermitian for all $d \geq 3$; our claim is the converse within the $D_n$ series: $p = 2$ is the \emph{only} value giving a Hermitian symmetric space in signature $(p, 2n-p)$.)
 
 For $n=2$, $\min(2,2) = 2$ and $p = q$ (split), so the Hermitian and split forms coincide. This echoes other dimensional thresholds: Ricci flow controls full curvature only in dimension~3; the $h$-cobordism theorem requires dimension $\geq 5$; exotic smooth structures on $\R^n$ exist only for $n=4$. Dimension~4 sits at the boundary in each case. Our result identifies another: the bridge transition from split-coincides-with-Hermitian ($n=2$) to split-differs-from-Hermitian ($n \geq 3$).
 
@@ -736,11 +795,11 @@ The $V_4$ structure of commuting involutions suggests a connection to Steinmann 
 
 \subsection{What this paper does and does not establish}
 
-\emph{Established:} The algebraic structure---$V_4$, bridge uniqueness, cone preservation---and the compact continuation, for all $n \geq 2$. The obstruction to abstract transfer and the contractivity bound $|K_\theta| \leq K_\alpha$. The $A$-series extension. The full simultaneous reconstruction for $n=2$ (QFT) and $n=3$ (CFT).
+\emph{Established:} The algebraic structure---$V_4$, bridge uniqueness, cone preservation---and the compact continuation, for all $n \geq 2$. The obstruction to abstract transfer and the contractivity bound $|K_\theta| \leq K_\alpha$. The $A$-series extension. The full simultaneous reconstruction for $n=2$ (QFT) and $n=3$ (CFT). The identification of the antiunitary correction (\S\ref{sec:antiunitary-correction}) and the dimension mod~4 classification for scalar representations.
 
-\emph{Not established here:} Simultaneous reconstruction for general $n$. The abstract transfer fails (\S\ref{sec:obstruction}). The resolution requires showing that the $\delta$-odd sector is absent from the physical Hilbert space. This is established in the companion paper \cite{Author_CauchySzego}, which proves that all scalar Hardy-space $K$-types on the Type~IV domain are $\delta$-even (a consequence of the rank-2 lattice structure), and that the vector-valued sign is controlled by the fiber intertwiner $J_\tau$. For $J_\tau = +\mathrm{id}$ (bosonic fields and Dirac fermions in even dimensions), the obstruction identified in \S\ref{sec:obstruction} is thereby shown to be vacuous on physical states.
+\emph{Not established here:} Simultaneous reconstruction for general $n$. The abstract transfer fails (\S\ref{sec:obstruction}), and in physical theories the resolution comes from modular theory rather than from $K$-type arithmetic alone (\S\ref{sec:antiunitary-correction}). The companion paper \cite{Author_CauchySzego} establishes that all scalar Hardy-space $K$-types on the Type~IV domain are $\delta$-even (a consequence of the rank-2 lattice structure: $k + |\lambda| = 2m_1$), which proves that $\delta$ preserves all $K$-type labels. This is a necessary condition for the BGL net construction, but the operator-level resolution requires the antiunitary/standard subspace framework of \cite{NO17,MN21}: time reflection is implemented by the modular conjugation $J$ (antiunitary, with $J^2 = \pm 1$), and the covering on which the net is local depends on $d \bmod 4$ \cite[Theorem~5.35]{NeebPIM}. The general vector-valued classification is the subject of \cite{MN25}.
 
-\emph{The relationship to companion papers:} The present paper provides the Lie-algebraic skeleton that identifies the $\delta$-odd obstruction as the sole obstacle to simultaneous reconstruction. The companion paper \cite{Author_CauchySzego} resolves this obstruction via Hardy-space analysis. Together, they supply the input for \cite{Author_SplitWedge}, whose bridge decomposition $\omega(F^{*_\theta} \cdot F) = \omega(F_+^{*_{\Theta_S}} \cdot F_+) - \omega(F_-^{*_{\Theta_S}} \cdot F_-)$ becomes positive-definite once the $\delta$-odd sector is eliminated. The logical dependence is: obstruction (here) $\to$ resolution (\cite{Author_CauchySzego}) $\to$ reconstruction (\cite{Author_SplitWedge}).
+\emph{The relationship to companion papers:} The present paper provides the Lie-algebraic skeleton: $V_4$ structure, cone preservation, the algebraic obstruction, and the antiunitary correction. The companion paper \cite{Author_CauchySzego} establishes the $K$-type label compatibility ($\delta$ preserves all labels). Together with the modular-theoretic framework of \cite{NO17,MN21,MN25}, these supply the input for \cite{Author_SplitWedge}, whose geometric constructions (tube inclusions, split wedge, two-point trinity) provide the spacetime infrastructure.
 
 \subsection{Formal verification}
 
@@ -823,6 +882,28 @@ Geom.\ Dedicata \textbf{217} (2023), no.~2, Paper No.~30.
 V.~Morinelli, K.-H.~Neeb, and G.~\'Olafsson,
 \emph{From Euler elements and 3-gradings to non-compactly causal symmetric spaces},
 J.\ Lie Theory \textbf{33} (2023), 377--432.
+
+\bibitem{NO17}
+K.-H.~Neeb and G.~\'Olafsson,
+\emph{Antiunitary representations and modular theory},
+in: 50th Seminar ``Sophus Lie'', Banach Center Publ., vol.~113 (2017), 291--362.
+arXiv:1704.01336.
+
+\bibitem{MN21}
+V.~Morinelli and K.-H.~Neeb,
+\emph{Covariant homogeneous nets of standard subspaces},
+Comm.\ Math.\ Phys.\ \textbf{386} (2021), 305--358.
+arXiv:2010.07128.
+
+\bibitem{MN25}
+V.~Morinelli and K.-H.~Neeb,
+\emph{Nets on coverings of causal symmetric spaces},
+in preparation, 2025.
+
+\bibitem{NeebPIM}
+K.-H.~Neeb,
+\emph{Causal flag manifolds and standard subspaces},
+Lecture notes / preprint, Section~5.6, 2024.
 
 \bibitem{Poland19}
 D.~Poland, S.~Rychkov, and A.~Vichi,

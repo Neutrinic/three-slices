@@ -8,13 +8,17 @@
   - Negative δ-structure (J_τ² = -id): odd-dimensional spinors
 
   By DeltaEvenness, the scalar lattice factor is always +1.
-  The full δ-eigenvalue on V_m ⊗ V is:
+  The full δ-eigenvalue *on K-type labels* in V_m ⊗ V is:
     (-1)^{2m₁} · J_τ = (+1) · J_τ = J_τ
 
-  For J_τ = +id: all Hardy space sections are δ-even.
-  The Szegő transfer preserves reflection positivity.
+  For J_τ = +id: all Hardy space K-type labels are δ-even.
 
-  This resolves Conjecture 8.1 of the Bridge paper for bosonic fields.
+  NOTE: This establishes K-type label compatibility, which is a
+  necessary algebraic condition for the BGL net construction.
+  The operator-level implementation of time reflection requires
+  the antiunitary/standard subspace framework of Neeb-Ólafsson
+  (arXiv:1704.01336) and Morinelli-Neeb (arXiv:2010.07128), with
+  the covering group on which the net is local determined by d mod 4.
 
   Reference: Cauchy-Szegő paper, Sections 4-5, Theorem 7.1
 -/
@@ -133,18 +137,23 @@ theorem odd_spinors_negative : DeltaStructure.negative.eigenvalue = -1 := rfl
 /-! ## The Trilogy Resolution
 
 Paper 1 (Split Wedge): algebraic framework, V₄, exact for d=4
-Paper 2 (Bridge): n-point reconstruction, identifies δ-odd obstruction
-Paper 3 (Cauchy-Szegő, this): resolves the obstruction
+Paper 2 (Bridge): identifies δ-odd obstruction + antiunitary correction
+Paper 3 (Cauchy-Szegő, this): K-type label compatibility
 
-The resolution: the δ-odd "obstruction" was an artifact of the
-algebraic approach. In the scalar sector, δ-odd K-types don't exist
-(k + |λ| = 2m₁ is always even). In the vector sector, the sign is
-controlled entirely by J_τ. For bosonic fields (J_τ = +id), the
-Cauchy-Szegő transfer preserves reflection positivity. -/
+The K-type label compatibility: in the scalar sector, all K-type
+labels are δ-even (k + |λ| = 2m₁ is always even). In the vector
+sector, the label sign is controlled entirely by J_τ. For bosonic
+fields (J_τ = +id), all K-type labels are δ-even.
 
-/-- The trilogy is resolved for bosonic fields:
-    scalar δ-eigenvalue is +1 (proven) and J_τ = +id (by assumption),
-    so the full δ-eigenvalue is +1 on every Hardy K-type. -/
+The operator-level resolution additionally requires the antiunitary
+framework (time reflection = antiunitary J, not unitary U) and the
+BGL construction on covering groups, with the covering determined
+by d mod 4 (Neeb, Theorem 5.35 of pim.pdf). -/
+
+/-- K-type label compatibility for bosonic fields:
+    scalar lattice factor is +1 (proven) and J_τ = +id (by assumption),
+    so all K-type labels carry δ-eigenvalue +1. This is a necessary
+    condition for the BGL net construction on covering groups. -/
 theorem trilogy_resolved :
     ∀ (τ : KType), fullDeltaEigenvalue τ .positive = 1 :=
   fun τ => positive_structure_delta_even τ

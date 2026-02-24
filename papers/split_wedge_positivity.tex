@@ -54,7 +54,7 @@
 \maketitle
 
 \begin{abstract}
-We establish that split-signature $(2,2)$ quantum field theory is equivalent to Lorentzian $(1,3)$ and Euclidean $(0,4)$ formulations for parity-invariant theories, under standard functional-analytic assumptions (OS reconstruction, Wick rotation, analytic continuation through the extended tube), with the algebraic core formally verified in the Lean~4 proof assistant. For the two-point function, we prove that split wedge reflection positivity implies a positive K\"all\'en-Lehmann spectral measure via a semigroup representation argument. For general $n$-point functions, we prove the full reconstruction theorem: split wedge positivity, combined with a discrete $R$-symmetry (the split analogue of parity), implies Osterwalder-Schrader reflection positivity and hence determines a Wightman QFT. The key insight is a ``bridge lemma'' that converts the codimension-2 split reflection $\Theta_S: (u,v) \mapsto (-u,-v)$ into a codimension-1 Euclidean time reflection $\theta: \tau \mapsto -\tau$ via the factorization $\theta = R \circ \Theta_S$. This establishes split signature as a third axiomatization of parity-invariant quantum field theory; we discuss the extension to parity-violating theories via $\Z_2$-graded positivity. All three formulations are projections of a single holomorphic structure on complexified spacetime $\C^4$.
+We establish that split-signature $(2,2)$ quantum field theory is equivalent to Lorentzian $(1,3)$ and Euclidean $(0,4)$ formulations for parity-invariant theories, under standard functional-analytic assumptions (OS reconstruction, Wick rotation, analytic continuation through the extended tube), under standard functional-analytic assumptions. For the two-point function, we prove that split wedge reflection positivity implies a positive K\"all\'en-Lehmann spectral measure via a semigroup representation argument. For general $n$-point functions, we prove the full reconstruction theorem: split wedge positivity, combined with a discrete $R$-symmetry (the split analogue of parity), implies Osterwalder-Schrader reflection positivity and hence determines a Wightman QFT. The key insight is a ``bridge lemma'' that converts the codimension-2 split reflection $\Theta_S: (u,v) \mapsto (-u,-v)$ into a codimension-1 Euclidean time reflection $\theta: \tau \mapsto -\tau$ via the factorization $\theta = R \circ \Theta_S$. This establishes split signature as a third axiomatization of parity-invariant quantum field theory; we discuss the extension to parity-violating theories via $\Z_2$-graded positivity. All three formulations are projections of a single holomorphic structure on complexified spacetime $\C^4$.
 \end{abstract}
 
 \tableofcontents
@@ -78,7 +78,7 @@ The central question we address is: \emph{Can split-signature data reconstruct a
 
 \subsection{Main Results}
 
-We prove that split-signature wedge reflection positivity is equivalent to Euclidean reflection positivity at all orders, establishing split signature as a third axiomatization of quantum field theory. Just as Osterwalder-Schrader licenses Wick rotation to Euclidean signature, our reconstruction theorem licenses Wick rotation to split signature, where spinor-helicity variables become real, conformal cross-ratios are manifestly positive, and self-duality conditions simplify. The algebraic core of the proof---the Klein four-group structure of the involutions, the Bridge Lemma factorization, and the dual cone geometry---has been formally verified in the Lean~4 proof assistant \cite{LeanVerification}.
+We prove that split-signature wedge reflection positivity is equivalent to Euclidean reflection positivity at all orders, establishing split signature as a third axiomatization of quantum field theory. Just as Osterwalder-Schrader licenses Wick rotation to Euclidean signature, our reconstruction theorem licenses Wick rotation to split signature, where spinor-helicity variables become real, conformal cross-ratios are manifestly positive, and self-duality conditions simplify. The algebraic core of the proof---the Klein four-group structure of the involutions, the Bridge Lemma factorization, and the dual cone geometry---is presented in full detail below.
 
 \begin{theorem}[Two-Point Reconstruction---Informal Statement]
 \label{thm:informal}
@@ -202,7 +202,7 @@ The split forward cone $V^+_S$ is a proper convex cone. Its dual cone with respe
 \label{eq:dual-cone}
     (V^+_S)^* := \{y \in \R^{2,2} : g_S(p,y) \geq 0 \;\forall\, p \in V^+_S\} = \{y : y_u \geq 0,\, y_v \geq 0,\, \min(y_u, y_v) \geq |y_\perp|\}.
 \end{equation}
-Unlike the Lorentzian forward cone $V^+_L$, which is self-dual under the Lorentz metric, $V^+_S$ is \emph{not} self-dual under the split metric: $(V^+_S)^* \subsetneq V^+_S \subset \overline{\WW^+}$. The non-self-duality arises because vectors in $V^+_S$ can concentrate near the $u$-axis or $v$-axis independently, yielding large transverse overlap with small timelike overlap.\footnote{Explicit counterexample: $p = (10,1,7,0)$ and $y = (1,10,7,0)$ both lie in $V^+_S$ (since $101 > 49$), but $g_S(p,y) = 10 + 10 - 49 = -29 < 0$. This counterexample has been formally verified in Lean~4 (\texttt{splitForwardCone\_not\_self\_dual} in \cite{LeanVerification}).}
+Unlike the Lorentzian forward cone $V^+_L$, which is self-dual under the Lorentz metric, $V^+_S$ is \emph{not} self-dual under the split metric: $(V^+_S)^* \subsetneq V^+_S \subset \overline{\WW^+}$. The non-self-duality arises because vectors in $V^+_S$ can concentrate near the $u$-axis or $v$-axis independently, yielding large transverse overlap with small timelike overlap.\footnote{Explicit counterexample: $p = (10,1,7,0)$ and $y = (1,10,7,0)$ both lie in $V^+_S$ (since $101 > 49$), but $g_S(p,y) = 10 + 10 - 49 = -29 < 0$. }
 
 %==============================================================================
 \section{Tubes and Analytic Continuation}
@@ -598,9 +598,9 @@ $(2) \Rightarrow (1)$: This is Osterwalder-Schrader reconstruction.
 $(1) \Rightarrow (3)$: Given a Wightman two-point function with $\rho \geq 0$, it extends holomorphically to the extended tube $\TT'$. By Lemma \ref{lemma:split-tube}, $\TT_S \subset \TT'$, so the function restricts to the split tube and hence to the split real slice $\R^{2,2}$. The spectral measure $\rho \geq 0$ implies that the kernel $\phi_{p_\perp}(\sigma, \tau)$ in the proof of Lemma \ref{lemma:spectral} is a Laplace transform of a positive measure (reversing Steps 5--6), which is positive-definite on the semigroup (reversing Step 5), which implies split wedge positivity (reversing Steps 1--3).
 \end{proof}
 
-\begin{remark}[Scope of the formal verification]
+\begin{remark}[Scope of the algebraic content]
 \label{rmk:trinity-scope}
-The equivalence cycle in Corollary~\ref{cor:trinity} relies on standard functional-analytic results for two of its four legs: $(1) \Rightarrow (2)$ uses Wick rotation and the forward direction of OS reconstruction, while $(1) \Rightarrow (3)$ uses analytic continuation through the extended tube $\TT'$. These are not verified in Lean. The novel contribution verified in the formalization is the algebraic infrastructure that enables the remaining legs---the sum-kernel rewrite (Step~1), the semigroup structure (Step~5), the tube inclusion $\TT_S \subset \TT'$ (Lemma~\ref{lemma:split-tube}), and the Bridge Lemma factorization $\theta = R \circ \Theta_S$---which are the new content specific to split signature.
+The equivalence cycle in Corollary~\ref{cor:trinity} relies on standard functional-analytic results for two of its four legs: $(1) \Rightarrow (2)$ uses Wick rotation and the forward direction of OS reconstruction, while $(1) \Rightarrow (3)$ uses analytic continuation through the extended tube $\TT'$. The novel algebraic content specific to split signature is the infrastructure enabling the remaining legs---the sum-kernel rewrite (Step~1), the semigroup structure (Step~5), the tube inclusion $\TT_S \subset \TT'$ (Lemma~\ref{lemma:split-tube}), and the Bridge Lemma factorization $\theta = R \circ \Theta_S$.
 \end{remark}
 
 %==============================================================================
@@ -672,7 +672,7 @@ Define the state $\omega: \BB(\WW^+) \to \C$ by
 \end{equation}
 Split wedge positivity (S6) states precisely that $\omega(F^* \cdot F) \geq 0$.
 
-The GNS construction yields a Hilbert space $\HH$, a cyclic vector $\Omega$, and a $*$-representation $\pi$ of $\BB(\WW^+)$ with $\omega(F) = \langle \Omega, \pi(F) \Omega \rangle$. (This is a standard application of the GNS theorem for $*$-algebras; the subsequent semigroup extension in Step~3 uses Nelson's theorem and Stone's theorem. These functional-analytic steps are not verified in Lean, which covers only the algebraic infrastructure feeding into them---see the Formal Verification subsection.)
+The GNS construction yields a Hilbert space $\HH$, a cyclic vector $\Omega$, and a $*$-representation $\pi$ of $\BB(\WW^+)$ with $\omega(F) = \langle \Omega, \pi(F) \Omega \rangle$. (This is a standard application of the GNS theorem for $*$-algebras; the subsequent semigroup extension in Step~3 uses Nelson's theorem and Stone's theorem.)
 
 \medskip
 \noindent\textbf{Step 2: Symmetry Implementation.}
@@ -719,7 +719,7 @@ Substituting $\xi' = \xi - a$, $\eta' = \eta - a$, and using the crucial identit
 \label{eq:theta-shift}
     \Theta_S(\xi' + a) = \Theta_S \xi' - a \qquad \text{(for $a = (a_u, a_v, 0, 0)$)},\footnotemark
 \end{equation}
-\footnotetext{This identity requires $a$ to be a timelike translation: $\Theta_S$ negates the $(u,v)$ components but preserves $(x,y)$, so the cancellation $\Theta_S(\xi' + a) = \Theta_S \xi' - a$ fails for spatial components. Formally verified: \texttt{thetaS\_shift} in \cite{LeanVerification} proves $\Theta_S(\xi' + a) = \Theta_S \xi' - a$ for $a = (a_u, a_v, 0, 0)$.}
+\footnotetext{This identity requires $a$ to be a timelike translation: $\Theta_S$ negates the $(u,v)$ components but preserves $(x,y)$, so the cancellation $\Theta_S(\xi' + a) = \Theta_S \xi' - a$ fails for spatial components.}
 we obtain:
 \begin{align}
     \|T(a)\Psi_f\|^2 &= \int K(\xi' + a, \eta' + a) \, \bar{f}(\xi') f(\eta') \, d\xi' \, d\eta' \\
@@ -742,7 +742,7 @@ for $\mathrm{Im}(z) \in V^+_S$, where $\mu \geq 0$ is the spectral measure. For 
 \begin{equation}
     W_2^{\mathrm{hol}}(x + i\epsilon y) = \int_{\overline{V^+_S}} e^{ip \cdot x} \cdot e^{-\epsilon p \cdot y} \, d\mu(p).
 \end{equation}
-The factor $e^{-\epsilon p \cdot y}$ provides genuine damping: for $p \in \overline{V^+_S}$ and $y \in (V^+_S)^*$, we have $p \cdot y = p_u y_u + p_v y_v - p_\perp \cdot y_\perp \geq 0$ by definition of the dual cone, so $e^{-\epsilon p \cdot y} \in (0, 1]$. (Note: unlike the Lorentzian forward cone, the split forward cone $V^+_S$ is not self-dual under the split metric. The dual cone $(V^+_S)^* = \{y: y_u \geq 0, y_v \geq 0, \min(y_u, y_v) \geq |y_\perp|\}$ is strictly smaller than $V^+_S$ but is non-empty and contained in $V^+_S$, which is all that is required.\footnote{The containment $(V^+_S)^* \subset \overline{V^+_S}$, the strict inclusion $(V^+_S)^* \subsetneq V^+_S$, and the inner product positivity $g_S(p,y) \geq 0$ for $p \in \overline{V^+_S}$, $y \in (V^+_S)^*$ have been formally verified: \texttt{dualCone\_subset\_forwardConeClosed}, \texttt{dualCone\_strictly\_smaller}, and \texttt{splitInner\_nonneg\_diagonal} in \cite{LeanVerification}.})
+The factor $e^{-\epsilon p \cdot y}$ provides genuine damping: for $p \in \overline{V^+_S}$ and $y \in (V^+_S)^*$, we have $p \cdot y = p_u y_u + p_v y_v - p_\perp \cdot y_\perp \geq 0$ by definition of the dual cone, so $e^{-\epsilon p \cdot y} \in (0, 1]$. (Note: unlike the Lorentzian forward cone, the split forward cone $V^+_S$ is not self-dual under the split metric. The dual cone $(V^+_S)^* = \{y: y_u \geq 0, y_v \geq 0, \min(y_u, y_v) \geq |y_\perp|\}$ is strictly smaller than $V^+_S$ but is non-empty and contained in $V^+_S$, which is all that is required.)
 
 For the translated kernel with tube regularization:
 \begin{equation}
@@ -859,7 +859,7 @@ Define the \textbf{Euclidean time reflection}:
 \begin{equation}
     \theta := R \circ \Theta_S : (\tau, \sigma, x, y) \mapsto (-\tau, \sigma, x, y).
 \end{equation}
-In split coordinates, $\theta(u, v, x, y) = (-v, -u, x, y)$, which negates $\tau = (u+v)/\sqrt{2}$ and preserves $\sigma = (u-v)/\sqrt{2}$.\footnote{Formally verified: \texttt{thetaE\_explicit}, \texttt{thetaE\_euclidean\_tau}, and \texttt{thetaE\_euclidean\_sigma} in \cite{LeanVerification}.}
+In split coordinates, $\theta(u, v, x, y) = (-v, -u, x, y)$, which negates $\tau = (u+v)/\sqrt{2}$ and preserves $\sigma = (u-v)/\sqrt{2}$.
 
 \begin{lemma}[Bridge Lemma]
 \label{lemma:bridge}
@@ -867,9 +867,9 @@ Under axiom \textnormal{(S3)} ($R$-invariance), the Schwinger functions satisfy 
 \end{lemma}
 
 \begin{proof}
-Let $\alpha_R$ denote the automorphism of $\BB(\WW^+)$ induced by $R$. Since $R$ preserves $\WW^+$ (swapping $u \leftrightarrow v$, both positive\footnote{Formally verified: \texttt{swapR\_preserves\_wedge} in \cite{LeanVerification}.}), $\alpha_R$ maps $\BB(\WW^+)$ to itself.
+Let $\alpha_R$ denote the automorphism of $\BB(\WW^+)$ induced by $R$. Since $R$ preserves $\WW^+$ (swapping $u \leftrightarrow v$, both positive), $\alpha_R$ maps $\BB(\WW^+)$ to itself.
 
-The $\theta$-involution relates to the $\Theta_S$-involution by $\theta = R \circ \Theta_S$\footnote{The factorization $\theta(p) = R(\Theta_S(p))$ and the conjugation identity $\theta(R(p)) = \Theta_S(p)$ have been formally verified: \texttt{bridge\_factorization} and \texttt{bridge\_conjugation\_identity} in \cite{LeanVerification}.}, giving
+The $\theta$-involution relates to the $\Theta_S$-involution by $\theta = R \circ \Theta_S$, giving
 \begin{equation}
     F^{*_\theta} = \alpha_R((\alpha_R^{-1} F)^{*_{\Theta_S}}).
 \end{equation}
@@ -887,7 +887,7 @@ Define $\EE_0 := \overline{\mathrm{span}\{\pi(F)\Omega : \supp(F) \subset (\WW^+
 
 The Bridge Lemma gives $\theta$-positivity on $\EE_0$. To extend to the full Euclidean half-space $\EE^+ = \{\tau > 0\}$, we use the unitary $\sigma$-translations.
 
-\emph{Geometric coverage.} For any point $(\tau_0, \sigma_0, x, y)$ with $\tau_0 > 0$, the translated wedge $\{(\tau, \sigma) : \tau > |\sigma - \sigma_0|\}$ contains this point (take the shift $s = \sigma_0$). Hence\footnote{Formally verified: \texttt{geometric\_coverage} in \cite{LeanVerification}. In split coordinates, for any $(u,v)$ with $u + v > 0$, the shift $s = (v-u)/2$ gives $u + s = v - s = (u+v)/2 > 0$.}
+\emph{Geometric coverage.} For any point $(\tau_0, \sigma_0, x, y)$ with $\tau_0 > 0$, the translated wedge $\{(\tau, \sigma) : \tau > |\sigma - \sigma_0|\}$ contains this point (take the shift $s = \sigma_0$). Hence\footnote{In split coordinates, for any $(u,v)$ with $u + v > 0$, the shift $s = (v-u)/2$ gives $u + s = v - s = (u+v)/2 > 0$.}
 \begin{equation}
     \bigcup_{s \in \R} U_\sigma(s) \WW^+ = \{(\tau, \sigma, x, y) : \tau > 0\} = \EE^+.
 \end{equation}
@@ -969,7 +969,7 @@ For completeness, we verify that the Schwinger functions $S_n$ obtained from the
 
 \begin{remark}[Three Involutions]
 \label{rmk:three-involutions}
-The proof uses three involutions: (i) $\Theta_S$, codimension-2, for which positivity is assumed; (ii) $R$, the discrete symmetry converting codimension-2 to codimension-1; (iii) $\theta = R \circ \Theta_S$, codimension-1, whose $c$-dual gives $\mathrm{ISO}(1,3)$. These three involutions form a Klein four-group $V_4 = \{e, \Theta_S, R, \theta\}$: each squares to the identity, and the composition of any two gives the third. All three preserve the split quadratic form $p^2_S$.\footnote{The full Klein four-group structure, the involution property $\Theta_S^2 = R^2 = \theta^2 = \mathrm{id}$, and isometry of all three maps have been formally verified: \texttt{klein\_four\_identity}, \texttt{thetaS\_involution}, \texttt{swapR\_involution}, \texttt{thetaE\_involution}, \texttt{thetaS\_preserves\_norm}, \texttt{swapR\_preserves\_norm}, \texttt{thetaE\_preserves\_norm} in \cite{LeanVerification}.}
+The proof uses three involutions: (i) $\Theta_S$, codimension-2, for which positivity is assumed; (ii) $R$, the discrete symmetry converting codimension-2 to codimension-1; (iii) $\theta = R \circ \Theta_S$, codimension-1, whose $c$-dual gives $\mathrm{ISO}(1,3)$. These three involutions form a Klein four-group $V_4 = \{e, \Theta_S, R, \theta\}$: each squares to the identity, and the composition of any two gives the third. All three preserve the split quadratic form $p^2_S$.
 \end{remark}
 
 \begin{remark}[Two Split Time Directions]
@@ -1267,21 +1267,6 @@ The three signatures---Lorentzian $(1,3)$, Euclidean $(0,4)$, and split $(2,2)$-
 % References
 %==============================================================================
 
-\subsection{Formal Verification}
-
-The algebraic core of this paper has been formally verified in the Lean~4 proof assistant using the Mathlib library \cite{LeanVerification}. The formalization covers:
-\begin{enumerate}[label=(\roman*)]
-\item All definitions: split spacetime $\R^{2,2}$, the split metric $g_S$, the three involutions $\Theta_S$, $R$, $\theta$, the split wedge $\WW^+$, the forward cone $V^+_S$, and the dual cone $(V^+_S)^*$.
-\item The Klein four-group structure: $\Theta_S^2 = R^2 = \theta^2 = \mathrm{id}$, $\theta(R(p)) = \Theta_S(p)$, and all three involutions preserve $p^2_S$.
-\item The Bridge Lemma factorization: $\theta = R \circ \Theta_S$ and the conjugation identity $\theta(R(p)) = \Theta_S(p)$ that enables positivity transfer.
-\item Wedge geometry: $R$ preserves $\WW^+$, $\Theta_S$ maps $\WW^+ \to \WW^-$, and $\bigcup_s U_\sigma(s)\WW^+ = \EE^+$.
-\item Dual cone structure: $(V^+_S)^* \subset \overline{V^+_S}$, $(V^+_S)^* \neq \varnothing$, $V^+_S$ is not self-dual (explicit counterexample), and $g_S(p,y) \geq 0$ for $p \in \overline{V^+_S}$, $y \in (V^+_S)^*$.
-\item The three antiholomorphic involutions $\sigma_L$, $\sigma_E$, $\sigma_S$ on $\C^4$: involution proofs ($\sigma^2 = \mathrm{id}$), composition laws, fixed-point set characterization (real/imaginary part conditions), and signature verification that the complexified quadratic form restricts to $(1,3)$, $(0,4)$, $(2,2)$ on the respective fixed-point sets.
-\end{enumerate}
-The functional analysis arguments (GNS construction, BCR theorem, Nelson's theorem, Stone's theorem, OS reconstruction) invoke standard results not yet available in Mathlib and are therefore not machine-verified. The Two-Point Trinity (Corollary~\ref{cor:trinity}) is stated as a formal equivalence, but its proof legs rely on the functional analysis results listed above; the Lean formalization verifies the algebraic infrastructure (sum-kernel rewrite, tube inclusion, semigroup structure) but not the equivalence itself. A successful build of the Lean project constitutes a machine-checked proof certificate for the algebraic content listed above; the source code is available at \cite{LeanVerification}.
-
-\emph{Corrections from formalization.} The Lean verification uncovered that the shift identity $\Theta_S(\xi' + a) = \Theta_S \xi' - a$ (equation~\eqref{eq:theta-shift}) requires restriction to timelike translations $a = (a_u, a_v, 0, 0)$, since $\Theta_S$ preserves the spatial components $(x, y)$. This does not affect the proof of Theorem~\ref{thm:main}, which uses only timelike shifts $a \in \R_+^2 \times \{0\}$.
-
 \begin{thebibliography}{99}
 
 \bibitem{Wightman1956}
@@ -1423,20 +1408,6 @@ Oxford Mathematical Monographs, Clarendon Press (1994).
 A.~Abrahams,
 ``The Cauchy--Szeg\H{o} Kernel as Holomorphic Filter: Simultaneous Reflection Positivity via Analytic Continuation Through Type~IV Bounded Symmetric Domains,''
 Paper~3 in the present series (2026).
-
-\bibitem{LeanVerification}
-A.~Abrahams,
-``Formal verification of the complexified spacetime QFT framework in Lean~4,''
-available at \url{https://github.com/Neutrinic/three-slices}, 2026.
-Lean~4.28 / Mathlib; unified repository covering three papers.
-Split Wedge module: 93 theorems verified including Klein four-group structure,
-involution identities, dual cone geometry (non-self-duality counterexample
-$g_S = -29$), geometric coverage $\bigcup_s W^+(s) = E^+$, tube inclusion
-$V_L^+ \to V_S^+$, and the Bridge Lemma factorization
-$\theta_E = R \circ \Theta_S$.
-The formalization uncovered that the shift identity
-$\Theta_S(\xi' + a) = \Theta_S \xi' - a$ requires restriction to timelike
-translations $a = (a_u, a_v, 0, 0)$; see footnote to equation~\eqref{eq:theta-shift}.
 
 \end{thebibliography}
 

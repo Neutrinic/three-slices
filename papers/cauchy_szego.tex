@@ -1091,7 +1091,7 @@ and~\ref{sec:filter}. The strategy is:
     $\delta$-structure $J_\tau$
     (Proposition~\ref{prop:vv-filter}).
 \end{enumerate}
-The arithmetic core of this theorem---the identity $k + |\lambda| = 2m_1$, the eigenvalue $(-1)^{k+|\lambda|} = +1$, and the absence of $\delta$-odd $K$-types---has been formally verified in Lean~4 with zero \texttt{sorry} axioms \cite{LeanVerification}.
+The arithmetic core of this theorem---the identity $k + |\lambda| = 2m_1$, the eigenvalue $(-1)^{k+|\lambda|} = +1$, and the absence of $\delta$-odd $K$-types---is established in Section~\ref{sec:filter} and Appendix~\ref{app:branching}.
 
 \begin{remark}[What $\delta$-evenness controls]\label{rem:label-vs-operator}
 The identity $k + |\lambda| = 2m_1$ proves that $\delta$ \emph{preserves all $K$-type labels}: no $K$-type is sent to a different $K$-type under $\delta$. This is a statement about the action of $\delta$ on the set $\hat{K}$ of $K$-type labels, not about the operator implementing $\delta$ within each $K$-type. In particular, this does not by itself determine the sign of the operator implementing time reflection on each $K$-type. As explained in \cite[\S5.5]{Bridge}, time reflection in positive-energy theories must be implemented by an \emph{antiunitary} operator $J$ (not a unitary involution $U$ with $U^2 = 1$), and the operator-level analysis requires the standard subspace formalism of \cite{NO17,MN21} rather than eigenspace decompositions. The $K$-type label preservation proved here is a necessary algebraic condition for the BGL net construction, complementary to the modular-theoretic machinery.
@@ -2425,18 +2425,6 @@ Springer Briefs in Mathematical Physics, vol.~32, Springer, 2018.
 R.~Brunetti, D.~Guido, and R.~Longo,
 \emph{Modular localization and Wigner particles},
 Rev.\ Math.\ Phys.\ \textbf{14} (2002), 759--785.
-
-\bibitem{LeanVerification}
-A.~Abrahams,
-``Formal verification of the complexified spacetime QFT framework in Lean~4,''
-available at \url{https://github.com/Neutrinic/three-slices}, 2026.
-Lean~4.28 / Mathlib; unified repository covering three papers.
-Cauchy--Szeg\H{o} module: 55 theorems and examples verified with zero
-\texttt{sorry} axioms, including the central $\delta$-evenness theorem
-$k + |\lambda| = 2m_1$ (\texttt{delta\_evenness}), the eigenvalue identity
-$(-1)^{k+|\lambda|} = +1$ (\texttt{delta\_eigenvalue\_positive}), absence
-of $\delta$-odd $K$-types (\texttt{no\_delta\_odd\_Ktypes}), Jordan
-algebra structure, and Type~IV domain geometry.
 
 \end{thebibliography}
 

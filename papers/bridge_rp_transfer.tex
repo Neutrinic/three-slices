@@ -700,7 +700,7 @@ which quotient of the universal cover supports the local net.
 
 The modular-theoretic approach and the $\delta$-evenness approach
 of \cite{Author_CauchySzego} are complementary. The $\delta$-evenness
-theorem ($k + |\lambda| = 2m_1$, formally verified in Lean~4)
+theorem ($k + |\lambda| = 2m_1$)
 establishes that $\delta$ preserves all $K$-type labels, which is
 a necessary condition for the BGL net to be well-defined on $K$-types.
 The modular-theoretic approach provides the
@@ -800,10 +800,6 @@ The $V_4$ structure of commuting involutions suggests a connection to Steinmann 
 \emph{Not established here:} Simultaneous reconstruction for general $n$. The abstract transfer fails (\S\ref{sec:obstruction}), and in physical theories the resolution comes from modular theory rather than from $K$-type arithmetic alone (\S\ref{sec:antiunitary-correction}). The companion paper \cite{Author_CauchySzego} establishes that all scalar Hardy-space $K$-types on the Type~IV domain are $\delta$-even (a consequence of the rank-2 lattice structure: $k + |\lambda| = 2m_1$), which proves that $\delta$ preserves all $K$-type labels. This is a necessary condition for the BGL net construction, but the operator-level resolution requires the antiunitary/standard subspace framework of \cite{NO17,MN21}: time reflection is implemented by the modular conjugation $J$ (antiunitary, with $J^2 = \pm 1$), and the covering on which the net is local depends on $d \bmod 4$ \cite[Theorem~5.35]{NeebPIM}. The general vector-valued classification is the subject of \cite{MN25}.
 
 \emph{The relationship to companion papers:} The present paper provides the Lie-algebraic skeleton: $V_4$ structure, cone preservation, the algebraic obstruction, and the antiunitary correction. The companion paper \cite{Author_CauchySzego} establishes the $K$-type label compatibility ($\delta$ preserves all labels). Together with the modular-theoretic framework of \cite{NO17,MN21,MN25}, these supply the input for \cite{Author_SplitWedge}, whose geometric constructions (tube inclusions, split wedge, two-point trinity) provide the spacetime infrastructure.
-
-\subsection{Formal verification}
-
-The algebraic core of this paper---bridge factorisation $\theta_E = R \circ \Theta_S$, the conjugation identity, dual cone geometry, and geometric coverage---has been formally verified in Lean~4 \cite{LeanVerification}. The formalization uncovered that the shift identity $\Theta_S(\xi' + a) = \Theta_S \xi' - a$ requires restriction to timelike translations $a = (a_u, a_v, 0, 0)$; this does not affect any results in this paper, which uses only timelike shifts. The Two-Point Trinity equivalence (Corollary~5.7 of \cite{Author_SplitWedge}) is stated as a formal bi-conditional but its proof legs rely on functional analysis (Wick rotation, OS reconstruction, analytic continuation through the extended tube) not yet available in Mathlib; the Lean formalization verifies the algebraic infrastructure but not the equivalence itself. The holomorphic extension to the Olshanski semigroup (\S\ref{sec:simultaneous}), including the contractivity bound, similarly invokes the Kr\"otz--Stanton theory \cite{KS04} and is not machine-verified.
 
 %----------------------------------------------------------------------
 \begin{thebibliography}{99}
@@ -919,21 +915,6 @@ A.~Abrahams,
 A.~Abrahams,
 \emph{The Cauchy--Szeg\H{o} Kernel as Holomorphic Filter: Simultaneous Reflection Positivity via Analytic Continuation Through Type~IV Bounded Symmetric Domains},
 [submitted to Commun.\ Math.\ Phys.], 2026.
-
-\bibitem{LeanVerification}
-A.~Abrahams,
-``Formal verification of the complexified spacetime QFT framework in Lean~4,''
-available at \url{https://github.com/Neutrinic/three-slices}, 2026.
-Lean~4.28 / Mathlib; unified repository covering three papers.
-Bridge module: 18 theorems verified including bridge factorisation
-$\theta_E = R \circ \Theta_S$, bridge conjugation identity, translated
-kernel shift invariance (restricted to timelike translations), dual cone
-inclusion $(V_S^+)^* \subset V_S^+$, non-self-duality counterexample
-($g_S = -29$), and geometric coverage $\bigcup_s W^+(s) = E^+$.
-The formalization uncovered that the shift identity
-$\Theta_S(\xi' + a) = \Theta_S \xi' - a$ requires $a$ to be a timelike
-translation $a = (a_u, a_v, 0, 0)$, as $\Theta_S$ preserves spatial
-components.
 
 \end{thebibliography}
 
